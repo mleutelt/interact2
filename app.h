@@ -1,13 +1,10 @@
 #pragma once
 
 #include <QObject>
-#include <QQmlEngine>
+#include <QtQml/qqml.h>
 
 #include "editor.h"
 #include "levelhandler.h"
-
-class QQmlEngine;
-class QJSEngine;
 
 class App : public QObject
 {

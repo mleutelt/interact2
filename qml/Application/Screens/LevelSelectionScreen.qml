@@ -28,10 +28,12 @@ Page {
         currentIndex: tabBar.currentIndex
 
         GridView {
+            enabled: !App.levelHandler.loading
             clip: true
             model: App.levelHandler.availableLevels
             cellWidth: container.width / 3
             cellHeight: cellWidth
+            // TODO: factor this out into a component that can be reused
             delegate: Button {
                 implicitWidth: GridView.view.cellWidth
                 implicitHeight: GridView.view.cellHeight
@@ -43,6 +45,11 @@ Page {
                         Layout.fillHeight: true
                         fillMode: Image.PreserveAspectCrop
                         source: model.preview
+
+                        BusyIndicator {
+                            anchors.centerIn: parent
+                            running: App.levelHandler.loading && model.name === App.levelHandler.currentLevelData.name
+                        }
                     }
                     Label {
                         Layout.fillWidth: true
@@ -52,14 +59,23 @@ Page {
                     }
                 }
 
-                onClicked: {
-                    Screens.show(Screens.CurrentLevel)
-                    App.levelHandler.loadLevel(model.path)
-                }
+                onClicked: App.levelHandler.loadLevel(model.path)
             }
         }
         GridView {
             model: App.levelHandler.userLevels
+        }
+    }
+
+    Connections {
+        target: App.levelHandler
+
+        // NOTE: change screen as soon as level has been loaded
+        // Maybe use a different signal here?
+        function onLoadingChanged() {
+            if (!App.levelHandler.loading) {
+                Screens.show(Screens.CurrentLevel)
+            }
         }
     }
 }

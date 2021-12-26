@@ -14,6 +14,7 @@ LevelHandler::LevelHandler(QObject *parent)
     : QObject{parent}
     , m_availableLevels{new LevelModel(this)}
     , m_userLevels{new LevelModel(this)}
+    , m_currentLevelData{new LevelDataModel(this)}
 {
     const QFileInfoList levelList = QDir(LEVELS_PATH).entryInfoList();
 
@@ -49,4 +50,36 @@ LevelModel *LevelHandler::userLevels() const
 void LevelHandler::loadLevel(const QString &path)
 {
     qCDebug(lvlh) << "loading level at path" << path;
+    setLoading(true);
+
+    LevelData data;
+    data.name = QDir(path).dirName();
+    // TODO: fill level data object and pass it to the data model
+    data.objects = QList<ObjectDescription>();
+
+    m_currentLevelData->setLevelData(data);
+
+    QTimer::singleShot(3000, [this]{
+        setLoading(false);
+    });
+}
+
+bool LevelHandler::loading() const
+{
+    return m_loading;
+}
+
+void LevelHandler::setLoading(bool flag)
+{
+    if (m_loading == flag) {
+        return;
+    }
+
+    m_loading = flag;
+    emit loadingChanged();
+}
+
+LevelDataModel *LevelHandler::currentLevelData() const
+{
+    return m_currentLevelData;
 }

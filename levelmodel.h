@@ -3,7 +3,7 @@
 #include <QAbstractListModel>
 #include <QUrl>
 
-class LevelData {
+class LevelDescription {
     Q_GADGET
     Q_PROPERTY(QString name MEMBER name)
     Q_PROPERTY(QUrl preview MEMBER preview)
@@ -33,10 +33,10 @@ public:
     QVariant data(const QModelIndex &index, int role) const override;
     QHash<int, QByteArray> roleNames() const override;
 
-    void addLevel(const LevelData& level);
+    void addLevel(const LevelDescription& level);
 
 signals:
 
 private:
-    QList<LevelData> m_data;
+    QList<LevelDescription> m_data;
 };

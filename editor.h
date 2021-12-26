@@ -1,7 +1,7 @@
 #pragma once
 
 #include <QObject>
-#include <QQmlEngine>
+#include <QtQml/qqml.h>
 
 class Editor : public QObject
 {

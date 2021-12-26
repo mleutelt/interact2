@@ -41,6 +41,8 @@ qt_add_qml_module(appInteract2
         levelhandler.cpp
         levelmodel.h
         levelmodel.cpp
+        leveldatamodel.h
+        leveldatamodel.cpp
     RESOURCES
         "resources/levels/Level 1/data.json"
         "resources/levels/Level 1/preview.png"

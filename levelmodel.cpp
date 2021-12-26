@@ -2,7 +2,7 @@
 
 #include <QLoggingCategory>
 
-Q_LOGGING_CATEGORY(lvlm, "app.models.level")
+Q_LOGGING_CATEGORY(lvlm, "app.models.levelmodel")
 
 LevelModel::LevelModel(QObject *parent)
     : QAbstractListModel{parent}
@@ -21,7 +21,7 @@ QVariant LevelModel::data(const QModelIndex &index, int role) const
     if (index.row() < 0 || index.row() >= m_data.count())
         return QVariant();
 
-    const LevelData &data = m_data[index.row()];
+    const LevelDescription &data = m_data[index.row()];
 
     switch (role) {
     case Name: return data.name;
@@ -42,7 +42,7 @@ QHash<int, QByteArray> LevelModel::roleNames() const
     return roles;
 }
 
-void LevelModel::addLevel(const LevelData &level)
+void LevelModel::addLevel(const LevelDescription &level)
 {
     beginInsertRows(QModelIndex(), m_data.count(), m_data.count());
     m_data << level;
