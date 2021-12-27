@@ -24,6 +24,8 @@ Page {
     Level {
         id: level
 
+        topWall.enabled: false
+
         Text {
             id: title
 
@@ -90,7 +92,7 @@ Page {
             newBall.width = 20 + 20 * Math.random()
             newBall.height = newBall.width
             newBall.x = ApplicationWindow.window.width / 2 + newBall.width * Math.random()
-            newBall.y = 10
+            newBall.y = -50
             var impulse = 5
             var impulseX = 0
             var impulseY = impulse

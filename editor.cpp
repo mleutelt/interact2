@@ -4,8 +4,6 @@
 
 Q_LOGGING_CATEGORY(editor, "app.editor")
 
-Editor::Editor(QObject *parent)
-    : QObject{parent}
+Editor::Editor(QObject *parent) : QObject { parent }
 {
-
 }

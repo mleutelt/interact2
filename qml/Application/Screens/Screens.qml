@@ -2,7 +2,7 @@ pragma Singleton
 
 import QtQuick
 
-// NOTE: central management of all screens to user can navigate between
+// NOTE: central management of all screens the user can navigate between
 QtObject {
     enum Screen {
         Main,

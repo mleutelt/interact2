@@ -5,14 +5,13 @@
 
 class Editor : public QObject
 {
-    Q_OBJECT
-    QML_ELEMENT
+  Q_OBJECT
+  QML_ELEMENT
 
 public:
-    explicit Editor(QObject *parent = nullptr);
+  explicit Editor(QObject *parent = nullptr);
 
 signals:
 
 private:
-
 };

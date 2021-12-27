@@ -8,29 +8,29 @@
 
 class App : public QObject
 {
-    Q_OBJECT
-    Q_PROPERTY(Editor* editor READ editor CONSTANT)
-    Q_PROPERTY(LevelHandler* levelHandler READ levelHandler CONSTANT)
-    Q_PROPERTY(bool debugMode READ debugMode WRITE debugMode NOTIFY debugModeChanged)
-    QML_ELEMENT
-    QML_SINGLETON
+  Q_OBJECT
+  Q_PROPERTY(Editor *editor READ editor CONSTANT)
+  Q_PROPERTY(LevelHandler *levelHandler READ levelHandler CONSTANT)
+  Q_PROPERTY(bool debugMode READ debugMode WRITE debugMode NOTIFY debugModeChanged)
+  QML_ELEMENT
+  QML_SINGLETON
 
 public:
-    explicit App(QObject *parent = nullptr);
+  explicit App(QObject *parent = nullptr);
 
-    Editor *editor() const;
-    LevelHandler *levelHandler() const;
+  Editor *editor() const;
+  LevelHandler *levelHandler() const;
 
-    bool debugMode() const;
-    void debugMode(bool flag);
+  bool debugMode() const;
+  void debugMode(bool flag);
 
 signals:
-    void debugModeChanged();
+  void debugModeChanged();
 
 private:
-    void initialize();
+  void initialize();
 
-    Editor *m_editor = nullptr;
-    LevelHandler *m_levelHandler = nullptr;
-    bool m_debugMode = false;
+  Editor *m_editor = nullptr;
+  LevelHandler *m_levelHandler = nullptr;
+  bool m_debugMode = false;
 };

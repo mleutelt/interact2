@@ -4,41 +4,40 @@
 
 Q_LOGGING_CATEGORY(app, "app")
 
-App::App(QObject *parent)
-    : QObject{parent}
+App::App(QObject *parent) : QObject { parent }
 {
-    initialize();
+  initialize();
 }
 
 Editor *App::editor() const
 {
-    return m_editor;
+  return m_editor;
 }
 
 LevelHandler *App::levelHandler() const
 {
-    return m_levelHandler;
+  return m_levelHandler;
 }
 
 bool App::debugMode() const
 {
-    return m_debugMode;
+  return m_debugMode;
 }
 
 void App::debugMode(bool flag)
 {
-    if (m_debugMode == flag) {
-        return;
-    }
+  if (m_debugMode == flag) {
+    return;
+  }
 
-    m_debugMode = flag;
-    emit debugModeChanged();
+  m_debugMode = flag;
+  emit debugModeChanged();
 }
 
 void App::initialize()
 {
-    qCInfo(app) << "initializing";
+  qCInfo(app) << "initializing";
 
-    m_editor = new Editor(this);
-    m_levelHandler = new LevelHandler(this);
+  m_editor = new Editor(this);
+  m_levelHandler = new LevelHandler(this);
 }
