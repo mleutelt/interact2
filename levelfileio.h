@@ -4,12 +4,12 @@
 
 #include "leveldata.h"
 
-class LevelReader : public QObject
+class LevelFileIO : public QObject
 {
   Q_OBJECT
 
 public:
-  explicit LevelReader(QObject *parent = nullptr);
+  explicit LevelFileIO(QObject *parent = nullptr);
 
   QList<ObjectDescription> loadLevelFromPath(const QString &path);
 };

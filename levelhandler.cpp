@@ -1,5 +1,5 @@
 #include "levelhandler.h"
-#include "levelreader.h"
+#include "levelfileio.h"
 
 #include <QDir>
 #include <QLoggingCategory>
@@ -16,7 +16,7 @@ LevelHandler::LevelHandler(QObject *parent)
     m_availableLevels { new LevelModel(this) },
     m_userLevels { new LevelModel(this) },
     m_currentLevelData { new LevelDataModel(this) },
-    m_levelReader { new LevelReader(this) }
+    m_levelFileIO { new LevelFileIO(this) }
 {
   const QFileInfoList levelList = QDir(LEVELS_PATH).entryInfoList();
 
@@ -56,7 +56,7 @@ void LevelHandler::loadLevel(const QString &path)
 
   LevelData data;
   data.name = QDir(path).dirName();
-  data.objects = m_levelReader->loadLevelFromPath(path);
+  data.objects = m_levelFileIO->loadLevelFromPath(path);
 
   m_currentLevelData->setLevelData(data);
 

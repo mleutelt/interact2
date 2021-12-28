@@ -5,7 +5,12 @@ project(Interact2 VERSION 0.1 LANGUAGES CXX)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(Qt6 6.2 COMPONENTS Quick REQUIRED)
+find_package(Qt6 6.2
+    COMPONENTS
+        Quick
+        Multimedia
+    REQUIRED
+)
 
 qt_add_executable(appInteract2
     main.cpp
@@ -44,8 +49,8 @@ qt_add_qml_module(appInteract2
         leveldatamodel.h
         leveldatamodel.cpp
         leveldata.h
-        levelreader.h
-        levelreader.cpp
+        levelfileio.h
+        levelfileio.cpp
     RESOURCES
         "resources/levels/Level 1/data.json"
         "resources/levels/Level 1/preview.png"
@@ -66,4 +71,5 @@ target_compile_definitions(appInteract2
 
 target_link_libraries(appInteract2
     PRIVATE
-    Qt6::Quick)
+    Qt6::Quick
+    Qt6::Multimedia)

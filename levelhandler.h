@@ -7,7 +7,7 @@
 #include "levelmodel.h"
 #include "leveldatamodel.h"
 
-class LevelReader;
+class LevelFileIO;
 
 class LevelHandler : public QObject
 {
@@ -42,5 +42,5 @@ private:
   bool m_loading = false;
   QTimer m_loadingTimer;
   LevelDataModel *m_currentLevelData = nullptr;
-  LevelReader *m_levelReader = nullptr;
+  LevelFileIO *m_levelFileIO = nullptr;
 };
