@@ -20,11 +20,18 @@ PObject {
 
         width: container.width
         height: container.height
+        density: 1
+        friction: 0.5
+        restitution: 0.1
+
+        onBeginContact: other => container.beginContact(other)
+        onEndContact: other => container.endContact(other)
     }
     visualItem: Rectangle {
         id: rectangle
 
         anchors.fill: parent
+        antialiasing: true
         color: Qt.rgba(Math.random(), Math.random(), Math.random())
     }
 }

@@ -38,6 +38,8 @@ void App::initialize()
 {
   qCInfo(app) << "initializing";
 
-  m_editor = new Editor(this);
   m_levelHandler = new LevelHandler(this);
+  m_editor = new Editor(this);
+
+  connect(m_editor, &Editor::levelSavedSuccessfully, m_levelHandler, &LevelHandler::updateUserLevelsModel);
 }

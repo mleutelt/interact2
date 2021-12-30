@@ -7,6 +7,7 @@
 int main(int argc, char *argv[])
 {
   QGuiApplication::setOrganizationName(u"Wurstcrew"_qs);
+  QGuiApplication::setApplicationName(u"interact2"_qs);
   QGuiApplication::setApplicationDisplayName(u"Interact 2"_qs);
   QGuiApplication::setApplicationVersion(APPLICATION_VERSION);
   QGuiApplication app(argc, argv);

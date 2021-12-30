@@ -4,7 +4,7 @@ import App
 
 import Box2D
 
-Item {
+Rectangle {
     id: container
 
     property World physicsWorld: World {}
@@ -14,6 +14,8 @@ Item {
     property alias topWall: topWall
 
     anchors.fill: parent
+
+    // TODO: add background image
 
     PRectangle {
         id: ground

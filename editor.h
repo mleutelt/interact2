@@ -2,6 +2,7 @@
 
 #include <QObject>
 #include <QtQml/qqml.h>
+#include <QQuickItemGrabResult>
 
 class Editor : public QObject
 {
@@ -40,11 +41,12 @@ public:
   EditOperationType currentEditOperation() const;
   void setCurrentEditOperation(EditOperationType operation);
 
-  void saveLevel(const QString &name);
+  Q_INVOKABLE void saveLevel(const QString &name, QQuickItemGrabResult *screenshot);
 
 signals:
   void currentShapeChanged();
   void currentEditOperationChanged();
+  void levelSavedSuccessfully();
 
 private:
   ShapeType m_currentShape = ShapeType_Circle;

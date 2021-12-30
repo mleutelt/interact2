@@ -36,8 +36,7 @@ public:
   QHash<int, QByteArray> roleNames() const override;
 
   void addLevel(const LevelDescription &level);
-
-signals:
+  void clear();
 
 private:
   QList<LevelDescription> m_data;

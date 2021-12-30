@@ -1,5 +1,8 @@
 #include "editor.h"
+#include "levelhandler.h"
 
+#include <QDir>
+#include <QStandardPaths>
 #include <QLoggingCategory>
 
 Q_LOGGING_CATEGORY(editor, "app.editor")
@@ -55,7 +58,13 @@ void Editor::setCurrentEditOperation(EditOperationType operation)
   emit currentEditOperationChanged();
 }
 
-void Editor::saveLevel(const QString &name)
+void Editor::saveLevel(const QString &name, QQuickItemGrabResult *screenshot)
 {
   qCDebug(editor) << "saving level with name:" << name;
+
+  LevelHandler::userLevelsDirectory().mkdir(name);
+
+  screenshot->saveToFile(QDir(LevelHandler::userLevelsDirectory().filePath(name)).filePath(LevelHandler::levelPreviewFileName()));
+
+  emit levelSavedSuccessfully();
 }

@@ -50,3 +50,10 @@ void LevelModel::addLevel(const LevelDescription &level)
   m_data << level;
   endInsertRows();
 }
+
+void LevelModel::clear()
+{
+  beginResetModel();
+  m_data.clear();
+  endResetModel();
+}

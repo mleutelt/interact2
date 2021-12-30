@@ -13,9 +13,7 @@ Page {
         PCircle {
             bullet: true
             bodyType: Body.Dynamic
-            density: 0.9
-            friction: 0.9
-            restitution: 0.2
+            restitution: 0.5
 
             item.color: Qt.rgba(Math.random(), Math.random(), Math.random())
         }

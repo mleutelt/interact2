@@ -30,7 +30,7 @@ signals:
 private:
   void initialize();
 
-  Editor *m_editor = nullptr;
   LevelHandler *m_levelHandler = nullptr;
+  Editor *m_editor = nullptr;
   bool m_debugMode = false;
 };

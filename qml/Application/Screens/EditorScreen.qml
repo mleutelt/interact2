@@ -10,13 +10,54 @@ Page {
     id: container
 
     Component {
-        id: ball
+        id: circleComponent
 
         PCircle {
             world: level.physicsWorld
-            bodyType: Body.Dynamic
 
             item.color: Qt.rgba(Math.random(), Math.random(), Math.random())
+        }
+    }
+
+
+    Component {
+        id: rectangleComponent
+
+        PRectangle {
+            world: level.physicsWorld
+
+            item.color: Qt.rgba(Math.random(), Math.random(), Math.random())
+        }
+    }
+
+    component PopupMenu: Popup {
+        id: popupItem
+        required property var model
+
+        signal buttonClicked(int value)
+
+        modal: true
+        dim: false
+        x: -width - shapesMenuLayout.spacing
+        padding: 0
+
+        RowLayout {
+            id: shapesMenuLayout
+
+            Repeater {
+                id: repeater
+
+                model: popupItem.model
+
+                RoundButton {
+                    text: modelData
+
+                    onClicked: {
+                        popupItem.buttonClicked(modelData)
+                        popupItem.close()
+                    }
+                }
+            }
         }
     }
 
@@ -27,8 +68,6 @@ Page {
     MouseArea {
         id: drawingMouseArea
 
-        property point currentPosition: Qt.point(0, 0)
-
         anchors.fill: parent
 
         onPressed: {
@@ -36,37 +75,51 @@ Page {
                 switch (App.editor.currentShape) {
                 case Editor.ShapeType_Circle:
                 case Editor.ShapeType_Rectangle:
-                    drawingRectangle.x = mouseX
-                    drawingRectangle.y = mouseY
+                    drawingRectangle.initialX = mouseX
+                    drawingRectangle.initialY = mouseY
                     break
                 }
             }
         }
-        onPositionChanged: currentPosition = Qt.point(mouse.x, mouse.y)
         onReleased: {
             switch (App.editor.currentShape) {
-            case Editor.ShapeType_Circle: {
-                var newBall = ball.createObject(level)
-                newBall.width = Math.min(drawingRectangle.width, drawingRectangle.height)
-                newBall.height = Math.min(drawingRectangle.height, drawingRectangle.width)
-                newBall.x = drawingRectangle.x
-                newBall.y = drawingRectangle.y
+            case Editor.ShapeType_Circle:
+                circleComponent.createObject(level, {
+                                                 width: Math.min(drawingRectangle.width, drawingRectangle.height),
+                                                 height: Math.min(drawingRectangle.height, drawingRectangle.width),
+                                                 x: drawingRectangle.x,
+                                                 y: drawingRectangle.y,
+                                                 bodyType: objectBehaviorButton.checked ? Body.Static : Body.Dynamic
+                                             })
+                break
+            case Editor.ShapeType_Rectangle:
+                rectangleComponent.createObject(level, {
+                                                 width: drawingRectangle.width,
+                                                 height: drawingRectangle.height,
+                                                 x: drawingRectangle.x,
+                                                 y: drawingRectangle.y,
+                                                 bodyType: objectBehaviorButton.checked ? Body.Static : Body.Dynamic
+                                             })
+                break
             }
-            }
-
-            currentPosition = Qt.point(0, 0)
         }
     }
 
     Rectangle {
         id: drawingRectangle
+
+        property int initialX: 0
+        property int initialY: 0
+
         color: "red"
         opacity: 0.3
         visible: drawingMouseArea.pressed
-        width: drawingMouseArea.currentPosition.x - x
-        height: drawingMouseArea.currentPosition.y - y
+        width: Math.abs(drawingMouseArea.mouseX - initialX)
+        height: Math.abs(drawingMouseArea.mouseY - initialY)
         border.width: 1
         border.color: "black"
+        x: Math.min(initialX, drawingMouseArea.mouseX)
+        y: Math.min(initialY, drawingMouseArea.mouseY)
     }
 
     // TODO: figure out editor controls
@@ -88,30 +141,12 @@ Page {
 
             onToggled: shapesMenu.open()
 
-            Popup {
+            PopupMenu {
                 id: shapesMenu
 
-                modal: true
-                dim: false
-                x: -width - shapesMenuLayout.spacing
-                padding: 0
+                model: App.editor.availableShapes
 
-                RowLayout {
-                    id: shapesMenuLayout
-                    Repeater {
-                        model: App.editor.availableShapes
-
-                        RoundButton {
-                            text: modelData
-
-                            onClicked: {
-                                App.editor.currentShape = modelData
-                                shapesMenu.close()
-                            }
-                        }
-                    }
-                }
-
+                onButtonClicked: value => App.editor.currentShape = value
                 onClosed: shapesMenuButton.toggle()
             }
         }
@@ -124,32 +159,22 @@ Page {
 
             onToggled: editMenu.open()
 
-            Popup {
+            PopupMenu {
                 id: editMenu
 
-                modal: true
-                dim: false
-                x: -width - editMenuLayout.spacing
-                padding: 0
+                model: App.editor.availableEditOperations
 
-                RowLayout {
-                    id: editMenuLayout
-                    Repeater {
-                        model: App.editor.availableEditOperations
-
-                        RoundButton {
-                            text: modelData
-
-                            onClicked: {
-                                App.editor.currentEditOperation = modelData
-                                editMenu.close()
-                            }
-                        }
-                    }
-                }
-
+                onButtonClicked: value => App.editor.currentEditOperation = value
                 onClosed: editOperationButton.toggle()
             }
+        }
+
+
+        RoundButton {
+            id: objectBehaviorButton
+
+            checkable: true
+            text: checked ? "static" : "dynamic"
         }
 
         RoundButton {
@@ -161,6 +186,10 @@ Page {
             onToggled: levelPropertiesDialog.open()
         }
 
+        Item {
+            Layout.fillHeight: true
+        }
+
         RoundButton {
             id: saveButton
 
@@ -168,15 +197,11 @@ Page {
 
             onClicked: {
                 if (levelNameInput.text) {
-                    App.editor.saveLevel(levelNameInput.text)
+                    level.grabToImage(result => App.editor.saveLevel(levelNameInput.text, result))
                 } else {
                     // TODO: show popup about missing name
                 }
             }
-        }
-
-        Item {
-            Layout.fillHeight: true
         }
 
         RoundButton {

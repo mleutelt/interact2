@@ -3,6 +3,7 @@
 #include <QObject>
 #include <QtQml/qqml.h>
 #include <QTimer>
+#include <QDir>
 
 #include "levelmodel.h"
 #include "leveldatamodel.h"
@@ -24,11 +25,15 @@ public:
   LevelModel *availableLevels() const;
   LevelModel *userLevels() const;
 
-  Q_INVOKABLE void loadLevel(const QString &path);
-
   bool loading() const;
 
   LevelDataModel *currentLevelData() const;
+
+  static QDir userLevelsDirectory();
+  static QString levelPreviewFileName();
+
+  Q_INVOKABLE void loadLevel(const QString &path);
+  Q_INVOKABLE void updateUserLevelsModel();
 
 signals:
   void loadingChanged();
@@ -36,6 +41,7 @@ signals:
 
 private:
   void setLoading(bool flag);
+  void updateGameLevelsModel();
 
   LevelModel *m_availableLevels = nullptr;
   LevelModel *m_userLevels = nullptr;
