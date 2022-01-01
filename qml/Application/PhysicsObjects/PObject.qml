@@ -7,12 +7,8 @@ import Box2D
 Rectangle {
     id: container
 
-    color: App.debugMode ? "red" : "transparent"
-    opacity: App.debugMode ? 0.5 : 1
-
-    implicitWidth: childContainer.childrenRect.width
-    implicitHeight: childContainer.childrenRect.height
-
+    property bool interactive: true
+    property var interactionHandler
     property alias visualItem: childContainer.children
     property alias physicalObject: body.fixtures
     property Body body: Body {
@@ -36,8 +32,21 @@ Rectangle {
     property alias fixtures: body.fixtures
     property alias gravityScale: body.gravityScale
 
-    signal beginContact(Fixture other)
-    signal endContact(Fixture other)
+    signal beginContact(other: Fixture)
+    signal endContact(other: Fixture)
+
+    color: App.debugMode ? "red" : "transparent"
+    opacity: App.debugMode ? 0.5 : 1
+
+    implicitWidth: childContainer.childrenRect.width
+    implicitHeight: childContainer.childrenRect.height
+
+    TapHandler {
+        onTapped: {
+            if (container.interactive && interactionHandler && typeof interactionHandler === "function")
+                container.interactionHandler(index)
+        }
+    }
 
     Item {
         id: childContainer

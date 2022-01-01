@@ -4,7 +4,8 @@
 
 Q_LOGGING_CATEGORY(app, "app")
 
-App::App(QObject *parent) : QObject { parent }
+App::App(QObject *parent)
+  : QObject { parent }
 {
   initialize();
 }

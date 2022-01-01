@@ -22,7 +22,7 @@ QtObject {
         }
     }
 
-    signal show(int screen)
+    signal show(screen: int)
     signal showPrevious()
     signal showInitial()
 }

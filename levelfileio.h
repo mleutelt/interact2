@@ -11,5 +11,6 @@ class LevelFileIO : public QObject
 public:
   explicit LevelFileIO(QObject *parent = nullptr);
 
-  QList<ObjectDescription> loadLevelFromPath(const QString &path);
+  static QList<ObjectDescription> loadLevelFromPath(const QString &path);
+  static bool storeLevelAtPath(const QString &path, const LevelData &data);
 };

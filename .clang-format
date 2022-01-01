@@ -75,3 +75,8 @@ BreakConstructorInitializers: BeforeColon
 
 AllowShortLambdasOnASingleLine: false
 AllowShortEnumsOnASingleLine: false
+
+AllowAllConstructorInitializersOnNextLine: true
+ConstructorInitializerAllOnOneLineOrOnePerLine: false
+
+BreakConstructorInitializersBeforeComma: true

@@ -9,32 +9,12 @@ import Box2D
 Page {
     id: container
 
-    Component {
-        id: circleComponent
-
-        PCircle {
-            world: level.physicsWorld
-
-            item.color: Qt.rgba(Math.random(), Math.random(), Math.random())
-        }
-    }
-
-
-    Component {
-        id: rectangleComponent
-
-        PRectangle {
-            world: level.physicsWorld
-
-            item.color: Qt.rgba(Math.random(), Math.random(), Math.random())
-        }
-    }
-
     component PopupMenu: Popup {
         id: popupItem
+
         required property var model
 
-        signal buttonClicked(int value)
+        signal buttonClicked(value: int)
 
         modal: true
         dim: false
@@ -61,12 +41,10 @@ Page {
         }
     }
 
-    Level {
-        id: level
-    }
-
     MouseArea {
         id: drawingMouseArea
+
+        property size minimalObjectSize: Qt.size(10, 10)
 
         anchors.fill: parent
 
@@ -82,24 +60,33 @@ Page {
             }
         }
         onReleased: {
-            switch (App.editor.currentShape) {
-            case Editor.ShapeType_Circle:
-                circleComponent.createObject(level, {
-                                                 width: Math.min(drawingRectangle.width, drawingRectangle.height),
-                                                 height: Math.min(drawingRectangle.height, drawingRectangle.width),
-                                                 x: drawingRectangle.x,
-                                                 y: drawingRectangle.y,
-                                                 bodyType: objectBehaviorButton.checked ? Body.Static : Body.Dynamic
-                                             })
+            switch (App.editor.currentEditOperation) {
+            case Editor.EditOperationType_Draw:
+                if (drawingRectangle.width > minimalObjectSize.width && drawingRectangle.height > minimalObjectSize.height) {
+                    App.editor.addObject(App.editor.currentShape,
+                                         Qt.rect(drawingRectangle.x, drawingRectangle.y, drawingRectangle.width, drawingRectangle.height),
+                                         objectBehaviorButton.checked)
+                }
+
                 break
-            case Editor.ShapeType_Rectangle:
-                rectangleComponent.createObject(level, {
-                                                 width: drawingRectangle.width,
-                                                 height: drawingRectangle.height,
-                                                 x: drawingRectangle.x,
-                                                 y: drawingRectangle.y,
-                                                 bodyType: objectBehaviorButton.checked ? Body.Static : Body.Dynamic
-                                             })
+            case Editor.EditOperationType_Delete:
+            case Editor.EditOperationType_Move:
+                break
+            }
+        }
+    }
+
+    Level {
+        id: level
+
+        objectFactory.model: App.editor.levelData
+        objectFactory.interactionHandler: function(index) {
+            switch (App.editor.currentEditOperation) {
+            case Editor.EditOperationType_Delete:
+                App.editor.removeObject(index)
+                break
+            case Editor.EditOperationType_Draw:
+            case Editor.EditOperationType_Move:
                 break
             }
         }
@@ -113,7 +100,7 @@ Page {
 
         color: "red"
         opacity: 0.3
-        visible: drawingMouseArea.pressed
+        visible: drawingMouseArea.pressed && App.editor.currentEditOperation === Editor.EditOperationType_Draw
         width: Math.abs(drawingMouseArea.mouseX - initialX)
         height: Math.abs(drawingMouseArea.mouseY - initialY)
         border.width: 1
@@ -123,9 +110,6 @@ Page {
     }
 
     // TODO: figure out editor controls
-    // - element selection (which physical element should be placed when clicking)
-    // - element modification (delete etc.)
-    // - save level to file
     // - load existing level from file
     ColumnLayout {
         anchors.top: parent.top
@@ -207,7 +191,10 @@ Page {
         RoundButton {
             text: "done"
 
-            onClicked: Screens.showPrevious()
+            onClicked: {
+                App.editor.reset()
+                Screens.showPrevious()
+            }
         }
     }
 
@@ -220,6 +207,8 @@ Page {
         height: parent.height / 2
         modal: true
 
+        // TODO: add background image selection
+        // TODO: add music selection
         GridLayout {
             anchors.fill: parent
             columns: 2

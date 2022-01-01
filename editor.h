@@ -4,6 +4,8 @@
 #include <QtQml/qqml.h>
 #include <QQuickItemGrabResult>
 
+#include "leveldatamodel.h"
+
 class Editor : public QObject
 {
   Q_OBJECT
@@ -12,6 +14,7 @@ class Editor : public QObject
   Q_PROPERTY(ShapeType currentShape READ currentShape WRITE setCurrentShape NOTIFY currentShapeChanged)
   Q_PROPERTY(EditOperationType currentEditOperation READ currentEditOperation WRITE setCurrentEditOperation NOTIFY
                  currentEditOperationChanged)
+  Q_PROPERTY(LevelDataModel *levelData READ levelData CONSTANT)
   QML_ELEMENT
 
 public:
@@ -41,7 +44,13 @@ public:
   EditOperationType currentEditOperation() const;
   void setCurrentEditOperation(EditOperationType operation);
 
+  LevelDataModel *levelData() const;
+
   Q_INVOKABLE void saveLevel(const QString &name, QQuickItemGrabResult *screenshot);
+  Q_INVOKABLE void reset();
+
+  Q_INVOKABLE void addObject(int type, const QRect &boundingRect, bool isStatic = false, int rotation = 0) const;
+  Q_INVOKABLE void removeObject(int index) const;
 
 signals:
   void currentShapeChanged();
@@ -51,4 +60,5 @@ signals:
 private:
   ShapeType m_currentShape = ShapeType_Circle;
   EditOperationType m_currentEditOperation = EditOperationType_Draw;
+  LevelDataModel *m_levelData = nullptr;
 };

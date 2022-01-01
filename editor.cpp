@@ -1,5 +1,6 @@
 #include "editor.h"
 #include "levelhandler.h"
+#include "levelfileio.h"
 
 #include <QDir>
 #include <QStandardPaths>
@@ -7,7 +8,9 @@
 
 Q_LOGGING_CATEGORY(editor, "app.editor")
 
-Editor::Editor(QObject *parent) : QObject { parent }
+Editor::Editor(QObject *parent)
+  : QObject { parent }
+  , m_levelData { new LevelDataModel(this) }
 {
 }
 
@@ -64,7 +67,33 @@ void Editor::saveLevel(const QString &name, QQuickItemGrabResult *screenshot)
 
   LevelHandler::userLevelsDirectory().mkdir(name);
 
-  screenshot->saveToFile(QDir(LevelHandler::userLevelsDirectory().filePath(name)).filePath(LevelHandler::levelPreviewFileName()));
+  QDir levelDirectory(LevelHandler::userLevelsDirectory().filePath(name));
+  LevelData levelData;
+  levelData.name = name;
+  levelData.objects = m_levelData->objects();
+
+  screenshot->saveToFile(levelDirectory.filePath(LevelHandler::levelPreviewFileName()));
+  LevelFileIO::storeLevelAtPath(levelDirectory.filePath(LevelHandler::levelDataFileName()), levelData);
 
   emit levelSavedSuccessfully();
+}
+
+void Editor::reset()
+{
+  m_levelData->clear();
+}
+
+void Editor::addObject(int type, const QRect &boundingRect, bool isStatic, int rotation) const
+{
+  m_levelData->addObject(type, boundingRect, isStatic, rotation);
+}
+
+void Editor::removeObject(int index) const
+{
+  m_levelData->removeObject(index);
+}
+
+LevelDataModel *Editor::levelData() const
+{
+  return m_levelData;
 }

@@ -10,9 +10,11 @@ class LevelDataModel : public QAbstractListModel
   Q_PROPERTY(QString name READ name NOTIFY nameChanged)
 
 public:
-  // TODO: figure out what we actually need here
   enum Roles
   {
+    Type,
+    BoundingBox,
+    Static,
   };
   Q_ENUM(Roles)
 
@@ -26,12 +28,17 @@ public:
 
   void setLevelData(const LevelData &data);
 
+  void addObject(int type, const QRect &boundingRect, bool isStatic, int rotation);
+  void removeObject(int index);
+  void clear();
+  QList<ObjectDescription> objects() const;
+
 signals:
   void nameChanged();
 
 private:
   void setName(const QString &name);
 
-  QList<LevelData> m_data;
+  QList<ObjectDescription> m_objects;
   QString m_name;
 };

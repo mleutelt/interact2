@@ -8,8 +8,6 @@
 #include "levelmodel.h"
 #include "leveldatamodel.h"
 
-class LevelFileIO;
-
 class LevelHandler : public QObject
 {
   Q_OBJECT
@@ -31,6 +29,7 @@ public:
 
   static QDir userLevelsDirectory();
   static QString levelPreviewFileName();
+  static QString levelDataFileName();
 
   Q_INVOKABLE void loadLevel(const QString &path);
   Q_INVOKABLE void updateUserLevelsModel();
@@ -48,5 +47,4 @@ private:
   bool m_loading = false;
   QTimer m_loadingTimer;
   LevelDataModel *m_currentLevelData = nullptr;
-  LevelFileIO *m_levelFileIO = nullptr;
 };

@@ -4,7 +4,8 @@
 
 Q_LOGGING_CATEGORY(lvldm, "app.models.leveldatamodel")
 
-LevelDataModel::LevelDataModel(QObject *parent) : QAbstractListModel { parent }
+LevelDataModel::LevelDataModel(QObject *parent)
+  : QAbstractListModel { parent }
 {
 }
 
@@ -12,13 +13,24 @@ int LevelDataModel::rowCount(const QModelIndex &parent) const
 {
   Q_UNUSED(parent)
 
-  return m_data.count();
+  return m_objects.count();
 }
 
 QVariant LevelDataModel::data(const QModelIndex &index, int role) const
 {
-  if (index.row() < 0 || index.row() >= m_data.count())
+  if (index.row() < 0 || index.row() >= m_objects.count())
     return QVariant();
+
+  const ObjectDescription &data = m_objects[index.row()];
+
+  switch (role) {
+  case Type:
+    return data.type;
+  case BoundingBox:
+    return data.boundingBox;
+  case Static:
+    return data.isStatic;
+  }
 
   return QVariant();
 }
@@ -26,6 +38,9 @@ QVariant LevelDataModel::data(const QModelIndex &index, int role) const
 QHash<int, QByteArray> LevelDataModel::roleNames() const
 {
   QHash<int, QByteArray> roles;
+  roles[Type] = "type";
+  roles[BoundingBox] = "boundingBox";
+  roles[Static] = "static";
 
   return roles;
 }
@@ -38,6 +53,49 @@ QString LevelDataModel::name() const
 void LevelDataModel::setLevelData(const LevelData &data)
 {
   setName(data.name);
+
+  beginResetModel();
+  m_objects = data.objects;
+  endResetModel();
+}
+
+void LevelDataModel::addObject(int type, const QRect &boundingRect, bool isStatic, int rotation)
+{
+  ObjectDescription objectDescription = {
+    type,
+    boundingRect,
+    isStatic,
+    rotation,
+  };
+
+  qCDebug(lvldm) << "adding object" << objectDescription << m_objects.count();
+
+  beginInsertRows(QModelIndex(), m_objects.count(), m_objects.count());
+  m_objects << objectDescription;
+  endInsertRows();
+}
+
+void LevelDataModel::removeObject(int index)
+{
+  qCDebug(lvldm) << "removing object with index" << index;
+
+  beginRemoveRows(QModelIndex(), index, index);
+  m_objects.remove(index);
+  endRemoveRows();
+}
+
+void LevelDataModel::clear()
+{
+  qCDebug(lvldm) << "clearing";
+
+  beginResetModel();
+  m_objects.clear();
+  endResetModel();
+}
+
+QList<ObjectDescription> LevelDataModel::objects() const
+{
+  return m_objects;
 }
 
 void LevelDataModel::setName(const QString &name)

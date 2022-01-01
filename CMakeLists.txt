@@ -37,6 +37,7 @@ qt_add_qml_module(appInteract2
         qml/Application/PhysicsObjects/PObject.qml
         qml/Application/PhysicsObjects/PRectangle.qml
         qml/Application/PhysicsObjects/PCircle.qml
+        qml/Application/PhysicsObjects/PObjectFactory.qml
     SOURCES
         app.h
         app.cpp

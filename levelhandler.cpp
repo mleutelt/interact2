@@ -14,11 +14,10 @@ namespace {
 }
 
 LevelHandler::LevelHandler(QObject *parent)
-  : QObject { parent },
-    m_availableLevels { new LevelModel(this) },
-    m_userLevels { new LevelModel(this) },
-    m_currentLevelData { new LevelDataModel(this) },
-    m_levelFileIO { new LevelFileIO(this) }
+  : QObject { parent }
+  , m_availableLevels { new LevelModel(this) }
+  , m_userLevels { new LevelModel(this) }
+  , m_currentLevelData { new LevelDataModel(this) }
 {
   QDir applicationDataDirectory(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation));
   applicationDataDirectory.mkpath(USER_LEVELS_DIRECTORY);
@@ -41,12 +40,14 @@ void LevelHandler::loadLevel(const QString &path)
 {
   qCDebug(lvlh) << "loading level at path" << path;
 
-  if (QDir(path).exists(LEVEL_FILE)) {
+  QDir levelPath(path);
+
+  if (levelPath.exists(LEVEL_FILE)) {
     setLoading(true);
 
     LevelData data;
-    data.name = QDir(path).dirName();
-    data.objects = m_levelFileIO->loadLevelFromPath(path);
+    data.name = levelPath.dirName();
+    data.objects = LevelFileIO::loadLevelFromPath(levelPath.filePath(LEVEL_FILE));
 
     m_currentLevelData->setLevelData(data);
 
@@ -131,4 +132,9 @@ QDir LevelHandler::userLevelsDirectory()
 QString LevelHandler::levelPreviewFileName()
 {
   return PREVIEW_FILE;
+}
+
+QString LevelHandler::levelDataFileName()
+{
+  return LEVEL_FILE;
 }

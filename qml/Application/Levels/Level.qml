@@ -7,11 +7,12 @@ import Box2D
 Rectangle {
     id: container
 
-    property World physicsWorld: World {}
+    property alias physicsWorld: objectFactory.world
     property alias ground: ground
     property alias leftWall: leftWall
     property alias rightWall: rightWall
     property alias topWall: topWall
+    property alias objectFactory: objectFactory
 
     anchors.fill: parent
 
@@ -63,5 +64,12 @@ Rectangle {
         anchors.bottomMargin: 40
 
         world: enabled ? physicsWorld : null
+    }
+
+    PObjectFactory {
+        id: objectFactory
+
+        world: World {}
+        level: container
     }
 }
