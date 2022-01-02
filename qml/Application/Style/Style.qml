@@ -7,6 +7,10 @@ import App
 QtObject {
     id: container
 
+    readonly property QtObject application: QtObject {
+        readonly property size minimumWindowSize: Qt.size(640, 480)
+    }
+
     readonly property FontLoader fontAwesomeRegular: FontLoader {
         source: "qrc:/App/resources/fonts/FontAwesome/Font Awesome 6 Free-Regular-400.otf"
     }

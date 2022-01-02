@@ -6,8 +6,8 @@ import App
 ApplicationWindow {
     id: applicationWindow
 
-    width: 640
-    height: 480
+    minimumHeight: Style.application.minimumWindowSize.height
+    minimumWidth: Style.application.minimumWindowSize.width
     visible: true
 
     StackView {
