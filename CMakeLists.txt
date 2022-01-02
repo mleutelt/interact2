@@ -36,6 +36,7 @@ qt_add_qml_module(appInteract2
         # to allow namespaced imports in qml
         qml/Application/PhysicsObjects/PObject.qml
         qml/Application/PhysicsObjects/PRectangle.qml
+        qml/Application/PhysicsObjects/PPolygon.qml
         qml/Application/PhysicsObjects/PCircle.qml
         qml/Application/PhysicsObjects/PObjectFactory.qml
     SOURCES

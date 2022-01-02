@@ -56,5 +56,23 @@ Instantiator {
                 Component.onCompleted: console.log(log, "Rectangle created")
             }
         }
+        DelegateChoice {
+            roleValue: Editor.ShapeType_Polygon
+
+            delegate: PPolygon {
+                world: factory.world
+                bodyType: model.static ? Body.Static : Body.Dynamic
+
+                parent: factory.level
+                interactionHandler: factory.interactionHandler
+                x: model.boundingBox.x
+                y: model.boundingBox.y
+                width: Math.min(model.boundingBox.width, model.boundingBox.height)
+                height: Math.min(model.boundingBox.height, model.boundingBox.width)
+                item.color: Qt.rgba(Math.random(), Math.random(), Math.random())
+
+                Component.onCompleted: console.log(log, "Polygon created")
+            }
+        }
     }
 }
