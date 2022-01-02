@@ -13,6 +13,7 @@ Page {
         id: popupItem
 
         required property var model
+        required property var iconResolver
 
         signal buttonClicked(value: int)
 
@@ -30,7 +31,9 @@ Page {
                 model: popupItem.model
 
                 RoundButton {
-                    text: modelData
+                    font.family: Style.fontAwesomeRegular.font.family
+                    font.weight: Font.Regular
+                    text: popupItem.iconResolver(modelData)
 
                     onClicked: {
                         popupItem.buttonClicked(modelData)
@@ -56,21 +59,45 @@ Page {
                     drawingRectangle.initialX = mouseX
                     drawingRectangle.initialY = mouseY
                     break
+                case Editor.ShapeType_Polygon:
+                    canvas.color = Qt.rgba(Math.random(), Math.random(), Math.random())
+                    canvas.currentX = mouseX
+                    canvas.currentY = mouseY
+                    break
                 }
             }
         }
         onReleased: {
-            switch (App.editor.currentEditOperation) {
-            case Editor.EditOperationType_Draw:
-                if (drawingRectangle.width > minimalObjectSize.width && drawingRectangle.height > minimalObjectSize.height) {
-                    App.editor.addObject(App.editor.currentShape,
-                                         Qt.rect(drawingRectangle.x, drawingRectangle.y, drawingRectangle.width, drawingRectangle.height),
-                                         objectBehaviorButton.checked)
-                }
+            switch (App.editor.currentShape) {
+            case Editor.ShapeType_Circle:
+            case Editor.ShapeType_Rectangle:
+                switch (App.editor.currentEditOperation) {
+                case Editor.EditOperationType_Draw:
+                    if (drawingRectangle.width > minimalObjectSize.width && drawingRectangle.height > minimalObjectSize.height) {
+                        App.editor.addObject(App.editor.currentShape,
+                                             Qt.rect(drawingRectangle.x, drawingRectangle.y, drawingRectangle.width, drawingRectangle.height),
+                                             objectBehaviorButton.checked)
+                    }
 
+                    break
+                case Editor.EditOperationType_Delete:
+                case Editor.EditOperationType_Move:
+                    break
+                }
                 break
-            case Editor.EditOperationType_Delete:
-            case Editor.EditOperationType_Move:
+            case Editor.ShapeType_Polygon:
+                canvas.clear()
+                // TODO: add object to level
+                break
+            }
+        }
+        onPositionChanged: {
+            switch (App.editor.currentShape) {
+            case Editor.ShapeType_Circle:
+            case Editor.ShapeType_Rectangle:
+                break
+            case Editor.ShapeType_Polygon:
+                canvas.requestPaint()
                 break
             }
         }
@@ -92,6 +119,33 @@ Page {
         }
     }
 
+    Canvas {
+        id: canvas
+
+        property real currentX
+        property real currentY
+        property color color: Qt.rgba(Math.random(), Math.random(), Math.random())
+
+        function clear() {
+            context.reset()
+            canvas.requestPaint()
+        }
+
+        anchors.fill: parent
+        contextType: "2d"
+
+        onPaint: {
+            context.lineWidth = 4
+            context.strokeStyle = canvas.color
+            context.beginPath()
+            context.moveTo(currentX, currentY)
+            currentX = drawingMouseArea.mouseX
+            currentY = drawingMouseArea.mouseY
+            context.lineTo(currentX, currentY)
+            context.stroke()
+        }
+    }
+
     Rectangle {
         id: drawingRectangle
 
@@ -100,7 +154,9 @@ Page {
 
         color: "red"
         opacity: 0.3
-        visible: drawingMouseArea.pressed && App.editor.currentEditOperation === Editor.EditOperationType_Draw
+        visible: drawingMouseArea.pressed &&
+                 App.editor.currentEditOperation === Editor.EditOperationType_Draw &&
+                 App.editor.currentShape !== Editor.ShapeType_Polygon
         width: Math.abs(drawingMouseArea.mouseX - initialX)
         height: Math.abs(drawingMouseArea.mouseY - initialY)
         border.width: 1
@@ -121,7 +177,9 @@ Page {
             id: shapesMenuButton
 
             checkable: true
-            text: App.editor.currentShape
+            font.family: Style.fontAwesomeRegular.font.family
+            font.weight: Font.Regular
+            text: Style.shapeIconForType(App.editor.currentShape)
 
             onToggled: shapesMenu.open()
 
@@ -129,6 +187,7 @@ Page {
                 id: shapesMenu
 
                 model: App.editor.availableShapes
+                iconResolver: Style.shapeIconForType
 
                 onButtonClicked: value => App.editor.currentShape = value
                 onClosed: shapesMenuButton.toggle()
@@ -139,7 +198,9 @@ Page {
             id: editOperationButton
 
             checkable: true
-            text: App.editor.currentEditOperation
+            font.family: Style.fontAwesomeRegular.font.family
+            font.weight: Font.Regular
+            text: Style.editIconForType(App.editor.currentEditOperation)
 
             onToggled: editMenu.open()
 
@@ -147,6 +208,7 @@ Page {
                 id: editMenu
 
                 model: App.editor.availableEditOperations
+                iconResolver: Style.editIconForType
 
                 onButtonClicked: value => App.editor.currentEditOperation = value
                 onClosed: editOperationButton.toggle()

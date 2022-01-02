@@ -34,7 +34,7 @@ QList<Editor::ShapeType> Editor::availableShapes() const
   return {
     ShapeType_Circle,
     ShapeType_Rectangle,
-    ShapeType_Polygon
+    ShapeType_Polygon,
   };
 }
 

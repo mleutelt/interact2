@@ -22,7 +22,7 @@ public:
   {
     ShapeType_Circle,
     ShapeType_Rectangle,
-    ShapeType_Polygon
+    ShapeType_Polygon,
   };
   Q_ENUM(ShapeType)
 

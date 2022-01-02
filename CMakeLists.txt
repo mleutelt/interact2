@@ -16,8 +16,10 @@ qt_add_executable(appInteract2
     main.cpp
 )
 
-set_source_files_properties(qml/Application/Screens/Screens.qml PROPERTIES
-    QT_QML_SINGLETON_TYPE true
+set_source_files_properties(
+    qml/Application/Screens/Screens.qml
+    qml/Application/Style/Style.qml
+    PROPERTIES QT_QML_SINGLETON_TYPE true
 )
 
 qt_add_qml_module(appInteract2
@@ -39,6 +41,7 @@ qt_add_qml_module(appInteract2
         qml/Application/PhysicsObjects/PPolygon.qml
         qml/Application/PhysicsObjects/PCircle.qml
         qml/Application/PhysicsObjects/PObjectFactory.qml
+        qml/Application/Style/Style.qml
     SOURCES
         app.h
         app.cpp
@@ -64,6 +67,8 @@ qt_add_qml_module(appInteract2
         "resources/levels/Level 4/preview.png"
         "resources/levels/Level 5/data.json"
         "resources/levels/Level 5/preview.png"
+        "resources/fonts/FontAwesome/Font Awesome 6 Free-Regular-400.otf"
+        "resources/fonts/FontAwesome/Font Awesome 6 Free-Solid-900.otf"
 )
 
 target_compile_definitions(appInteract2
