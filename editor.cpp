@@ -35,6 +35,7 @@ QList<Editor::ShapeType> Editor::availableShapes() const
     ShapeType_Circle,
     ShapeType_Rectangle,
     ShapeType_Polygon,
+    ShapeType_SpecialStar,
   };
 }
 

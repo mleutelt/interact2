@@ -41,6 +41,7 @@ qt_add_qml_module(appInteract2
         qml/Application/PhysicsObjects/PPolygon.qml
         qml/Application/PhysicsObjects/PCircle.qml
         qml/Application/PhysicsObjects/PObjectFactory.qml
+        qml/Application/PhysicsObjects/PStar.qml
         qml/Application/Style/Style.qml
     SOURCES
         app.h

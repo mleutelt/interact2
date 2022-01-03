@@ -24,6 +24,7 @@ QtObject {
         case Editor.ShapeType_Circle: return "\uf111"
         case Editor.ShapeType_Rectangle: return "\uf2fb"
         case Editor.ShapeType_Polygon: return "\uf5ee"
+        case Editor.ShapeType_SpecialStar: return "\uf005"
         }
     }
 

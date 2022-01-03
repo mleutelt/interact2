@@ -74,5 +74,22 @@ Instantiator {
                 Component.onCompleted: console.log(log, "Polygon created")
             }
         }
+        DelegateChoice {
+            roleValue: Editor.ShapeType_SpecialStar
+
+            delegate: PStar {
+                world: factory.world
+                bodyType: model.static ? Body.Static : Body.Dynamic
+
+                parent: factory.level
+                interactionHandler: factory.interactionHandler
+                x: model.boundingBox.x
+                y: model.boundingBox.y
+                width: Math.min(model.boundingBox.width, model.boundingBox.height)
+                height: Math.min(model.boundingBox.height, model.boundingBox.width)
+
+                Component.onCompleted: console.log(log, "Star created")
+            }
+        }
     }
 }

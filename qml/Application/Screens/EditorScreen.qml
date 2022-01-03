@@ -56,6 +56,7 @@ Page {
                 switch (App.editor.currentShape) {
                 case Editor.ShapeType_Circle:
                 case Editor.ShapeType_Rectangle:
+                case Editor.ShapeType_SpecialStar:
                     drawingRectangle.initialX = mouseX
                     drawingRectangle.initialY = mouseY
                     break
@@ -71,6 +72,7 @@ Page {
             switch (App.editor.currentShape) {
             case Editor.ShapeType_Circle:
             case Editor.ShapeType_Rectangle:
+            case Editor.ShapeType_SpecialStar:
                 switch (App.editor.currentEditOperation) {
                 case Editor.EditOperationType_Draw:
                     if (drawingRectangle.width > minimalObjectSize.width && drawingRectangle.height > minimalObjectSize.height) {
@@ -95,6 +97,7 @@ Page {
             switch (App.editor.currentShape) {
             case Editor.ShapeType_Circle:
             case Editor.ShapeType_Rectangle:
+            case Editor.ShapeType_SpecialStar:
                 break
             case Editor.ShapeType_Polygon:
                 canvas.requestPaint()
