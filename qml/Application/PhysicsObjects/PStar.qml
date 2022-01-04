@@ -16,24 +16,49 @@ PObject {
     property alias collidesWith: polygon.collidesWith
     property alias groupIndex: polygon.groupIndex
 
-    physicalObject: B2D.Polygon {
-        id: polygon
+    physicalObject: [
+        B2D.Polygon {
+            id: polygon
 
-        density: 1
-        friction: 0.5
-        restitution: 0.1
-        vertices: [
-            Qt.point(shapePath.startX, shapePath.startY),
-            Qt.point(p1.x, p1.y),
-            Qt.point(p2.x, p2.y),
-            Qt.point(p3.x, p3.y),
-            Qt.point(p4.x, p4.y),
-            Qt.point(p5.x, p5.y),
-        ]
+            density: 1
+            friction: 0.5
+            restitution: 0.1
+            vertices: [
+                Qt.point(shapePath.startX, shapePath.startY),
+                Qt.point(p1.x, p1.y),
+                Qt.point(star.width * 2 / 5, p2.y),
+            ]
 
-        onBeginContact: other => container.beginContact(other)
-        onEndContact: other => container.endContact(other)
-    }
+            onBeginContact: other => container.beginContact(other)
+            onEndContact: other => container.endContact(other)
+        },
+        B2D.Polygon {
+            density: polygon.density
+            friction: polygon.friction
+            restitution: polygon.restitution
+            vertices: [
+                Qt.point(p2.x, p2.y),
+                Qt.point(p3.x, p3.y),
+                Qt.point(shapePath.startX, star.height * 4 / 5),
+            ]
+
+            onBeginContact: other => container.beginContact(other)
+            onEndContact: other => container.endContact(other)
+        },
+        B2D.Polygon {
+            density: polygon.density
+            friction: polygon.friction
+            restitution: polygon.restitution
+            vertices: [
+                Qt.point(p4.x, p4.y),
+                Qt.point(shapePath.startX, shapePath.startY),
+                Qt.point(star.width * 3 / 5, p2.y),
+            ]
+
+            onBeginContact: other => container.beginContact(other)
+            onEndContact: other => container.endContact(other)
+        }
+    ]
 
     visualItem: Shape {
         id: star
