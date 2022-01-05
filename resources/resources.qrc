@@ -1,0 +1,45 @@
+<RCC>
+    <qresource prefix="/">
+        <file>sounds/cfork_plopp.aif</file>
+        <file>sounds/glock_N_kling.aif</file>
+        <file>sounds/glock_N_kloing.aif</file>
+        <file>sounds/junggle_btn402.mp3</file>
+        <file>sounds/vitriolix_pop.wav</file>
+        <file>music/Lullaby.mp3</file>
+        <file>levels/Introduction/data.json</file>
+        <file>levels/Introduction/preview.png</file>
+        <file>levels/Introduction/resources/introduction.png</file>
+        <file>levels/Level 1/data.json</file>
+        <file>levels/Level 1/preview.png</file>
+        <file>levels/Level 1/resources/Easy1.png</file>
+        <file>levels/Level 2/data.json</file>
+        <file>levels/Level 2/preview.png</file>
+        <file>levels/Level 2/resources/2Boxes.png</file>
+        <file>levels/Level 3/data.json</file>
+        <file>levels/Level 3/preview.png</file>
+        <file>levels/Level 3/resources/Lava.png</file>
+        <file>levels/Level 4/data.json</file>
+        <file>levels/Level 4/preview.png</file>
+        <file>levels/Level 4/resources/Milch.png</file>
+        <file>levels/Level 5/data.json</file>
+        <file>levels/Level 5/preview.png</file>
+        <file>levels/Level 5/resources/Wassergraben.png</file>
+        <file>levels/Level 6/data.json</file>
+        <file>levels/Level 6/preview.png</file>
+        <file>levels/Level 6/resources/Wiese.png</file>
+        <file>fonts/FontAwesome/Font Awesome 6 Free-Regular-400.otf</file>
+        <file>fonts/FontAwesome/Font Awesome 6 Free-Solid-900.otf</file>
+        <file>backgrounds/clouds.png</file>
+        <file>backgrounds/diver.png</file>
+        <file>backgrounds/iceberg.png</file>
+        <file>backgrounds/kariertesblatt.png</file>
+        <file>backgrounds/marsrover.png</file>
+        <file>backgrounds/Nasentierlandschaft.png</file>
+        <file>backgrounds/paper1.png</file>
+        <file>backgrounds/paper2.png</file>
+        <file>backgrounds/paper3.png</file>
+        <file>backgrounds/paper4.png</file>
+        <file>backgrounds/penguins.png</file>
+        <file>images/coil.png</file>
+    </qresource>
+</RCC>

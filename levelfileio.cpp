@@ -15,18 +15,20 @@ LevelFileIO::LevelFileIO(QObject *parent)
 {
 }
 
-QList<ObjectDescription> LevelFileIO::loadLevelFromPath(const QString &path)
+LevelData LevelFileIO::loadLevelFromPath(const QString &path)
 {
   qCInfo(lvlfio) << "reading level data from path" << path;
 
   QFile levelFile(path);
 
+  LevelData levelData;
+
   if (!levelFile.open(QIODevice::ReadOnly)) {
     qCCritical(lvlfio) << "unable to read file";
-    return QList<ObjectDescription>();
+    return levelData;
   }
 
-  QList<ObjectDescription> result;
+  QList<ObjectDescription> objects;
 
   QJsonDocument document = QJsonDocument::fromJson(levelFile.readAll());
   QJsonObject level = document.object();
@@ -46,10 +48,17 @@ QList<ObjectDescription> LevelFileIO::loadLevelFromPath(const QString &path)
     objectDescription.isStatic = o.value(u"static"_qs).toBool();
     objectDescription.rotation = o.value(u"rotation"_qs).toInt();
 
-    result << objectDescription;
+    objects << objectDescription;
   }
 
-  return result;
+  levelData.objects = objects;
+  levelData.backgroundImage = level.value(u"backgroundImage"_qs).toString();
+  levelData.topWallEnabled = level.value(u"topWallEnabled"_qs).toBool();
+  levelData.leftWallEnabled = level.value(u"leftWallEnabled"_qs).toBool();
+  levelData.rightWallEnabled = level.value(u"rightWallEnabled"_qs).toBool();
+  levelData.groundEnabled = level.value(u"groundEnabled"_qs).toBool();
+
+  return levelData;
 }
 
 bool LevelFileIO::storeLevelAtPath(const QString &path, const LevelData &data)
@@ -84,6 +93,7 @@ bool LevelFileIO::storeLevelAtPath(const QString &path, const LevelData &data)
   level[u"leftWallEnabled"_qs] = data.leftWallEnabled;
   level[u"rightWallEnabled"_qs] = data.rightWallEnabled;
   level[u"topWallEnabled"_qs] = data.topWallEnabled;
+  level[u"backgroundImage"_qs] = data.backgroundImage.toString();
 
   QJsonDocument document(level);
 

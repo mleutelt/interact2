@@ -2,6 +2,7 @@
 
 #include <QObject>
 #include <QRect>
+#include <QUrl>
 #include <QDebug>
 
 class ObjectDescription
@@ -28,6 +29,7 @@ class LevelData
 
 public:
   QString name;
+  QUrl backgroundImage;
   QList<ObjectDescription> objects;
   bool groundEnabled = true;
   bool leftWallEnabled = true;

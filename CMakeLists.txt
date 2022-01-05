@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 
-project(Interact2 VERSION 0.1 LANGUAGES CXX)
+project(Interact2 VERSION 0.2 LANGUAGES CXX)
 
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -12,8 +12,11 @@ find_package(Qt6 6.2
     REQUIRED
 )
 
+qt_add_big_resources(LARGE_RESOURCES resources/resources.qrc)
+
 qt_add_executable(appInteract2
     main.cpp
+    ${LARGE_RESOURCES}
 )
 
 set_source_files_properties(
@@ -27,6 +30,7 @@ qt_add_qml_module(appInteract2
     VERSION 1.0
     QML_FILES
         qml/main.qml
+        qml/Application/Components/ImageButton.qml
         qml/Application/Screens/Screens.qml
         qml/Application/Screens/MainScreen.qml
         qml/Application/Screens/EditorScreen.qml
@@ -57,19 +61,6 @@ qt_add_qml_module(appInteract2
         leveldata.h
         levelfileio.h
         levelfileio.cpp
-    RESOURCES
-        "resources/levels/Level 1/data.json"
-        "resources/levels/Level 1/preview.png"
-        "resources/levels/Level 2/data.json"
-        "resources/levels/Level 2/preview.png"
-        "resources/levels/Level 3/data.json"
-        "resources/levels/Level 3/preview.png"
-        "resources/levels/Level 4/data.json"
-        "resources/levels/Level 4/preview.png"
-        "resources/levels/Level 5/data.json"
-        "resources/levels/Level 5/preview.png"
-        "resources/fonts/FontAwesome/Font Awesome 6 Free-Regular-400.otf"
-        "resources/fonts/FontAwesome/Font Awesome 6 Free-Solid-900.otf"
 )
 
 target_compile_definitions(appInteract2
@@ -80,4 +71,5 @@ target_compile_definitions(appInteract2
 target_link_libraries(appInteract2
     PRIVATE
     Qt6::Quick
-    Qt6::Multimedia)
+    Qt6::Multimedia
+)

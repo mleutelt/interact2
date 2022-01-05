@@ -72,6 +72,7 @@ void Editor::saveLevel(const QString &name, QQuickItemGrabResult *screenshot)
   QDir levelDirectory(LevelHandler::userLevelsDirectory().filePath(name));
   LevelData levelData;
   levelData.name = name;
+  levelData.backgroundImage = m_levelData->backgroundImage();
   levelData.objects = m_levelData->objects();
 
   screenshot->saveToFile(levelDirectory.filePath(LevelHandler::levelPreviewFileName()));

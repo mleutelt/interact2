@@ -7,7 +7,7 @@
 Q_LOGGING_CATEGORY(lvlh, "app.levelhandler")
 
 namespace {
-  const QString LEVELS_PATH = u":/App/resources/levels"_qs;
+  const QString LEVELS_PATH = u":/levels"_qs;
   const QString PREVIEW_FILE = u"preview.png"_qs;
   const QString USER_LEVELS_DIRECTORY = u"levels"_qs;
   const QString LEVEL_FILE = u"data.json"_qs;
@@ -45,13 +45,9 @@ void LevelHandler::loadLevel(const QString &path)
   if (levelPath.exists(LEVEL_FILE)) {
     setLoading(true);
 
-    LevelData data;
-    data.name = levelPath.dirName();
-    data.objects = LevelFileIO::loadLevelFromPath(levelPath.filePath(LEVEL_FILE));
+    m_currentLevelData->setLevelData(LevelFileIO::loadLevelFromPath(levelPath.filePath(LEVEL_FILE)));
 
-    m_currentLevelData->setLevelData(data);
-
-    QTimer::singleShot(3000, this, [this] {
+    QTimer::singleShot(1000, this, [this] {
       setLoading(false);
     });
   } else {

@@ -7,32 +7,6 @@ import App
 Page {
     id: container
 
-    component LevelButton: Button {
-        implicitWidth: GridView.view.cellWidth
-        implicitHeight: GridView.view.cellHeight
-        contentItem: ColumnLayout {
-            Image {
-                Layout.fillWidth: true
-                Layout.fillHeight: true
-                fillMode: Image.PreserveAspectCrop
-                source: model.preview
-
-                BusyIndicator {
-                    anchors.centerIn: parent
-                    running: App.levelHandler.loading && model.name === App.levelHandler.currentLevelData.name
-                }
-            }
-            Label {
-                Layout.fillWidth: true
-                horizontalAlignment: Label.AlignHCenter
-                verticalAlignment: Label.AlignVCenter
-                text: model.name
-            }
-        }
-
-        onClicked: App.levelHandler.loadLevel(model.path)
-    }
-
     header: TabBar {
         id: tabBar
 
@@ -59,7 +33,15 @@ Page {
             model: App.levelHandler.availableLevels
             cellWidth: container.width / 3
             cellHeight: cellWidth
-            delegate: LevelButton {}
+            delegate: ImageButton {
+                implicitWidth: GridView.view.cellWidth
+                implicitHeight: GridView.view.cellHeight
+                loading: App.levelHandler.loading && model.name === App.levelHandler.currentLevelData.name
+                image: model.preview
+                text: model.name
+
+                onClicked: App.levelHandler.loadLevel(model.path)
+            }
         }
 
         GridView {
@@ -68,7 +50,15 @@ Page {
             model: App.levelHandler.userLevels
             cellWidth: container.width / 3
             cellHeight: cellWidth
-            delegate: LevelButton {}
+            delegate: ImageButton {
+                implicitWidth: GridView.view.cellWidth
+                implicitHeight: GridView.view.cellHeight
+                loading: App.levelHandler.loading && model.name === App.levelHandler.currentLevelData.name
+                image: model.preview
+                text: model.name
+
+                onClicked: App.levelHandler.loadLevel(model.path)
+            }
         }
     }
 

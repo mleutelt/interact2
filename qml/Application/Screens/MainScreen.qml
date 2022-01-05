@@ -36,6 +36,7 @@ Page {
     Level {
         id: level
 
+        backgroundImage.source: "qrc:/backgrounds/kariertesblatt.png"
         topWall.enabled: false
 
         Text {
@@ -104,7 +105,8 @@ Page {
     Label {
         anchors.bottom: parent.bottom
         anchors.right: parent.right
-        text: Application.version
+        anchors.margins: 10
+        text: "v%1".arg(Application.version)
     }
 
     StackView.onActivated: {

@@ -1,6 +1,7 @@
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
+import Qt.labs.folderlistmodel
 
 import App
 
@@ -41,6 +42,30 @@ Page {
                     }
                 }
             }
+        }
+    }
+
+    component SelectionMenu: Popup {
+        id: selectionMenu
+
+        property alias model: gridView.model
+        property alias delegate: gridView.delegate
+
+        signal elementSelected(value: string)
+
+        parent: Overlay.overlay
+        anchors.centerIn: parent
+        modal: true
+        contentWidth: parent.width * 3 / 4
+        contentHeight: parent.height * 3 / 4
+
+        GridView {
+            id: gridView
+
+            anchors.fill: parent
+            cellWidth: gridView.width / 2
+            cellHeight: cellWidth
+            clip: true
         }
     }
 
@@ -109,6 +134,7 @@ Page {
     Level {
         id: level
 
+        backgroundImage.source: App.editor.levelData.backgroundImage
         objectFactory.model: App.editor.levelData
         objectFactory.interactionHandler: function(index) {
             switch (App.editor.currentEditOperation) {
@@ -267,6 +293,7 @@ Page {
         id: levelPropertiesDialog
 
         title: "Level Properties"
+        parent: Overlay.overlay
         anchors.centerIn: parent
         width: parent.width / 2
         height: parent.height / 2
@@ -275,6 +302,8 @@ Page {
         // TODO: add background image selection
         // TODO: add music selection
         GridLayout {
+            id: propertiesGrid
+
             anchors.fill: parent
             columns: 2
 
@@ -315,6 +344,53 @@ Page {
                 value: level.physicsWorld.gravity.y
                 editable: true
             }
+
+            Label {
+                Layout.fillWidth: true
+                text: "Background"
+            }
+
+            ImageButton {
+                id: backgroundSelection
+
+                Layout.fillWidth: true
+                Layout.maximumWidth: propertiesGrid.width / 2
+                Layout.fillHeight: true
+                image: App.editor.levelData.backgroundImage
+                text: "Select image"
+
+                onClicked: backgroundSelectionPopup.open()
+
+                SelectionMenu {
+                    id: backgroundSelectionPopup
+                    model: FolderListModel {
+                        folder: "qrc:/backgrounds"
+                    }
+                    delegate: ImageButton {
+                        implicitWidth: GridView.view.cellWidth
+                        implicitHeight: GridView.view.cellHeight
+                        image: model.fileUrl
+                        text: model.fileBaseName
+
+                        onClicked: {
+                            App.editor.levelData.backgroundImage = model.fileUrl
+                            backgroundSelectionPopup.close()
+                        }
+                    }
+                }
+            }
+
+            Label {
+                Layout.fillWidth: true
+                text: "Music"
+            }
+
+            Button {
+                id: musicSelection
+                Layout.fillWidth: true
+                text: "Select music"
+            }
+
 
             Item { Layout.fillHeight: true }
             Item { Layout.fillHeight: true }

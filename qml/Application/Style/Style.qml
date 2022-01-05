@@ -12,11 +12,11 @@ QtObject {
     }
 
     readonly property FontLoader fontAwesomeRegular: FontLoader {
-        source: "qrc:/App/resources/fonts/FontAwesome/Font Awesome 6 Free-Regular-400.otf"
+        source: "qrc:/fonts/FontAwesome/Font Awesome 6 Free-Regular-400.otf"
     }
 
     readonly property FontLoader fontAwesomeSolid: FontLoader {
-        source: "qrc:/App/resources/fonts/FontAwesome/Font Awesome 6 Free-Solid-900.otf"
+        source: "qrc:/fonts/FontAwesome/Font Awesome 6 Free-Solid-900.otf"
     }
 
     function shapeIconForType(type) {

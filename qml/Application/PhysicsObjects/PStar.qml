@@ -64,6 +64,7 @@ PObject {
         id: star
 
         anchors.fill: parent
+        antialiasing: true
 
         ShapePath {
             id: shapePath

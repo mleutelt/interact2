@@ -53,6 +53,7 @@ QString LevelDataModel::name() const
 void LevelDataModel::setLevelData(const LevelData &data)
 {
   setName(data.name);
+  setBackgroundImage(data.backgroundImage);
 
   beginResetModel();
   m_objects = data.objects;
@@ -88,6 +89,9 @@ void LevelDataModel::clear()
 {
   qCDebug(lvldm) << "clearing";
 
+  setName(QString());
+  setBackgroundImage(QUrl());
+
   beginResetModel();
   m_objects.clear();
   endResetModel();
@@ -106,4 +110,19 @@ void LevelDataModel::setName(const QString &name)
 
   m_name = name;
   emit nameChanged();
+}
+
+QUrl LevelDataModel::backgroundImage() const
+{
+  return m_backgroundImage;
+}
+
+void LevelDataModel::setBackgroundImage(const QUrl &url)
+{
+  if (m_backgroundImage == url) {
+    return;
+  }
+
+  m_backgroundImage = url;
+  emit backgroundImageChanged();
 }

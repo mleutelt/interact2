@@ -4,7 +4,7 @@ import App
 
 import Box2D
 
-Rectangle {
+Item {
     id: container
 
     property alias physicsWorld: objectFactory.world
@@ -13,10 +13,16 @@ Rectangle {
     property alias rightWall: rightWall
     property alias topWall: topWall
     property alias objectFactory: objectFactory
+    property alias backgroundImage: backgroundImage
 
     anchors.fill: parent
 
-    // TODO: add background image
+    Image {
+        id: backgroundImage
+
+        anchors.fill: parent
+        fillMode: Image.PreserveAspectCrop
+    }
 
     PRectangle {
         id: ground
@@ -24,7 +30,7 @@ Rectangle {
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.bottom: parent.bottom
-        height: 40
+        height: 0
 
         friction: 1
         density: 1
@@ -49,7 +55,6 @@ Rectangle {
         anchors.left: parent.left
         anchors.top: parent.top
         anchors.bottom: parent.bottom
-        anchors.bottomMargin: 40
 
         world: enabled ? physicsWorld : null
     }
@@ -61,7 +66,6 @@ Rectangle {
         anchors.right: parent.right
         anchors.top: parent.top
         anchors.bottom: parent.bottom
-        anchors.bottomMargin: 40
 
         world: enabled ? physicsWorld : null
     }
