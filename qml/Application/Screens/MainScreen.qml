@@ -2,6 +2,7 @@ import QtQuick
 import QtQuick.Controls
 
 import App
+
 import Box2D
 
 Page {
@@ -46,7 +47,7 @@ Page {
             anchors.bottomMargin: 60
             anchors.horizontalCenter: parent.horizontalCenter
             font.pixelSize: 82
-            text: "interact 2"
+            text: qsTr("interact 2")
 
         }
 
@@ -65,9 +66,14 @@ Page {
 
             visualItem: Button {
                 implicitWidth: container.width / 5
-                text: "Start"
+                text: qsTr("Start")
 
-                onClicked: Screens.show(Screens.LevelSelection)
+                onClicked: Screens.show(Screens.LevelSelection, {
+                                            levelSelectionHandler: (path) => {
+                                                App.levelHandler.loadLevel(path)
+                                                Screens.show(Screens.CurrentLevel)
+                                            }
+                                        })
             }
         }
 
@@ -80,33 +86,11 @@ Page {
 
             visualItem: Button {
                 implicitWidth: container.width / 4
-                text: "Editor"
+                text: qsTr("Editor")
 
                 onClicked: Screens.show(Screens.Editor)
             }
         }
-
-        PRectangle {
-            id: settingsButton
-
-            anchors.top: editorButton.bottom
-            anchors.topMargin: 20
-            anchors.horizontalCenter: editorButton.horizontalCenter
-
-            visualItem: Button {
-                implicitWidth: container.width / 3
-                text: "Settings"
-
-                onClicked: Screens.show(Screens.Settings)
-            }
-        }
-    }
-
-    Label {
-        anchors.bottom: parent.bottom
-        anchors.right: parent.right
-        anchors.margins: 10
-        text: "v%1".arg(Application.version)
     }
 
     StackView.onActivated: {

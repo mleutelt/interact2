@@ -51,6 +51,7 @@ LevelData LevelFileIO::loadLevelFromPath(const QString &path)
     objects << objectDescription;
   }
 
+  levelData.name = QFileInfo(path).dir().dirName();
   levelData.objects = objects;
   levelData.backgroundImage = level.value(u"backgroundImage"_qs).toString();
   levelData.topWallEnabled = level.value(u"topWallEnabled"_qs).toBool();

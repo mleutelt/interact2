@@ -8,6 +8,8 @@ Button {
     property alias image: image.source
     property alias loading: busyIndicator.running
 
+    font.capitalization: Font.Capitalize
+
     contentItem: ColumnLayout {
         Image {
             id: image
@@ -15,6 +17,8 @@ Button {
             Layout.fillWidth: true
             Layout.fillHeight: true
             fillMode: Image.PreserveAspectCrop
+            asynchronous: true
+            smooth: true
 
             BusyIndicator {
                 id: busyIndicator
@@ -23,10 +27,10 @@ Button {
                 running: false
             }
         }
-        Label {
+
+        IconLabel {
             Layout.fillWidth: true
-            horizontalAlignment: Label.AlignHCenter
-            verticalAlignment: Label.AlignVCenter
+            font: container.font
             text: container.text
         }
     }

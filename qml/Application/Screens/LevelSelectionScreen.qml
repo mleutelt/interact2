@@ -7,20 +7,21 @@ import App
 Page {
     id: container
 
-    header: TabBar {
+    property var levelSelectionHandler
+
+    footer: TabBar {
         id: tabBar
 
-        TabButton {
-            text: "Game levels"
-        }
-        TabButton {
-            text: "User levels"
-        }
-    }
-    footer: Button {
-        text: "Back"
+        position: TabBar.Footer
 
-        onClicked: Screens.showPrevious()
+        TabButton {
+            font.capitalization: Font.Capitalize
+            text: qsTr("Game levels")
+        }
+        TabButton {
+            font.capitalization: Font.Capitalize
+            text: qsTr("User levels")
+        }
     }
 
     StackLayout {
@@ -28,48 +29,42 @@ Page {
         currentIndex: tabBar.currentIndex
 
         GridView {
-            enabled: !App.levelHandler.loading
             clip: true
             model: App.levelHandler.availableLevels
             cellWidth: container.width / 3
             cellHeight: cellWidth
-            delegate: ImageButton {
+            delegate: Item {
                 implicitWidth: GridView.view.cellWidth
                 implicitHeight: GridView.view.cellHeight
-                loading: App.levelHandler.loading && model.name === App.levelHandler.currentLevelData.name
-                image: model.preview
-                text: model.name
 
-                onClicked: App.levelHandler.loadLevel(model.path)
+                ImageButton {
+                    anchors.fill: parent
+                    anchors.margins: 10
+                    image: model.preview
+                    text: model.name
+
+                    onClicked: container.levelSelectionHandler(model.path)
+                }
             }
         }
 
         GridView {
-            enabled: !App.levelHandler.loading
             clip: true
             model: App.levelHandler.userLevels
             cellWidth: container.width / 3
             cellHeight: cellWidth
-            delegate: ImageButton {
+            delegate: Item {
                 implicitWidth: GridView.view.cellWidth
                 implicitHeight: GridView.view.cellHeight
-                loading: App.levelHandler.loading && model.name === App.levelHandler.currentLevelData.name
-                image: model.preview
-                text: model.name
 
-                onClicked: App.levelHandler.loadLevel(model.path)
-            }
-        }
-    }
+                ImageButton {
+                    anchors.fill: parent
+                    anchors.margins: 10
+                    image: model.preview
+                    text: model.name
 
-    Connections {
-        target: App.levelHandler
-
-        // NOTE: change screen as soon as level has been loaded
-        // Maybe use a different signal here?
-        function onLoadingChanged() {
-            if (!App.levelHandler.loading) {
-                Screens.show(Screens.CurrentLevel)
+                    onClicked: container.levelSelectionHandler(model.path)
+                }
             }
         }
     }

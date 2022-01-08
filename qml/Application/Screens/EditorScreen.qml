@@ -51,8 +51,6 @@ Page {
         property alias model: gridView.model
         property alias delegate: gridView.delegate
 
-        signal elementSelected(value: string)
-
         parent: Overlay.overlay
         anchors.centerIn: parent
         modal: true
@@ -194,8 +192,42 @@ Page {
         y: Math.min(initialY, drawingMouseArea.mouseY)
     }
 
-    // TODO: figure out editor controls
-    // - load existing level from file
+    ColumnLayout {
+        anchors.bottom: parent.bottom
+        anchors.left: parent.left
+        anchors.margins: 10
+
+        RoundButton {
+            id: openLevelButton
+
+            ToolTip.visible: hovered
+            ToolTip.text: qsTr("Open existing levels")
+            font.family: Style.fontAwesomeRegular.font.family
+            font.weight: Font.Regular
+            text: "\uf07c"
+
+            onClicked: levelSelectionDialog.open()
+        }
+
+        RoundButton {
+            id: saveButton
+
+            ToolTip.visible: hovered
+            ToolTip.text: qsTr("Save the level")
+            font.family: Style.fontAwesomeRegular.font.family
+            font.weight: Font.Regular
+            text: "\uf0c7"
+
+            onClicked: {
+                if (levelNameInput.text) {
+                    level.grabToImage(result => App.editor.saveLevel(levelNameInput.text, result))
+                } else {
+                    // TODO: show popup about missing name
+                }
+            }
+        }
+    }
+
     ColumnLayout {
         anchors.top: parent.top
         anchors.bottom: parent.bottom
@@ -205,6 +237,8 @@ Page {
         RoundButton {
             id: shapesMenuButton
 
+            ToolTip.visible: hovered
+            ToolTip.text: qsTr("Shape selection")
             checkable: true
             font.family: Style.fontAwesomeRegular.font.family
             font.weight: Font.Regular
@@ -226,6 +260,8 @@ Page {
         RoundButton {
             id: editOperationButton
 
+            ToolTip.visible: hovered
+            ToolTip.text: qsTr("Editing")
             checkable: true
             font.family: Style.fontAwesomeRegular.font.family
             font.weight: Font.Regular
@@ -248,58 +284,38 @@ Page {
         RoundButton {
             id: objectBehaviorButton
 
+            ToolTip.visible: hovered
+            ToolTip.text: qsTr("Static/dynamic object mode")
             checkable: true
-            text: checked ? "static" : "dynamic"
+            font.family: Style.fontAwesomeRegular.font.family
+            font.weight: Font.Regular
+            text: checked ? "\uf78c" : "\uf31e"
         }
 
         RoundButton {
             id: levelPropertiesButton
 
-            checkable: true
-            text: "props"
+            ToolTip.visible: hovered
+            ToolTip.text: qsTr("Level properties")
+            font.family: Style.fontAwesomeRegular.font.family
+            font.weight: Font.Regular
+            text: "\uf1de"
 
-            onToggled: levelPropertiesDialog.open()
+            onClicked: levelPropertiesDialog.open()
         }
 
         Item {
             Layout.fillHeight: true
-        }
-
-        RoundButton {
-            id: saveButton
-
-            text: "save"
-
-            onClicked: {
-                if (levelNameInput.text) {
-                    level.grabToImage(result => App.editor.saveLevel(levelNameInput.text, result))
-                } else {
-                    // TODO: show popup about missing name
-                }
-            }
-        }
-
-        RoundButton {
-            text: "done"
-
-            onClicked: {
-                App.editor.reset()
-                Screens.showPrevious()
-            }
         }
     }
 
     Dialog {
         id: levelPropertiesDialog
 
-        title: "Level Properties"
         parent: Overlay.overlay
         anchors.centerIn: parent
-        width: parent.width / 2
-        height: parent.height / 2
         modal: true
 
-        // TODO: add background image selection
         // TODO: add music selection
         GridLayout {
             id: propertiesGrid
@@ -309,23 +325,25 @@ Page {
 
             Label {
                 Layout.fillWidth: true
-                text: "Name"
+                text: qsTr("Name")
             }
 
             TextField {
                 id: levelNameInput
 
                 Layout.fillWidth: true
+                text: App.editor.levelData.name
             }
 
             Label {
                 Layout.fillWidth: true
-                text: "Gravity X"
+                text: qsTr("Gravity X")
             }
 
             SpinBox {
                 id: gravityXSpinBox
 
+                Layout.alignment: Qt.AlignRight
                 from: -10
                 to: 10
                 value: level.physicsWorld.gravity.x
@@ -333,12 +351,13 @@ Page {
 
             Label {
                 Layout.fillWidth: true
-                text: "Gravity Y"
+                text: qsTr("Gravity Y")
             }
 
             SpinBox {
                 id: gravityYSpinBox
 
+                Layout.alignment: Qt.AlignRight
                 from: -10
                 to: 10
                 value: level.physicsWorld.gravity.y
@@ -347,7 +366,7 @@ Page {
 
             Label {
                 Layout.fillWidth: true
-                text: "Background"
+                text: qsTr("Background")
             }
 
             ImageButton {
@@ -356,8 +375,10 @@ Page {
                 Layout.fillWidth: true
                 Layout.maximumWidth: propertiesGrid.width / 2
                 Layout.fillHeight: true
+                Layout.preferredHeight: Layout.maximumWidth
+                Layout.alignment: Qt.AlignRight
                 image: App.editor.levelData.backgroundImage
-                text: "Select image"
+                text: qsTr("Select image")
 
                 onClicked: backgroundSelectionPopup.open()
 
@@ -374,6 +395,7 @@ Page {
 
                         onClicked: {
                             App.editor.levelData.backgroundImage = model.fileUrl
+                            backgroundSelection.text = model.fileBaseName
                             backgroundSelectionPopup.close()
                         }
                     }
@@ -382,20 +404,63 @@ Page {
 
             Label {
                 Layout.fillWidth: true
-                text: "Music"
+                text: qsTr("Music")
             }
 
             Button {
                 id: musicSelection
+
                 Layout.fillWidth: true
-                text: "Select music"
+                Layout.maximumWidth: propertiesGrid.width / 2
+                Layout.alignment: Qt.AlignRight
+                text: qsTr("Select music")
+
+                onClicked: musicSelectionPopup.open()
+
+                SelectionMenu {
+                    id: musicSelectionPopup
+                    model: FolderListModel {
+                        folder: "qrc:/music"
+                    }
+                    delegate: Button {
+                        implicitWidth: GridView.view.cellWidth
+                        implicitHeight: GridView.view.cellHeight
+                        text: model.fileBaseName
+
+                        onClicked: {
+                            // TODO: store music in level data
+                            musicSelection.text = model.fileBaseName
+                            musicSelectionPopup.close()
+                        }
+                    }
+                }
             }
 
 
             Item { Layout.fillHeight: true }
             Item { Layout.fillHeight: true }
         }
-
-        onClosed: levelPropertiesButton.toggle()
     }
+
+    Dialog {
+        id: levelSelectionDialog
+
+        parent: Overlay.overlay
+        anchors.centerIn: parent
+        contentWidth: parent.width * 3 / 4
+        contentHeight: parent.height * 3 / 4
+        modal: true
+        padding: 0
+
+        LevelSelectionScreen {
+            anchors.fill: parent
+
+            levelSelectionHandler: function(path) {
+                App.editor.loadLevel(path)
+                levelSelectionDialog.close()
+            }
+        }
+    }
+
+    StackView.onDeactivated: App.editor.reset()
 }

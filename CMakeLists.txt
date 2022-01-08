@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 
-project(Interact2 VERSION 0.2 LANGUAGES CXX)
+project(Interact2 VERSION 0.3 LANGUAGES CXX)
 
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -12,7 +12,9 @@ find_package(Qt6 6.2
     REQUIRED
 )
 
-qt_add_big_resources(LARGE_RESOURCES resources/resources.qrc)
+qt_add_big_resources(LARGE_RESOURCES
+    resources/resources.qrc
+)
 
 qt_add_executable(appInteract2
     main.cpp
@@ -22,6 +24,7 @@ qt_add_executable(appInteract2
 set_source_files_properties(
     qml/Application/Screens/Screens.qml
     qml/Application/Style/Style.qml
+    qml/Application/Sound/Sound.qml
     PROPERTIES QT_QML_SINGLETON_TYPE true
 )
 
@@ -31,11 +34,13 @@ qt_add_qml_module(appInteract2
     QML_FILES
         qml/main.qml
         qml/Application/Components/ImageButton.qml
+        qml/Application/Components/Dialog.qml
+        qml/Application/Components/Button.qml
+        qml/Application/Sound/Sound.qml
         qml/Application/Screens/Screens.qml
         qml/Application/Screens/MainScreen.qml
         qml/Application/Screens/EditorScreen.qml
         qml/Application/Screens/LevelSelectionScreen.qml
-        qml/Application/Screens/SettingsScreen.qml
         qml/Application/Screens/CurrentLevelScreen.qml
         qml/Application/Levels/Level.qml
         # FIXME: ideally the physics objects should be put into another importable module

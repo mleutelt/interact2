@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/">
+        <file>qtquickcontrols2.conf</file>
         <file>sounds/cfork_plopp.aif</file>
         <file>sounds/glock_N_kling.aif</file>
         <file>sounds/glock_N_kloing.aif</file>

@@ -8,7 +8,7 @@ QtObject {
     id: container
 
     readonly property QtObject application: QtObject {
-        readonly property size minimumWindowSize: Qt.size(640, 480)
+        readonly property size minimumWindowSize: Qt.size(800, 600)
     }
 
     readonly property FontLoader fontAwesomeRegular: FontLoader {
@@ -22,7 +22,7 @@ QtObject {
     function shapeIconForType(type) {
         switch (type) {
         case Editor.ShapeType_Circle: return "\uf111"
-        case Editor.ShapeType_Rectangle: return "\uf2fb"
+        case Editor.ShapeType_Rectangle: return "\uf0c8"
         case Editor.ShapeType_Polygon: return "\uf5ee"
         case Editor.ShapeType_SpecialStar: return "\uf005"
         }

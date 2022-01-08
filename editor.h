@@ -48,6 +48,7 @@ public:
 
   LevelDataModel *levelData() const;
 
+  Q_INVOKABLE void loadLevel(const QString &path);
   Q_INVOKABLE void saveLevel(const QString &name, QQuickItemGrabResult *screenshot);
   Q_INVOKABLE void reset();
 

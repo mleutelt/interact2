@@ -43,32 +43,11 @@ void LevelHandler::loadLevel(const QString &path)
   QDir levelPath(path);
 
   if (levelPath.exists(LEVEL_FILE)) {
-    setLoading(true);
-
     m_currentLevelData->setLevelData(LevelFileIO::loadLevelFromPath(levelPath.filePath(LEVEL_FILE)));
-
-    QTimer::singleShot(1000, this, [this] {
-      setLoading(false);
-    });
   } else {
     qCCritical(lvlh) << "unable to find level data";
     // TODO: emit signal to display UI message
   }
-}
-
-bool LevelHandler::loading() const
-{
-  return m_loading;
-}
-
-void LevelHandler::setLoading(bool flag)
-{
-  if (m_loading == flag) {
-    return;
-  }
-
-  m_loading = flag;
-  emit loadingChanged();
 }
 
 void LevelHandler::updateGameLevelsModel()

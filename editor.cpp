@@ -84,6 +84,8 @@ void Editor::saveLevel(const QString &name, QQuickItemGrabResult *screenshot)
 void Editor::reset()
 {
   m_levelData->clear();
+  setCurrentShape(ShapeType_Circle);
+  setCurrentEditOperation(EditOperationType_Draw);
 }
 
 void Editor::addObject(int type, const QRect &boundingRect, bool isStatic, int rotation) const
@@ -99,4 +101,18 @@ void Editor::removeObject(int index) const
 LevelDataModel *Editor::levelData() const
 {
   return m_levelData;
+}
+
+void Editor::loadLevel(const QString &path)
+{
+  qCDebug(editor) << "loading level at path" << path;
+
+  QDir levelPath(path);
+
+  if (levelPath.exists(LevelHandler::levelDataFileName())) {
+    m_levelData->setLevelData(LevelFileIO::loadLevelFromPath(levelPath.filePath(LevelHandler::levelDataFileName())));
+  } else {
+    qCCritical(editor) << "unable to find level data";
+    // TODO: emit signal to display UI message
+  }
 }
