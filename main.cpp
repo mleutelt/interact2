@@ -1,8 +1,11 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
+#include <QQmlContext>
 
 #include <QLocale>
 #include <QTranslator>
+
+#include "physicsobjectoptimizer.h"
 
 int main(int argc, char *argv[])
 {
@@ -33,6 +36,9 @@ int main(int argc, char *argv[])
       },
       Qt::QueuedConnection);
   engine.load(url);
+
+  QScopedPointer<PhysicsObjectOptimizer> physicsObjectOptimizer( new PhysicsObjectOptimizer );
+  engine.rootContext()->setContextProperty("physicsObjectOptimizer", physicsObjectOptimizer.data());
 
   return app.exec();
 }

@@ -66,6 +66,8 @@ qt_add_qml_module(appInteract2
         leveldata.h
         levelfileio.h
         levelfileio.cpp
+        physicsobjectoptimizer.h
+        physicsobjectoptimizer.cpp
 )
 
 target_compile_definitions(appInteract2

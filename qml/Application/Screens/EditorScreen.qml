@@ -87,6 +87,7 @@ Page {
                     canvas.color = Qt.rgba(Math.random(), Math.random(), Math.random())
                     canvas.currentX = mouseX
                     canvas.currentY = mouseY
+                    physicsObjectOptimizer.clear();
                     break
                 }
             }
@@ -112,6 +113,15 @@ Page {
                 break
             case Editor.ShapeType_Polygon:
                 canvas.clear()
+                physicsObjectOptimizer.idealizeLine();
+                if (physicsObjectOptimizer.isClosed())
+                {
+                    // TODO: create Polygon
+                }
+                else
+                {
+                    // TODO: create line
+                }
                 // TODO: add object to level
                 break
             }
@@ -123,6 +133,10 @@ Page {
             case Editor.ShapeType_SpecialStar:
                 break
             case Editor.ShapeType_Polygon:
+                if (drawingMouseArea.pressedButtons & Qt.LeftButton)
+                {
+                    physicsObjectOptimizer.addVertex(mouseX, mouseY);
+                }
                 canvas.requestPaint()
                 break
             }
@@ -170,6 +184,7 @@ Page {
             currentY = drawingMouseArea.mouseY
             context.lineTo(currentX, currentY)
             context.stroke()
+
         }
     }
 
