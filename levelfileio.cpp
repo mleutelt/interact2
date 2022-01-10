@@ -40,10 +40,10 @@ LevelData LevelFileIO::loadLevelFromPath(const QString &path)
     ObjectDescription objectDescription;
     objectDescription.type = o.value(u"type"_qs).toInt();
     objectDescription.boundingBox = {
-      o.value(u"x"_qs).toInt(),
-      o.value(u"y"_qs).toInt(),
-      o.value(u"width"_qs).toInt(),
-      o.value(u"height"_qs).toInt(),
+      o.value(u"x"_qs).toDouble(),
+      o.value(u"y"_qs).toDouble(),
+      o.value(u"width"_qs).toDouble(),
+      o.value(u"height"_qs).toDouble(),
     };
     objectDescription.isStatic = o.value(u"static"_qs).toBool();
     objectDescription.rotation = o.value(u"rotation"_qs).toInt();

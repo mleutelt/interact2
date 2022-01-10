@@ -5,8 +5,6 @@
 #include <QLocale>
 #include <QTranslator>
 
-#include "physicsobjectoptimizer.h"
-
 int main(int argc, char *argv[])
 {
   QGuiApplication::setOrganizationName(u"Wurstcrew"_qs);
@@ -36,9 +34,6 @@ int main(int argc, char *argv[])
       },
       Qt::QueuedConnection);
   engine.load(url);
-
-  QScopedPointer<PhysicsObjectOptimizer> physicsObjectOptimizer( new PhysicsObjectOptimizer );
-  engine.rootContext()->setContextProperty("physicsObjectOptimizer", physicsObjectOptimizer.data());
 
   return app.exec();
 }

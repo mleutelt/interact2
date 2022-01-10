@@ -32,6 +32,6 @@ PObject {
         anchors.fill: parent
         antialiasing: true
         radius: container.width / 2
-        color: "black"
+        color: container.itemColor
     }
 }

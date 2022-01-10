@@ -24,7 +24,7 @@ Page {
             bodyType: Body.Dynamic
             restitution: 0.5
 
-            item.color: Qt.rgba(Math.random(), Math.random(), Math.random())
+            itemColor: Qt.rgba(Math.random(), Math.random(), Math.random())
         }
     }
 
@@ -63,6 +63,7 @@ Page {
             id: startButton
 
             anchors.centerIn: parent
+            itemColor: Qt.rgba(Math.random(), Math.random(), Math.random())
 
             visualItem: Button {
                 implicitWidth: container.width / 5
@@ -83,6 +84,7 @@ Page {
             anchors.top: startButton.bottom
             anchors.topMargin: 20
             anchors.horizontalCenter: startButton.horizontalCenter
+            itemColor: Qt.rgba(Math.random(), Math.random(), Math.random())
 
             visualItem: Button {
                 implicitWidth: container.width / 4

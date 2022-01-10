@@ -6,7 +6,7 @@ import Box2D as B2D
 PObject {
     id: container
 
-    property alias item: rectangle
+    property alias item: polygonShape
 
     property alias density: polygon.density
     property alias friction: polygon.friction
@@ -16,10 +16,29 @@ PObject {
     property alias collidesWith: polygon.collidesWith
     property alias groupIndex: polygon.groupIndex
 
+    // NOTE: initial position is the starting point of the polyline
+    x: pathPolyLine.start.x
+    y: pathPolyLine.start.y
+
     // TODO: model this correctly
-    physicalObject: B2D.Polygon {
+    // This propably needs to be an array of triangle vertices, that has been created
+    // by the concave chopper
+//    physicalObject: B2D.Polygon {
+//        id: polygon
+
+//        density: 1
+//        friction: 0.5
+//        restitution: 0.1
+
+//        onBeginContact: other => container.beginContact(other)
+//        onEndContact: other => container.endContact(other)
+//    }
+    // NOTE: only here to have valid physical object
+    physicalObject: B2D.Box {
         id: polygon
 
+        width: container.width
+        height: container.height
         density: 1
         friction: 0.5
         restitution: 0.1
@@ -27,13 +46,32 @@ PObject {
         onBeginContact: other => container.beginContact(other)
         onEndContact: other => container.endContact(other)
     }
-    // TODO: use QtQuick.Shapes (or Canvas) to draw the graphical representation
-    visualItem: Rectangle {
-        id: rectangle
 
-        anchors.fill: parent
+    visualItem: Shape {
+        id: polygonShape
+
+        // NOTE: we can't use anchors here because we need to map from the
+        // drawing canvas coordinate system, which is the whole screen, to
+        // our local coordinate system.
+        // Seems to be a bit off sometimes, but accurate enough.
+        width: parent.width
+        height: parent.height
+        x: -model.boundingBox.x
+        y: -model.boundingBox.y
         antialiasing: true
-        color: Qt.rgba(Math.random(), Math.random(), Math.random())
+
+        ShapePath {
+            id: shapePath
+
+            fillColor: container.itemColor
+            strokeColor: fillColor
+            fillRule: ShapePath.WindingFill
+
+            PathPolyline {
+                id: pathPolyLine
+
+                path: model.polygon
+            }
+        }
     }
 }
-

@@ -7,6 +7,7 @@ import Box2D
 Rectangle {
     id: container
 
+    property color itemColor: "black"
     property bool interactive: true
     property var interactionHandler
     property alias visualItem: childContainer.children

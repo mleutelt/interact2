@@ -88,9 +88,14 @@ void Editor::reset()
   setCurrentEditOperation(EditOperationType_Draw);
 }
 
-void Editor::addObject(int type, const QRect &boundingRect, bool isStatic, int rotation) const
+void Editor::addSimpleObject(int type, const QRectF &boundingRect, bool isStatic, int rotation) const
 {
   m_levelData->addObject(type, boundingRect, isStatic, rotation);
+}
+
+void Editor::addPolygonObject(int type, const QPolygonF &polygon, bool isStatic, int rotation) const
+{
+  m_levelData->addObjectPoly(type, polygon, isStatic, rotation);
 }
 
 void Editor::removeObject(int index) const

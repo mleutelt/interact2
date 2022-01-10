@@ -1,7 +1,8 @@
 #pragma once
 
 #include <QObject>
-#include <QRect>
+#include <QRectF>
+#include <QPolygonF>
 #include <QUrl>
 #include <QDebug>
 
@@ -11,7 +12,8 @@ class ObjectDescription
 
 public:
   int type = 0;
-  QRect boundingBox;
+  QRectF boundingBox;
+  QPolygonF polygon;
   bool isStatic = false;
   int rotation = 0;
 };

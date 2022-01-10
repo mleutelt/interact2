@@ -16,6 +16,7 @@ PObject {
     property alias collidesWith: polygon.collidesWith
     property alias groupIndex: polygon.groupIndex
 
+    // FIXME: vertices are not accurate
     physicalObject: [
         B2D.Polygon {
             id: polygon

@@ -5,6 +5,7 @@
 #include <QQuickItemGrabResult>
 
 #include "leveldatamodel.h"
+#include "physicsobjectoptimizer.h"
 
 class Editor : public QObject
 {
@@ -52,7 +53,8 @@ public:
   Q_INVOKABLE void saveLevel(const QString &name, QQuickItemGrabResult *screenshot);
   Q_INVOKABLE void reset();
 
-  Q_INVOKABLE void addObject(int type, const QRect &boundingRect, bool isStatic = false, int rotation = 0) const;
+  Q_INVOKABLE void addSimpleObject(int type, const QRectF &boundingRect, bool isStatic = false, int rotation = 0) const;
+  Q_INVOKABLE void addPolygonObject(int type, const QPolygonF &polygon, bool isStatic = false, int rotation = 0) const;
   Q_INVOKABLE void removeObject(int index) const;
 
 signals:

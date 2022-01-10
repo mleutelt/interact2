@@ -32,6 +32,6 @@ PObject {
 
         anchors.fill: parent
         antialiasing: true
-        color: Qt.rgba(Math.random(), Math.random(), Math.random())
+        color: container.itemColor
     }
 }

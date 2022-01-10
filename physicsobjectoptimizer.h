@@ -1,36 +1,24 @@
-#ifndef PHYSICSOBJECTOPTIMIZER_H
-#define PHYSICSOBJECTOPTIMIZER_H
+#pragma once
 
 #include <QObject>
+#include <QtQml/qqml.h>
 #include <QPointF>
 #include <QPolygonF>
 
 class PhysicsObjectOptimizer : public QObject
 {
-    Q_OBJECT
-public:
-    explicit PhysicsObjectOptimizer(QObject *parent = nullptr);
+  Q_OBJECT
+  QML_ELEMENT
+  QML_SINGLETON
 
-    Q_INVOKABLE void clear();
-    Q_INVOKABLE void addVertex(qreal vertexX, qreal vertexY);
-    Q_INVOKABLE void idealizeLine();
-    Q_INVOKABLE QPolygonF* getPolygonOrLine();
-    Q_INVOKABLE bool isClosed();
+public:
+  explicit PhysicsObjectOptimizer(QObject *parent = nullptr);
+
+  Q_INVOKABLE QPolygonF optimizeLine(const QList<QPointF> &input);
 
 private:
-    QPolygonF m_PolygonFRaw;
-    QPolygonF m_PolygonFOptimized;
-
-    QPointF qpfLineStart, qpfLineEnd, qpfPoint;
-
-    float fLineStartX, fLineStartY, fLineEndX, fLineEndY, fPointX, fPointY;
-
-    int iSkip;
-
-    float calculateDistance(QPointF qpfLineStart, QPointF qpfLineEnd, QPointF qpfPoint);
-    bool minDistance(QPointF pointOne, QPointF pointTwo);
-signals:
-
+  // calculate the distance of a point to a line
+  float calculateDistance(const QPointF &lineStart, const QPointF &lineEnd, const QPointF &point);
+  // calculate the distance between two points
+  bool minDistance(const QPointF &pointOne, const QPointF &pointTwo);
 };
-
-#endif // PHYSICSOBJECTOPTIMIZER_H

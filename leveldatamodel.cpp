@@ -1,5 +1,6 @@
 #include "leveldatamodel.h"
 
+#include <QPolygon>
 #include <QLoggingCategory>
 
 Q_LOGGING_CATEGORY(lvldm, "app.models.leveldatamodel")
@@ -30,6 +31,8 @@ QVariant LevelDataModel::data(const QModelIndex &index, int role) const
     return data.boundingBox;
   case Static:
     return data.isStatic;
+  case Polygon:
+    return data.polygon;
   }
 
   return QVariant();
@@ -41,6 +44,7 @@ QHash<int, QByteArray> LevelDataModel::roleNames() const
   roles[Type] = "type";
   roles[BoundingBox] = "boundingBox";
   roles[Static] = "static";
+  roles[Polygon] = "polygon";
 
   return roles;
 }
@@ -60,13 +64,23 @@ void LevelDataModel::setLevelData(const LevelData &data)
   endResetModel();
 }
 
-void LevelDataModel::addObject(int type, const QRect &boundingRect, bool isStatic, int rotation)
+void LevelDataModel::addObject(int type, const QRectF &boundingRect, bool isStatic, int rotation)
 {
   ObjectDescription objectDescription = {
-    type,
-    boundingRect,
-    isStatic,
-    rotation,
+    type, boundingRect, {}, isStatic, rotation,
+  };
+
+  qCDebug(lvldm) << "adding object" << objectDescription << m_objects.count();
+
+  beginInsertRows(QModelIndex(), m_objects.count(), m_objects.count());
+  m_objects << objectDescription;
+  endInsertRows();
+}
+
+void LevelDataModel::addObjectPoly(int type, const QPolygonF &polygon, bool isStatic, int rotation)
+{
+  ObjectDescription objectDescription = {
+    type, polygon.boundingRect(), polygon, isStatic, rotation,
   };
 
   qCDebug(lvldm) << "adding object" << objectDescription << m_objects.count();

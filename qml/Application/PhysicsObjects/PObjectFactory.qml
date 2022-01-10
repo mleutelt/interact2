@@ -32,7 +32,7 @@ Instantiator {
                 y: model.boundingBox.y
                 width: Math.min(model.boundingBox.width, model.boundingBox.height)
                 height: Math.min(model.boundingBox.height, model.boundingBox.width)
-                item.color: Qt.rgba(Math.random(), Math.random(), Math.random())
+                itemColor: Qt.rgba(Math.random(), Math.random(), Math.random())
 
                 Component.onCompleted: console.log(log, "Circle created")
             }
@@ -50,8 +50,7 @@ Instantiator {
                 y: model.boundingBox.y
                 width: model.boundingBox.width
                 height: model.boundingBox.height
-
-                item.color: Qt.rgba(Math.random(), Math.random(), Math.random())
+                itemColor: Qt.rgba(Math.random(), Math.random(), Math.random())
 
                 Component.onCompleted: console.log(log, "Rectangle created")
             }
@@ -65,11 +64,9 @@ Instantiator {
 
                 parent: factory.level
                 interactionHandler: factory.interactionHandler
-                x: model.boundingBox.x
-                y: model.boundingBox.y
-                width: Math.min(model.boundingBox.width, model.boundingBox.height)
-                height: Math.min(model.boundingBox.height, model.boundingBox.width)
-                item.color: Qt.rgba(Math.random(), Math.random(), Math.random())
+                width: model.boundingBox.width
+                height: model.boundingBox.height
+                itemColor: Qt.rgba(Math.random(), Math.random(), Math.random())
 
                 Component.onCompleted: console.log(log, "Polygon created")
             }

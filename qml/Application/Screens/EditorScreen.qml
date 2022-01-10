@@ -1,5 +1,7 @@
 import QtQuick
 import QtQuick.Controls
+import QtQuick.Controls.Material
+import QtQuick.Controls.Material.impl
 import QtQuick.Layouts
 import Qt.labs.folderlistmodel
 
@@ -71,6 +73,7 @@ Page {
         id: drawingMouseArea
 
         property size minimalObjectSize: Qt.size(10, 10)
+        property var pointBuffer: []
 
         anchors.fill: parent
 
@@ -84,10 +87,9 @@ Page {
                     drawingRectangle.initialY = mouseY
                     break
                 case Editor.ShapeType_Polygon:
-                    canvas.color = Qt.rgba(Math.random(), Math.random(), Math.random())
                     canvas.currentX = mouseX
                     canvas.currentY = mouseY
-                    physicsObjectOptimizer.clear();
+                    pointBuffer = []
                     break
                 }
             }
@@ -100,9 +102,9 @@ Page {
                 switch (App.editor.currentEditOperation) {
                 case Editor.EditOperationType_Draw:
                     if (drawingRectangle.width > minimalObjectSize.width && drawingRectangle.height > minimalObjectSize.height) {
-                        App.editor.addObject(App.editor.currentShape,
-                                             Qt.rect(drawingRectangle.x, drawingRectangle.y, drawingRectangle.width, drawingRectangle.height),
-                                             objectBehaviorButton.checked)
+                        App.editor.addSimpleObject(App.editor.currentShape,
+                                                   Qt.rect(drawingRectangle.x, drawingRectangle.y, drawingRectangle.width, drawingRectangle.height),
+                                                   objectBehaviorButton.checked)
                     }
 
                     break
@@ -113,16 +115,9 @@ Page {
                 break
             case Editor.ShapeType_Polygon:
                 canvas.clear()
-                physicsObjectOptimizer.idealizeLine();
-                if (physicsObjectOptimizer.isClosed())
-                {
-                    // TODO: create Polygon
-                }
-                else
-                {
-                    // TODO: create line
-                }
-                // TODO: add object to level
+                App.editor.addPolygonObject(App.editor.currentShape,
+                                            PhysicsObjectOptimizer.optimizeLine(pointBuffer),
+                                            objectBehaviorButton.checked)
                 break
             }
         }
@@ -133,9 +128,8 @@ Page {
             case Editor.ShapeType_SpecialStar:
                 break
             case Editor.ShapeType_Polygon:
-                if (drawingMouseArea.pressedButtons & Qt.LeftButton)
-                {
-                    physicsObjectOptimizer.addVertex(mouseX, mouseY);
+                if (pressed) {
+                    pointBuffer.push(Qt.point(mouseX, mouseY))
                 }
                 canvas.requestPaint()
                 break
@@ -165,7 +159,7 @@ Page {
 
         property real currentX
         property real currentY
-        property color color: Qt.rgba(Math.random(), Math.random(), Math.random())
+        property color color: Material.color(Material.Red)
 
         function clear() {
             context.reset()
@@ -194,17 +188,21 @@ Page {
         property int initialX: 0
         property int initialY: 0
 
-        color: "red"
-        opacity: 0.3
         visible: drawingMouseArea.pressed &&
                  App.editor.currentEditOperation === Editor.EditOperationType_Draw &&
                  App.editor.currentShape !== Editor.ShapeType_Polygon
         width: Math.abs(drawingMouseArea.mouseX - initialX)
         height: Math.abs(drawingMouseArea.mouseY - initialY)
-        border.width: 1
-        border.color: "black"
         x: Math.min(initialX, drawingMouseArea.mouseX)
         y: Math.min(initialY, drawingMouseArea.mouseY)
+        color: Color.transparent("black", 0.1)
+        border.width: 2
+        border.color: Material.color(Material.Red)
+        radius: 2
+        layer.enabled: true
+        layer.effect: ElevationEffect {
+            elevation: 6
+        }
     }
 
     ColumnLayout {

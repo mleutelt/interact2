@@ -18,6 +18,7 @@ public:
     Type,
     BoundingBox,
     Static,
+    Polygon,
   };
   Q_ENUM(Roles)
 
@@ -31,7 +32,8 @@ public:
 
   void setLevelData(const LevelData &data);
 
-  void addObject(int type, const QRect &boundingRect, bool isStatic, int rotation);
+  void addObject(int type, const QRectF &boundingRect, bool isStatic, int rotation);
+  void addObjectPoly(int type, const QPolygonF &polygon, bool isStatic, int rotation);
   void removeObject(int index);
   void clear();
   QList<ObjectDescription> objects() const;
