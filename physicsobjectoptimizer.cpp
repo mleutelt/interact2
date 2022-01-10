@@ -1,9 +1,9 @@
 #include "physicsobjectoptimizer.h"
 #include <QDebug>
 
-#define DISTANCE 5
-#define SKIP 5
-#define POINTDISTANCE 5
+#define DISTANCE 3
+#define SKIP 2
+#define POINTDISTANCE 2
 
 PhysicsObjectOptimizer::PhysicsObjectOptimizer(QObject *parent)
     : QObject{parent}
@@ -38,7 +38,7 @@ void PhysicsObjectOptimizer::idealizeLine()
     int i,j;
 
     // TODO: Falsches Inkrement, aber sobald dort "+=" steht, wird die Linie zu stark vereinfacht!
-    for( i = 0; i < ( int ) ( m_PolygonFRaw.size() - SKIP ); i + SKIP )
+    for( i = 0; i < ( int ) ( m_PolygonFRaw.size() - SKIP ); i += SKIP )
     {
         // take two points for a line
         qpfLineStart = m_PolygonFRaw.at( i );
