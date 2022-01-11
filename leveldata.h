@@ -32,6 +32,7 @@ class LevelData
 public:
   QString name;
   QUrl backgroundImage;
+  QUrl music;
   QList<ObjectDescription> objects;
   bool groundEnabled = true;
   bool leftWallEnabled = true;

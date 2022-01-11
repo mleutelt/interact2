@@ -182,8 +182,5 @@ ApplicationWindow {
         }
     }
 
-    Component.onCompleted: {
-        Screens.show(Screens.Main)
-        Sound.playMusic("Lullaby.mp3")
-    }
+    Component.onCompleted: Screens.show(Screens.Main)
 }

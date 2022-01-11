@@ -1,6 +1,6 @@
 #include "leveldatamodel.h"
 
-#include <QPolygon>
+#include <QPolygonF>
 #include <QLoggingCategory>
 
 Q_LOGGING_CATEGORY(lvldm, "app.models.leveldatamodel")
@@ -58,6 +58,7 @@ void LevelDataModel::setLevelData(const LevelData &data)
 {
   setName(data.name);
   setBackgroundImage(data.backgroundImage);
+  setMusic(data.music);
 
   beginResetModel();
   m_objects = data.objects;
@@ -105,6 +106,7 @@ void LevelDataModel::clear()
 
   setName(QString());
   setBackgroundImage(QUrl());
+  setMusic(QUrl());
 
   beginResetModel();
   m_objects.clear();
@@ -139,4 +141,19 @@ void LevelDataModel::setBackgroundImage(const QUrl &url)
 
   m_backgroundImage = url;
   emit backgroundImageChanged();
+}
+
+QUrl LevelDataModel::music() const
+{
+  return m_music;
+}
+
+void LevelDataModel::setMusic(const QUrl &url)
+{
+  if (m_music == url) {
+    return;
+  }
+
+  m_music = url;
+  emit musicChanged();
 }

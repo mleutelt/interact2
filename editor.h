@@ -61,6 +61,7 @@ signals:
   void currentShapeChanged();
   void currentEditOperationChanged();
   void levelSavedSuccessfully();
+  void levelLoadedSuccessfully();
 
 private:
   ShapeType m_currentShape = ShapeType_Circle;

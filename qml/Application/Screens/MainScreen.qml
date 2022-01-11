@@ -96,6 +96,8 @@ Page {
     }
 
     StackView.onActivated: {
+        Sound.playMusic("qrc:/music/Lullaby.mp3")
+
         for (let i = 0; i < 5; i++) {
             var width = 20 + 20 * Math.random()
             var size = Qt.size(width, width)

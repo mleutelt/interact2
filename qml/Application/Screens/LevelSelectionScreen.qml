@@ -26,12 +26,15 @@ Page {
 
     StackLayout {
         anchors.fill: parent
+        anchors.leftMargin: 10
+        anchors.rightMargin: 10
+        anchors.topMargin: 10
         currentIndex: tabBar.currentIndex
 
         GridView {
             clip: true
             model: App.levelHandler.availableLevels
-            cellWidth: container.width / 3
+            cellWidth: parent.width / 3
             cellHeight: cellWidth
             delegate: Item {
                 implicitWidth: GridView.view.cellWidth
@@ -51,7 +54,7 @@ Page {
         GridView {
             clip: true
             model: App.levelHandler.userLevels
-            cellWidth: container.width / 3
+            cellWidth: parent.width / 3
             cellHeight: cellWidth
             delegate: Item {
                 implicitWidth: GridView.view.cellWidth

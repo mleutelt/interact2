@@ -73,6 +73,7 @@ void Editor::saveLevel(const QString &name, QQuickItemGrabResult *screenshot)
   LevelData levelData;
   levelData.name = name;
   levelData.backgroundImage = m_levelData->backgroundImage();
+  levelData.music = m_levelData->music();
   levelData.objects = m_levelData->objects();
 
   screenshot->saveToFile(levelDirectory.filePath(LevelHandler::levelPreviewFileName()));
@@ -116,6 +117,8 @@ void Editor::loadLevel(const QString &path)
 
   if (levelPath.exists(LevelHandler::levelDataFileName())) {
     m_levelData->setLevelData(LevelFileIO::loadLevelFromPath(levelPath.filePath(LevelHandler::levelDataFileName())));
+
+    emit levelLoadedSuccessfully();
   } else {
     qCCritical(editor) << "unable to find level data";
     // TODO: emit signal to display UI message

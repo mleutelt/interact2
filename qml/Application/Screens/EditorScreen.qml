@@ -50,8 +50,7 @@ Page {
     component SelectionMenu: Popup {
         id: selectionMenu
 
-        property alias model: gridView.model
-        property alias delegate: gridView.delegate
+        property alias view: gridView
 
         parent: Overlay.overlay
         anchors.centerIn: parent
@@ -63,8 +62,6 @@ Page {
             id: gridView
 
             anchors.fill: parent
-            cellWidth: gridView.width / 2
-            cellHeight: cellWidth
             clip: true
         }
     }
@@ -397,19 +394,26 @@ Page {
 
                 SelectionMenu {
                     id: backgroundSelectionPopup
-                    model: FolderListModel {
+                    view.cellWidth: view.width / 2
+                    view.cellHeight: view.cellWidth
+                    view.model: FolderListModel {
                         folder: "qrc:/backgrounds"
                     }
-                    delegate: ImageButton {
+                    view.delegate: Item {
                         implicitWidth: GridView.view.cellWidth
                         implicitHeight: GridView.view.cellHeight
-                        image: model.fileUrl
-                        text: model.fileBaseName
 
-                        onClicked: {
-                            App.editor.levelData.backgroundImage = model.fileUrl
-                            backgroundSelection.text = model.fileBaseName
-                            backgroundSelectionPopup.close()
+                        ImageButton {
+                            anchors.fill: parent
+                            anchors.margins: 10
+                            image: model.fileUrl
+                            text: model.fileBaseName
+
+                            onClicked: {
+                                App.editor.levelData.backgroundImage = model.fileUrl
+                                backgroundSelection.text = model.fileBaseName
+                                backgroundSelectionPopup.close()
+                            }
                         }
                     }
                 }
@@ -423,26 +427,36 @@ Page {
             Button {
                 id: musicSelection
 
+                property string selectedMusic
+
                 Layout.fillWidth: true
                 Layout.maximumWidth: propertiesGrid.width / 2
                 Layout.alignment: Qt.AlignRight
-                text: qsTr("Select music")
+                text: selectedMusic ? selectedMusic : qsTr("Select music")
 
                 onClicked: musicSelectionPopup.open()
 
                 SelectionMenu {
                     id: musicSelectionPopup
-                    model: FolderListModel {
+                    view.cellHeight: 48
+                    view.cellWidth: view.width
+                    view.model: FolderListModel {
                         folder: "qrc:/music"
                     }
-                    delegate: Button {
+                    view.delegate: CheckDelegate {
                         implicitWidth: GridView.view.cellWidth
                         implicitHeight: GridView.view.cellHeight
+                        checked: musicSelection.text === model.fileBaseName
                         text: model.fileBaseName
 
-                        onClicked: {
-                            // TODO: store music in level data
-                            musicSelection.text = model.fileBaseName
+                        onToggled: {
+                            if (checked) {
+                                App.editor.levelData.music = "qrc" + model.filePath
+                                musicSelection.selectedMusic = model.fileBaseName
+                            } else {
+                                App.editor.levelData.music = ""
+                                musicSelection.selectedMusic = ""
+                            }
                             musicSelectionPopup.close()
                         }
                     }
@@ -464,6 +478,7 @@ Page {
         contentHeight: parent.height * 3 / 4
         modal: true
         padding: 0
+        topPadding: 0
 
         LevelSelectionScreen {
             anchors.fill: parent
@@ -472,6 +487,14 @@ Page {
                 App.editor.loadLevel(path)
                 levelSelectionDialog.close()
             }
+        }
+    }
+
+    Connections {
+        target: App.editor
+
+        function onLevelLoadedSuccessfully() {
+            Sound.playMusic(App.editor.levelData.music)
         }
     }
 

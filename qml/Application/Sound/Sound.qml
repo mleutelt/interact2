@@ -6,7 +6,7 @@ import QtMultimedia
 QtObject {
     function playMusic(title = "") {
         if (title) {
-            backgroundMusic.source = "qrc:/music/%1".arg(title)
+            backgroundMusic.source = title
         }
 
         backgroundMusic.play()
@@ -16,7 +16,7 @@ QtObject {
         backgroundMusic.pause()
     }
 
-    property bool musicPlaying: backgroundMusic.playbackState === MediaPlayer.PlayingState
+    readonly property bool musicPlaying: backgroundMusic.playbackState === MediaPlayer.PlayingState
     property alias musicVolume: output.volume
     property MediaPlayer backgroundMusic: MediaPlayer {
         loops: MediaPlayer.Infinite
