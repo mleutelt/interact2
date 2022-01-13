@@ -113,7 +113,7 @@ Page {
             case Editor.ShapeType_Polygon:
                 canvas.clear()
                 App.editor.addPolygonObject(App.editor.currentShape,
-                                            PhysicsObjectOptimizer.optimizeLine(pointBuffer),
+                                            PhysicsObjectOptimizer.getLineOrPolygonList(pointBuffer),
                                             objectBehaviorButton.checked)
                 break
             }

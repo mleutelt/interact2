@@ -54,7 +54,7 @@ public:
   Q_INVOKABLE void reset();
 
   Q_INVOKABLE void addSimpleObject(int type, const QRectF &boundingRect, bool isStatic = false, int rotation = 0) const;
-  Q_INVOKABLE void addPolygonObject(int type, const QPolygonF &polygon, bool isStatic = false, int rotation = 0) const;
+  Q_INVOKABLE void addPolygonObject(int type, const QList<QPolygonF> &polygon, bool isStatic = false, int rotation = 0) const;
   Q_INVOKABLE void removeObject(int index) const;
 
 signals:

@@ -68,6 +68,8 @@ qt_add_qml_module(appInteract2
         levelfileio.cpp
         physicsobjectoptimizer.h
         physicsobjectoptimizer.cpp
+        concavechopper.h
+        concavechopper.cpp
 )
 
 target_compile_definitions(appInteract2

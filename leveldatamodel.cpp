@@ -78,7 +78,7 @@ void LevelDataModel::addObject(int type, const QRectF &boundingRect, bool isStat
   endInsertRows();
 }
 
-void LevelDataModel::addObjectPoly(int type, const QPolygonF &polygon, bool isStatic, int rotation)
+void LevelDataModel::addObjectPoly(int type, const QList<QPolygonF> &polygonList, bool isStatic, int rotation)
 {
   ObjectDescription objectDescription = {
     type, polygon.boundingRect(), polygon, isStatic, rotation,

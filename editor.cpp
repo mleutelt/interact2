@@ -94,9 +94,9 @@ void Editor::addSimpleObject(int type, const QRectF &boundingRect, bool isStatic
   m_levelData->addObject(type, boundingRect, isStatic, rotation);
 }
 
-void Editor::addPolygonObject(int type, const QPolygonF &polygon, bool isStatic, int rotation) const
+void Editor::addPolygonObject(int type, const QList<QPolygonF> &polygonList, bool isStatic, int rotation) const
 {
-  m_levelData->addObjectPoly(type, polygon, isStatic, rotation);
+  m_levelData->addObjectPoly(type, polygonList, isStatic, rotation);
 }
 
 void Editor::removeObject(int index) const
