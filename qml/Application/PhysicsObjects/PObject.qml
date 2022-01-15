@@ -36,8 +36,8 @@ Rectangle {
     signal beginContact(other: Fixture)
     signal endContact(other: Fixture)
 
-    color: App.debugMode ? "red" : "transparent"
-    opacity: App.debugMode ? 0.5 : 1
+    color: App.debugBoundingBoxes ? "red" : "transparent"
+    opacity: App.debugBoundingBoxes ? 0.5 : 1
 
     implicitWidth: childContainer.childrenRect.width
     implicitHeight: childContainer.childrenRect.height

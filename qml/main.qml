@@ -104,10 +104,17 @@ ApplicationWindow {
                     anchors.fill: parent
 
                     CheckBox {
-                        text: qsTr("Show physics objects")
-                        checked: App.debugMode
+                        text: qsTr("Show bounding boxes")
+                        checked: App.debugBoundingBoxes
 
-                        onToggled: App.debugMode = !App.debugMode
+                        onToggled: App.debugBoundingBoxes = !App.debugBoundingBoxes
+                    }
+
+                    CheckBox {
+                        text: qsTr("Show Box2d debug info")
+                        checked: App.debugBox2d
+
+                        onToggled: App.debugBox2d = !App.debugBox2d
                     }
 
                     Label {

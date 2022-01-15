@@ -14,6 +14,8 @@ public:
   int type = 0;
   QRectF boundingBox;
   QPolygonF polygon;
+  // NOTE: Box2d expects the vertices of a polygon as a QVariantList
+  QList<QVariantList> points;
   bool isStatic = false;
   int rotation = 0;
 };

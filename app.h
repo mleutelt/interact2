@@ -11,7 +11,8 @@ class App : public QObject
   Q_OBJECT
   Q_PROPERTY(Editor *editor READ editor CONSTANT)
   Q_PROPERTY(LevelHandler *levelHandler READ levelHandler CONSTANT)
-  Q_PROPERTY(bool debugMode READ debugMode WRITE debugMode NOTIFY debugModeChanged)
+  Q_PROPERTY(bool debugBoundingBoxes READ debugBoundingBoxes WRITE setDebugBoundingBoxes NOTIFY debugBoundingBoxesChanged)
+  Q_PROPERTY(bool debugBox2d READ debugBox2d WRITE setDebugBox2d NOTIFY debugBox2dChanged)
   QML_ELEMENT
   QML_SINGLETON
 
@@ -21,16 +22,21 @@ public:
   Editor *editor() const;
   LevelHandler *levelHandler() const;
 
-  bool debugMode() const;
-  void debugMode(bool flag);
+  bool debugBoundingBoxes() const;
+  void setDebugBoundingBoxes(bool flag);
+
+  bool debugBox2d() const;
+  void setDebugBox2d(bool flag);
 
 signals:
-  void debugModeChanged();
+  void debugBoundingBoxesChanged();
+  void debugBox2dChanged();
 
 private:
   void initialize();
 
   LevelHandler *m_levelHandler = nullptr;
   Editor *m_editor = nullptr;
-  bool m_debugMode = false;
+  bool m_debugBoundingBoxes = false;
+  bool m_debugBox2d = false;
 };

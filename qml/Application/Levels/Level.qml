@@ -76,4 +76,13 @@ Item {
         world: World {}
         level: container
     }
+
+    DebugDraw {
+        id: debugDraw
+
+        anchors.fill: parent
+        world: physicsWorld
+        opacity: 0.7
+        visible: App.debugBox2d
+    }
 }

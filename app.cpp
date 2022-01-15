@@ -20,19 +20,19 @@ LevelHandler *App::levelHandler() const
   return m_levelHandler;
 }
 
-bool App::debugMode() const
+bool App::debugBoundingBoxes() const
 {
-  return m_debugMode;
+  return m_debugBoundingBoxes;
 }
 
-void App::debugMode(bool flag)
+void App::setDebugBoundingBoxes(bool flag)
 {
-  if (m_debugMode == flag) {
+  if (m_debugBoundingBoxes == flag) {
     return;
   }
 
-  m_debugMode = flag;
-  emit debugModeChanged();
+  m_debugBoundingBoxes = flag;
+  emit debugBoundingBoxesChanged();
 }
 
 void App::initialize()
@@ -43,4 +43,19 @@ void App::initialize()
   m_editor = new Editor(this);
 
   connect(m_editor, &Editor::levelSavedSuccessfully, m_levelHandler, &LevelHandler::updateUserLevelsModel);
+}
+
+bool App::debugBox2d() const
+{
+  return m_debugBox2d;
+}
+
+void App::setDebugBox2d(bool flag)
+{
+  if (m_debugBox2d == flag) {
+    return;
+  }
+
+  m_debugBox2d = flag;
+  emit debugBox2dChanged();
 }

@@ -33,6 +33,8 @@ QVariant LevelDataModel::data(const QModelIndex &index, int role) const
     return data.isStatic;
   case Polygon:
     return data.polygon;
+  case Points:
+    return QVariant::fromValue(data.points);
   }
 
   return QVariant();
@@ -45,6 +47,7 @@ QHash<int, QByteArray> LevelDataModel::roleNames() const
   roles[BoundingBox] = "boundingBox";
   roles[Static] = "static";
   roles[Polygon] = "polygon";
+  roles[Points] = "points";
 
   return roles;
 }
@@ -68,7 +71,7 @@ void LevelDataModel::setLevelData(const LevelData &data)
 void LevelDataModel::addObject(int type, const QRectF &boundingRect, bool isStatic, int rotation)
 {
   ObjectDescription objectDescription = {
-    type, boundingRect, {}, isStatic, rotation,
+    type, boundingRect, {}, {}, isStatic, rotation,
   };
 
   qCDebug(lvldm) << "adding object" << objectDescription << m_objects.count();
@@ -78,10 +81,24 @@ void LevelDataModel::addObject(int type, const QRectF &boundingRect, bool isStat
   endInsertRows();
 }
 
-void LevelDataModel::addObjectPoly(int type, const QList<QPolygonF> &polygonList, bool isStatic, int rotation)
+void LevelDataModel::addObjectPoly(int type, const QPolygonF &originalPoints, const QList<QPolygonF> &optimizedPoints,
+                                   bool isStatic, int rotation)
 {
+  // NOTE: convert to list of QVariantLists, each QVariantList representing a triangle (in case of a object being
+  // a closed polygon) created by triangulation or a rectangle (in case of a self-intersecting line) created by
+  // line segmentation.
+  // FIXME: move this code somewhere else
+  QList<QVariantList> list;
+  for (const QPolygonF &p : optimizedPoints) {
+    QVariantList innerList;
+    for (const QPointF &po : p) {
+      innerList << po;
+    }
+    list << innerList;
+  }
+
   ObjectDescription objectDescription = {
-    type, polygon.boundingRect(), polygon, isStatic, rotation,
+    type, originalPoints.boundingRect(), originalPoints, list, isStatic, rotation,
   };
 
   qCDebug(lvldm) << "adding object" << objectDescription << m_objects.count();
