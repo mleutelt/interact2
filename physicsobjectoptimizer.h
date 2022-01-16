@@ -31,7 +31,7 @@ class PhysicsObjectOptimizer : public QObject
 public:
   explicit PhysicsObjectOptimizer(QObject *parent = nullptr);
 
-  Q_INVOKABLE OptimizerResult optimizePoints(const QList<QPointF> &points);
+  Q_INVOKABLE OptimizerResult determineAndOptimizeObject(const QList<QPointF> &points);
 
 private:
   /// Perform the cross product on a vector and a scalar. In 2D this produces

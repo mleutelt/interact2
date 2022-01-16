@@ -10,8 +10,6 @@ namespace {
   const int DISTANCE = 3;
   const int SKIP = 2;
   const int POINTDISTANCE = 20;
-  // all values that enter the physicsengine will be divided by the scalingfactor
-  const float SCALINGFACTOR = 10.0f;
   const float lineThickness = 0.15f;
 }
 
@@ -20,12 +18,16 @@ PhysicsObjectOptimizer::PhysicsObjectOptimizer(QObject *parent)
 {
 }
 
-OptimizerResult PhysicsObjectOptimizer::optimizePoints(const QList<QPointF> &points)
+OptimizerResult PhysicsObjectOptimizer::determineAndOptimizeObject(const QList<QPointF> &points)
 {
   m_resultLineOrPolygonList.clear();
   m_OptimizedPointList.clear();
 
-  optimizeLine(points);
+  // NOTE: make sure all points are in local coordinates
+  QPolygonF tmp(points);
+  tmp.translate(-tmp.boundingRect().x(), -tmp.boundingRect().y());
+
+  optimizeLine(tmp);
 
   OptimizerResult result;
   result.originalPoints = points;
@@ -158,8 +160,8 @@ void PhysicsObjectOptimizer::createLine()
   for (int i = 0; i < m_OptimizedPointList.count() - 1; i++) {
     QPolygonF lineShape;
 
-    QPointF firstPoint(m_OptimizedPointList.at(i + 0).x() / SCALINGFACTOR, m_OptimizedPointList.at(i + 0).y() / SCALINGFACTOR);
-    QPointF secondPoint(m_OptimizedPointList.at(i + 1).x() / SCALINGFACTOR, m_OptimizedPointList.at(i + 1).y() / SCALINGFACTOR);
+    QPointF firstPoint(m_OptimizedPointList.at(i + 0).x(), m_OptimizedPointList.at(i + 0).y());
+    QPointF secondPoint(m_OptimizedPointList.at(i + 1).x(), m_OptimizedPointList.at(i + 1).y());
 
     float dx = secondPoint.x() - firstPoint.x();
     float dy = secondPoint.y() - firstPoint.y();
@@ -221,7 +223,7 @@ void PhysicsObjectOptimizer::createLine()
       d.setY(QPointF::dotProduct(n2, v)); // - b2_toiSlop;
     }
 
-    if ((d.x() >= 0.1) && (d.y() >= 0.1)) {
+    if ((d.x() >= 0.01) && (d.y() >= 0.01)) {
       m_resultLineOrPolygonList << lineShape;
     }
   }
@@ -232,12 +234,9 @@ void PhysicsObjectOptimizer::createPolygon()
   for (int i = 0; i < (int)m_OptimizedPointList.size() - 2; i += 3) {
     QPolygonF polygonShape;
 
-    polygonShape << QPointF(m_OptimizedPointList.at(i + 0).x() / SCALINGFACTOR,
-                            m_OptimizedPointList.at(i + 0).y() / SCALINGFACTOR);
-    polygonShape << QPointF(m_OptimizedPointList.at(i + 1).x() / SCALINGFACTOR,
-                            m_OptimizedPointList.at(i + 1).y() / SCALINGFACTOR);
-    polygonShape << QPointF(m_OptimizedPointList.at(i + 2).x() / SCALINGFACTOR,
-                            m_OptimizedPointList.at(i + 2).y() / SCALINGFACTOR);
+    polygonShape << QPointF(m_OptimizedPointList.at(i + 0).x(), m_OptimizedPointList.at(i + 0).y());
+    polygonShape << QPointF(m_OptimizedPointList.at(i + 1).x(), m_OptimizedPointList.at(i + 1).y());
+    polygonShape << QPointF(m_OptimizedPointList.at(i + 2).x(), m_OptimizedPointList.at(i + 2).y());
 
     QPointF normals[3];
     QPointF centroid(0, 0);
