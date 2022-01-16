@@ -6,7 +6,7 @@ import Box2D as B2D
 PObject {
     id: container
 
-    property alias item: polygonShape
+    property alias item: lineShape
 
     property real density: 1
     property real friction: 0.5
@@ -27,14 +27,14 @@ PObject {
             onBeginContact: other => container.beginContact(other)
             onEndContact: other => container.endContact(other)
 
-            Component.onCompleted: console.log("poly fixture created from points:", modelData)
+            Component.onCompleted: console.log("line segment fixture created from points:", modelData)
         }
 
         onObjectAdded: (index, object) => container.body.addFixture(object)
     }
 
     visualItem: Shape {
-        id: polygonShape
+        id: lineShape
 
         // NOTE: we can't use anchors here because we need to map from the
         // drawing canvas coordinate system, which is the whole screen, to
@@ -51,12 +51,11 @@ PObject {
 
             fillColor: container.itemColor
             strokeColor: fillColor
-            fillRule: ShapePath.WindingFill
 
-            PathPolyline {
+            PathMultiline {
                 id: pathPolyLine
 
-                path: model.polygon
+                paths: model.points
             }
         }
     }

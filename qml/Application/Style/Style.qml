@@ -21,10 +21,10 @@ QtObject {
 
     function shapeIconForType(type) {
         switch (type) {
-        case Editor.ShapeType_Circle: return "\uf111"
-        case Editor.ShapeType_Rectangle: return "\uf0c8"
-        case Editor.ShapeType_Polygon: return "\uf5ee"
-        case Editor.ShapeType_SpecialStar: return "\uf005"
+        case Constants.ShapeType_Circle: return "\uf111"
+        case Constants.ShapeType_Rectangle: return "\uf0c8"
+        case Constants.ShapeType_Polygon: return "\uf5ee"
+        case Constants.ShapeType_SpecialStar: return "\uf005"
         }
     }
 

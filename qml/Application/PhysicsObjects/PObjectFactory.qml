@@ -20,7 +20,7 @@ Instantiator {
         role: "type"
 
         DelegateChoice {
-            roleValue: Editor.ShapeType_Circle
+            roleValue: Constants.ShapeType_Circle
 
             delegate: PCircle {
                 world: factory.world
@@ -38,7 +38,7 @@ Instantiator {
             }
         }
         DelegateChoice {
-            roleValue: Editor.ShapeType_Rectangle
+            roleValue: Constants.ShapeType_Rectangle
 
             delegate: PRectangle {
                 world: factory.world
@@ -56,7 +56,7 @@ Instantiator {
             }
         }
         DelegateChoice {
-            roleValue: Editor.ShapeType_Polygon
+            roleValue: Constants.ShapeType_Polygon
 
             delegate: PPolygon {
                 world: factory.world
@@ -72,7 +72,23 @@ Instantiator {
             }
         }
         DelegateChoice {
-            roleValue: Editor.ShapeType_SpecialStar
+            roleValue: Constants.ShapeType_Line
+
+            delegate: PLine {
+                world: factory.world
+                bodyType: model.static ? Body.Static : Body.Dynamic
+
+                parent: factory.level
+                interactionHandler: factory.interactionHandler
+                width: model.boundingBox.width
+                height: model.boundingBox.height
+                itemColor: Qt.rgba(Math.random(), Math.random(), Math.random())
+
+                Component.onCompleted: console.log(log, "Line created")
+            }
+        }
+        DelegateChoice {
+            roleValue: Constants.ShapeType_SpecialStar
 
             delegate: PStar {
                 world: factory.world

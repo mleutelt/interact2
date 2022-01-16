@@ -68,40 +68,41 @@ void LevelDataModel::setLevelData(const LevelData &data)
   endResetModel();
 }
 
-void LevelDataModel::addObject(int type, const QRectF &boundingRect, bool isStatic, int rotation)
+void LevelDataModel::addSimpleObject(int type, const QRectF &boundingRect, bool isStatic, int rotation)
 {
   ObjectDescription objectDescription = {
     type, boundingRect, {}, {}, isStatic, rotation,
   };
 
-  qCDebug(lvldm) << "adding object" << objectDescription << m_objects.count();
+  qCDebug(lvldm) << "adding simple object" << objectDescription << m_objects.count();
 
   beginInsertRows(QModelIndex(), m_objects.count(), m_objects.count());
   m_objects << objectDescription;
   endInsertRows();
 }
 
-void LevelDataModel::addObjectPoly(int type, const QPolygonF &originalPoints, const QList<QPolygonF> &optimizedPoints,
-                                   bool isStatic, int rotation)
+void LevelDataModel::addPolygonObject(int type, const QPolygonF &originalPoints, const QList<QPolygonF> &optimizedPoints,
+                                      bool isStatic, int rotation)
 {
-  // NOTE: convert to list of QVariantLists, each QVariantList representing a triangle (in case of a object being
-  // a closed polygon) created by triangulation or a rectangle (in case of a self-intersecting line) created by
-  // line segmentation.
-  // FIXME: move this code somewhere else
-  QList<QVariantList> list;
-  for (const QPolygonF &p : optimizedPoints) {
-    QVariantList innerList;
-    for (const QPointF &po : p) {
-      innerList << po;
-    }
-    list << innerList;
-  }
-
   ObjectDescription objectDescription = {
-    type, originalPoints.boundingRect(), originalPoints, list, isStatic, rotation,
+    type, originalPoints.boundingRect(), originalPoints, polygonListToVariantList(optimizedPoints), isStatic, rotation,
   };
 
-  qCDebug(lvldm) << "adding object" << objectDescription << m_objects.count();
+  qCDebug(lvldm) << "adding polygon object" << objectDescription << m_objects.count();
+
+  beginInsertRows(QModelIndex(), m_objects.count(), m_objects.count());
+  m_objects << objectDescription;
+  endInsertRows();
+}
+
+void LevelDataModel::addLineObject(int type, const QPolygonF &originalPoints, const QList<QPolygonF> &lineSegments, bool isStatic,
+                                   int rotation)
+{
+  ObjectDescription objectDescription = {
+    type, originalPoints.boundingRect(), originalPoints, polygonListToVariantList(lineSegments), isStatic, rotation,
+  };
+
+  qCDebug(lvldm) << "adding line object" << objectDescription << m_objects.count();
 
   beginInsertRows(QModelIndex(), m_objects.count(), m_objects.count());
   m_objects << objectDescription;
@@ -143,6 +144,24 @@ void LevelDataModel::setName(const QString &name)
 
   m_name = name;
   emit nameChanged();
+}
+
+QList<QVariantList> LevelDataModel::polygonListToVariantList(const QList<QPolygonF> &list) const
+{
+  // NOTE: convert to list of QVariantLists, each QVariantList representing a triangle (in case of a object being
+  // a closed polygon) created by triangulation or a rectangle (in case of a self-intersecting line) created by
+  // line segmentation.
+  // FIXME: move this code somewhere else
+  QList<QVariantList> result;
+  for (const QPolygonF &polygon : list) {
+    QVariantList pointList;
+    for (const QPointF &point : polygon) {
+      pointList << point;
+    }
+    result << pointList;
+  }
+
+  return result;
 }
 
 QUrl LevelDataModel::backgroundImage() const

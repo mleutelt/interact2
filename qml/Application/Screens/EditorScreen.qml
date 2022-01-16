@@ -78,16 +78,15 @@ Page {
             console.log("Mouse button pressed at (" + mouseX + ", " + mouseY + ")")
             if (App.editor.currentEditOperation === Editor.EditOperationType_Draw) {
                 switch (App.editor.currentShape) {
-                case Editor.ShapeType_Circle:
-                case Editor.ShapeType_Rectangle:
-                case Editor.ShapeType_SpecialStar:
+                case Constants.ShapeType_Circle:
+                case Constants.ShapeType_Rectangle:
+                case Constants.ShapeType_SpecialStar:
                     drawingRectangle.initialX = mouseX
                     drawingRectangle.initialY = mouseY
                     break
-                case Editor.ShapeType_Polygon:
+                case Constants.ShapeType_Polygon:
                     canvas.currentX = mouseX
                     canvas.currentY = mouseY
-                    pointBuffer = []
                     break
                 }
             }
@@ -95,9 +94,9 @@ Page {
         onReleased: {
             console.log("Mouse button released at (" + mouseX + ", " + mouseY + ")")
             switch (App.editor.currentShape) {
-            case Editor.ShapeType_Circle:
-            case Editor.ShapeType_Rectangle:
-            case Editor.ShapeType_SpecialStar:
+            case Constants.ShapeType_Circle:
+            case Constants.ShapeType_Rectangle:
+            case Constants.ShapeType_SpecialStar:
                 switch (App.editor.currentEditOperation) {
                 case Editor.EditOperationType_Draw:
                     if (drawingRectangle.width > minimalObjectSize.width && drawingRectangle.height > minimalObjectSize.height) {
@@ -112,21 +111,22 @@ Page {
                     break
                 }
                 break
-            case Editor.ShapeType_Polygon:
+            case Constants.ShapeType_Polygon:
                 canvas.clear()
                 App.editor.addPolygonObject(App.editor.currentShape,
-                                            PhysicsObjectOptimizer.getLineOrPolygonList(pointBuffer),
+                                            PhysicsObjectOptimizer.optimizePoints(pointBuffer),
                                             objectBehaviorButton.checked)
+                pointBuffer = []
                 break
             }
         }
         onPositionChanged: {
             switch (App.editor.currentShape) {
-            case Editor.ShapeType_Circle:
-            case Editor.ShapeType_Rectangle:
-            case Editor.ShapeType_SpecialStar:
+            case Constants.ShapeType_Circle:
+            case Constants.ShapeType_Rectangle:
+            case Constants.ShapeType_SpecialStar:
                 break
-            case Editor.ShapeType_Polygon:
+            case Constants.ShapeType_Polygon:
                 if (pressed) {
                     console.log("Pushing mouse coordinates (" + mouseX + ", " + mouseY + ")")
                     pointBuffer.push(Qt.point(mouseX, mouseY))
@@ -178,7 +178,6 @@ Page {
             currentY = drawingMouseArea.mouseY
             context.lineTo(currentX, currentY)
             context.stroke()
-
         }
     }
 
@@ -190,7 +189,7 @@ Page {
 
         visible: drawingMouseArea.pressed &&
                  App.editor.currentEditOperation === Editor.EditOperationType_Draw &&
-                 App.editor.currentShape !== Editor.ShapeType_Polygon
+                 App.editor.currentShape !== Constants.ShapeType_Polygon
         width: Math.abs(drawingMouseArea.mouseX - initialX)
         height: Math.abs(drawingMouseArea.mouseY - initialY)
         x: Math.min(initialX, drawingMouseArea.mouseX)

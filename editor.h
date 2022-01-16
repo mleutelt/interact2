@@ -6,28 +6,20 @@
 
 #include "leveldatamodel.h"
 #include "physicsobjectoptimizer.h"
+#include "constants.h"
 
 class Editor : public QObject
 {
   Q_OBJECT
-  Q_PROPERTY(QList<ShapeType> availableShapes READ availableShapes CONSTANT)
+  Q_PROPERTY(QList<Constants::ShapeType> availableShapes READ availableShapes CONSTANT)
   Q_PROPERTY(QList<EditOperationType> availableEditOperations READ availableEditOperations CONSTANT)
-  Q_PROPERTY(ShapeType currentShape READ currentShape WRITE setCurrentShape NOTIFY currentShapeChanged)
+  Q_PROPERTY(Constants::ShapeType currentShape READ currentShape WRITE setCurrentShape NOTIFY currentShapeChanged)
   Q_PROPERTY(EditOperationType currentEditOperation READ currentEditOperation WRITE setCurrentEditOperation NOTIFY
                  currentEditOperationChanged)
   Q_PROPERTY(LevelDataModel *levelData READ levelData CONSTANT)
   QML_ELEMENT
 
 public:
-  enum ShapeType
-  {
-    ShapeType_Circle,
-    ShapeType_Rectangle,
-    ShapeType_Polygon,
-    ShapeType_SpecialStar,
-  };
-  Q_ENUM(ShapeType)
-
   enum EditOperationType
   {
     EditOperationType_Draw,
@@ -38,10 +30,10 @@ public:
 
   explicit Editor(QObject *parent = nullptr);
 
-  ShapeType currentShape() const;
-  void setCurrentShape(ShapeType shape);
+  Constants::ShapeType currentShape() const;
+  void setCurrentShape(Constants::ShapeType shape);
 
-  QList<ShapeType> availableShapes() const;
+  QList<Constants::ShapeType> availableShapes() const;
   QList<EditOperationType> availableEditOperations() const;
 
   EditOperationType currentEditOperation() const;
@@ -65,7 +57,7 @@ signals:
   void levelLoadedSuccessfully();
 
 private:
-  ShapeType m_currentShape = ShapeType_Circle;
+  Constants::ShapeType m_currentShape = Constants::ShapeType_Circle;
   EditOperationType m_currentEditOperation = EditOperationType_Draw;
   LevelDataModel *m_levelData = nullptr;
 };

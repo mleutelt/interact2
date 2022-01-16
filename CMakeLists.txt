@@ -48,6 +48,7 @@ qt_add_qml_module(appInteract2
         qml/Application/PhysicsObjects/PObject.qml
         qml/Application/PhysicsObjects/PRectangle.qml
         qml/Application/PhysicsObjects/PPolygon.qml
+        qml/Application/PhysicsObjects/PLine.qml
         qml/Application/PhysicsObjects/PCircle.qml
         qml/Application/PhysicsObjects/PObjectFactory.qml
         qml/Application/PhysicsObjects/PStar.qml
@@ -70,6 +71,7 @@ qt_add_qml_module(appInteract2
         physicsobjectoptimizer.cpp
         concavechopper.h
         concavechopper.cpp
+        constants.h
 )
 
 target_compile_definitions(appInteract2

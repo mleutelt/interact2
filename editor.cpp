@@ -14,12 +14,12 @@ Editor::Editor(QObject *parent)
 {
 }
 
-Editor::ShapeType Editor::currentShape() const
+Constants::ShapeType Editor::currentShape() const
 {
   return m_currentShape;
 }
 
-void Editor::setCurrentShape(ShapeType shape)
+void Editor::setCurrentShape(Constants::ShapeType shape)
 {
   if (m_currentShape == shape) {
     return;
@@ -29,13 +29,13 @@ void Editor::setCurrentShape(ShapeType shape)
   emit currentShapeChanged();
 }
 
-QList<Editor::ShapeType> Editor::availableShapes() const
+QList<Constants::ShapeType> Editor::availableShapes() const
 {
   return {
-    ShapeType_Circle,
-    ShapeType_Rectangle,
-    ShapeType_Polygon,
-    ShapeType_SpecialStar,
+    Constants::ShapeType_Circle,
+    Constants::ShapeType_Rectangle,
+    Constants::ShapeType_Polygon,
+    Constants::ShapeType_SpecialStar,
   };
 }
 
@@ -85,18 +85,24 @@ void Editor::saveLevel(const QString &name, QQuickItemGrabResult *screenshot)
 void Editor::reset()
 {
   m_levelData->clear();
-  setCurrentShape(ShapeType_Circle);
+  setCurrentShape(Constants::ShapeType_Circle);
   setCurrentEditOperation(EditOperationType_Draw);
 }
 
 void Editor::addSimpleObject(int type, const QRectF &boundingRect, bool isStatic, int rotation) const
 {
-  m_levelData->addObject(type, boundingRect, isStatic, rotation);
+  m_levelData->addSimpleObject(type, boundingRect, isStatic, rotation);
 }
 
 void Editor::addPolygonObject(int type, const OptimizerResult &optimizerResult, bool isStatic, int rotation) const
 {
-  m_levelData->addObjectPoly(type, optimizerResult.originalPoints, optimizerResult.optimizedPoints, isStatic, rotation);
+  if (optimizerResult.isLine) {
+    m_levelData->addLineObject(Constants::ShapeType_Line, optimizerResult.originalPoints, optimizerResult.optimizedPoints,
+                               isStatic, rotation);
+  } else {
+    m_levelData->addPolygonObject(Constants::ShapeType_Polygon, optimizerResult.originalPoints, optimizerResult.optimizedPoints,
+                                  isStatic, rotation);
+  }
 }
 
 void Editor::removeObject(int index) const
