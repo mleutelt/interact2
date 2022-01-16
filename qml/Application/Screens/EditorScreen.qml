@@ -75,6 +75,7 @@ Page {
         anchors.fill: parent
 
         onPressed: {
+            console.log("Mouse button pressed at (" + mouseX + ", " + mouseY + ")")
             if (App.editor.currentEditOperation === Editor.EditOperationType_Draw) {
                 switch (App.editor.currentShape) {
                 case Editor.ShapeType_Circle:
@@ -92,6 +93,7 @@ Page {
             }
         }
         onReleased: {
+            console.log("Mouse button released at (" + mouseX + ", " + mouseY + ")")
             switch (App.editor.currentShape) {
             case Editor.ShapeType_Circle:
             case Editor.ShapeType_Rectangle:
@@ -126,6 +128,7 @@ Page {
                 break
             case Editor.ShapeType_Polygon:
                 if (pressed) {
+                    console.log("Pushing mouse coordinates (" + mouseX + ", " + mouseY + ")")
                     pointBuffer.push(Qt.point(mouseX, mouseY))
                 }
                 canvas.requestPaint()
