@@ -152,11 +152,20 @@ bool PhysicsObjectOptimizer::minDistance(const QPointF &pointOne, const QPointF 
 
 bool PhysicsObjectOptimizer::isPolygon()
 {
-  return ((m_OptimizedPointList.first() == m_OptimizedPointList.last()) && m_OptimizedPointList.size() > 2);
+  if (m_OptimizedPointList.size() > 2) {
+    return m_OptimizedPointList.first() == m_OptimizedPointList.last();
+  }
+
+  return false;
 }
 
 void PhysicsObjectOptimizer::createLine()
 {
+  if (m_OptimizedPointList.count() < 3) {
+    m_resultLineOrPolygonList << m_OptimizedPointList;
+    return;
+  }
+
   for (int i = 0; i < m_OptimizedPointList.count() - 1; i++) {
     QPolygonF lineShape;
 

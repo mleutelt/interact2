@@ -3,10 +3,11 @@ import QtQuick.Controls as QQC
 
 import App
 
-QQC.Button {
+QQC.RoundButton {
     id: container
 
-    font.capitalization: Font.Capitalize
+    font.family: Style.fontAwesomeRegular.font.family
+    font.weight: Font.Regular
 
     onClicked: Sound.playSound(Sound.Pop)
 }

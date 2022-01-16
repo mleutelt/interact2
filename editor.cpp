@@ -96,12 +96,16 @@ void Editor::addSimpleObject(int type, const QRectF &boundingRect, bool isStatic
 
 void Editor::addPolygonObject(int type, const OptimizerResult &optimizerResult, bool isStatic, int rotation) const
 {
-  if (optimizerResult.isLine) {
-    m_levelData->addLineObject(Constants::ShapeType_Line, optimizerResult.originalPoints, optimizerResult.optimizedPoints,
-                               isStatic, rotation);
+  if (optimizerResult.originalPoints.count() > 2) {
+    if (optimizerResult.isLine) {
+      m_levelData->addLineObject(Constants::ShapeType_Line, optimizerResult.originalPoints, optimizerResult.optimizedPoints,
+                                 isStatic, rotation);
+    } else {
+      m_levelData->addPolygonObject(Constants::ShapeType_Polygon, optimizerResult.originalPoints, optimizerResult.optimizedPoints,
+                                    isStatic, rotation);
+    }
   } else {
-    m_levelData->addPolygonObject(Constants::ShapeType_Polygon, optimizerResult.originalPoints, optimizerResult.optimizedPoints,
-                                  isStatic, rotation);
+    qCDebug(editor) << "ignoring input, not enough points";
   }
 }
 

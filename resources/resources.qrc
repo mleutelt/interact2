@@ -1,11 +1,6 @@
 <RCC>
     <qresource prefix="/">
         <file>qtquickcontrols2.conf</file>
-        <file>sounds/cfork_plopp.aif</file>
-        <file>sounds/glock_N_kling.aif</file>
-        <file>sounds/glock_N_kloing.aif</file>
-        <file>sounds/junggle_btn402.mp3</file>
-        <file>sounds/vitriolix_pop.wav</file>
         <file>music/Lullaby.mp3</file>
         <file>levels/Introduction/data.json</file>
         <file>levels/Introduction/preview.png</file>
@@ -42,5 +37,13 @@
         <file>backgrounds/paper4.png</file>
         <file>backgrounds/penguins.png</file>
         <file>images/coil.png</file>
+        <file>sounds/attention-bell-ding.wav</file>
+        <file>sounds/ball-bouncing.wav</file>
+        <file>sounds/kling.wav</file>
+        <file>sounds/kloing.wav</file>
+        <file>sounds/paper-slide.wav</file>
+        <file>sounds/plopp.wav</file>
+        <file>sounds/pop.wav</file>
+        <file>sounds/paper-crumple.wav</file>
     </qresource>
 </RCC>

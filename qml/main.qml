@@ -16,14 +16,14 @@ ApplicationWindow {
         id: stackView
 
         anchors.fill: parent
+
+        onDepthChanged: Sound.playSound(Sound.PaperSlide)
     }
 
     RoundButton {
         anchors.bottom: parent.bottom
         anchors.right: parent.right
         anchors.margins: 10
-        font.family: Style.fontAwesomeRegular.font.family
-        font.weight: Font.Regular
         text: "\uf085"
         visible: Screens.currentScreen !== Screens.LevelSelection
 
@@ -36,8 +36,6 @@ ApplicationWindow {
         anchors.top: parent.top
         anchors.left: parent.left
         anchors.margins: 10
-        font.family: Style.fontAwesomeRegular.font.family
-        font.weight: Font.Regular
         text: "\uf060"
         visible: Screens.currentScreen !== Screens.Main
 
@@ -160,6 +158,31 @@ ApplicationWindow {
                             value: Sound.musicVolume
 
                             onValueChanged: Sound.musicVolume = value
+                        }
+                    }
+
+                    CheckBox {
+                        id: soundEffectsCheckBox
+                        text: qsTr("Sound effects")
+                        checked: Sound.effectsEnabled
+
+                        onToggled: Sound.effectsEnabled = !Sound.effectsEnabled
+                    }
+
+                    RowLayout {
+                        Layout.fillWidth: true
+
+                        Label {
+                            text: qsTr("Volume")
+                        }
+
+                        Slider {
+                            Layout.fillWidth: true
+
+                            enabled: soundEffectsCheckBox.checked
+                            value: Sound.effectsVolume
+
+                            onValueChanged: Sound.effectsVolume = value
                         }
                     }
                 }

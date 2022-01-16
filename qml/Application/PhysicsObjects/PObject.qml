@@ -54,4 +54,7 @@ Rectangle {
 
         anchors.fill: parent
     }
+
+    Component.onCompleted: Sound.playSound(Sound.Plopp)
+    Component.onDestruction: Sound.playSound(Sound.PaperCrumple)
 }

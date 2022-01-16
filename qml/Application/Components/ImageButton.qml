@@ -2,6 +2,8 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
+import App
+
 Button {
     id: container
 
@@ -34,4 +36,6 @@ Button {
             text: container.text
         }
     }
+
+    onClicked: Sound.playSound(Sound.Pop)
 }

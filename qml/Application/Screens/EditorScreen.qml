@@ -34,8 +34,6 @@ Page {
                 model: popupItem.model
 
                 RoundButton {
-                    font.family: Style.fontAwesomeRegular.font.family
-                    font.weight: Font.Regular
                     text: popupItem.iconResolver(modelData)
 
                     onClicked: {
@@ -214,8 +212,6 @@ Page {
 
             ToolTip.visible: hovered
             ToolTip.text: qsTr("Open existing levels")
-            font.family: Style.fontAwesomeRegular.font.family
-            font.weight: Font.Regular
             text: "\uf07c"
 
             onClicked: levelSelectionDialog.open()
@@ -226,8 +222,6 @@ Page {
 
             ToolTip.visible: hovered
             ToolTip.text: qsTr("Save the level")
-            font.family: Style.fontAwesomeRegular.font.family
-            font.weight: Font.Regular
             text: "\uf0c7"
 
             onClicked: {
@@ -252,8 +246,6 @@ Page {
             ToolTip.visible: hovered
             ToolTip.text: qsTr("Shape selection")
             checkable: true
-            font.family: Style.fontAwesomeRegular.font.family
-            font.weight: Font.Regular
             text: Style.shapeIconForType(App.editor.currentShape)
 
             onToggled: shapesMenu.open()
@@ -275,8 +267,6 @@ Page {
             ToolTip.visible: hovered
             ToolTip.text: qsTr("Editing")
             checkable: true
-            font.family: Style.fontAwesomeRegular.font.family
-            font.weight: Font.Regular
             text: Style.editIconForType(App.editor.currentEditOperation)
 
             onToggled: editMenu.open()
@@ -299,8 +289,6 @@ Page {
             ToolTip.visible: hovered
             ToolTip.text: qsTr("Static/dynamic object mode")
             checkable: true
-            font.family: Style.fontAwesomeRegular.font.family
-            font.weight: Font.Regular
             text: checked ? "\uf78c" : "\uf31e"
         }
 
@@ -309,8 +297,6 @@ Page {
 
             ToolTip.visible: hovered
             ToolTip.text: qsTr("Level properties")
-            font.family: Style.fontAwesomeRegular.font.family
-            font.weight: Font.Regular
             text: "\uf1de"
 
             onClicked: levelPropertiesDialog.open()

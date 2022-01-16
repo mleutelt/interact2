@@ -36,6 +36,7 @@ qt_add_qml_module(appInteract2
         qml/Application/Components/ImageButton.qml
         qml/Application/Components/Dialog.qml
         qml/Application/Components/Button.qml
+        qml/Application/Components/RoundButton.qml
         qml/Application/Sound/Sound.qml
         qml/Application/Screens/Screens.qml
         qml/Application/Screens/MainScreen.qml
