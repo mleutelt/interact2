@@ -10,7 +10,7 @@ namespace {
   const int DISTANCE = 3;
   const int SKIP = 2;
   const int POINTDISTANCE = 20;
-  const float lineThickness = 0.15f;
+  const float lineThickness = 4.f;
 }
 
 PhysicsObjectOptimizer::PhysicsObjectOptimizer(QObject *parent)
@@ -161,6 +161,22 @@ bool PhysicsObjectOptimizer::isPolygon()
 
 void PhysicsObjectOptimizer::createLine()
 {
+#if 0 // create just a Testbox
+    QPolygonF lineShape;
+
+    QPointF firstPoint(100, 200);
+    QPointF secondPoint(200, 200);
+
+    lineShape << QPointF(firstPoint.x(), firstPoint.y() - (lineThickness / 2.f));
+    // bottom right
+    lineShape << QPointF(secondPoint.x(), secondPoint.y() - (lineThickness / 2.f));
+    // top right
+    lineShape << QPointF(secondPoint.x(), secondPoint.y() + (lineThickness / 2.f));
+    // top left
+    lineShape << QPointF(firstPoint.x(), firstPoint.y() + (lineThickness / 2.f));
+
+    m_resultLineOrPolygonList << lineShape;
+#else
   if (m_OptimizedPointList.count() < 3) {
     m_resultLineOrPolygonList << m_OptimizedPointList;
     return;
@@ -181,18 +197,18 @@ void PhysicsObjectOptimizer::createLine()
     // bottom right
     lineShape << QPointF(secondPoint.x(), secondPoint.y() - (lineThickness / 2.f));
     // top right
-    lineShape << QPointF(secondPoint.x() + (lineThickness / 2.f), secondPoint.y());
+    lineShape << QPointF(secondPoint.x(), secondPoint.y() + (lineThickness / 2.f));
     // top left
-    lineShape << QPointF(firstPoint.x() + (lineThickness / 2.f), firstPoint.y());
+    lineShape << QPointF(firstPoint.x(), firstPoint.y() + (lineThickness / 2.f));
 
     // winkel der steigung berechnen
     float m = dy / dx;
     float arctan = atan(m);
-    float angle = (arctan * 180.f) / M_PI;
+    //float angle = (arctan * 180.f) / M_PI;
 
     // rotate box (linesegment)
     QTransform matrix;
-    matrix.rotate(angle);
+    matrix.rotate(arctan);
     lineShape = matrix.map(lineShape);
 
     // float lineSegmentLength = sqrt( dx * dx + dy * dy);
@@ -236,6 +252,7 @@ void PhysicsObjectOptimizer::createLine()
       m_resultLineOrPolygonList << lineShape;
     }
   }
+#endif
 }
 
 void PhysicsObjectOptimizer::createPolygon()
