@@ -9,7 +9,7 @@ Q_LOGGING_CATEGORY(phoo, "app.physicsobjectoptimizer")
 namespace {
   const int DISTANCE = 3;
   const int SKIP = 2;
-  const int POINTDISTANCE = 20;
+  const int POINTDISTANCE = 5;
   const float lineThickness = 4.f;
 }
 
@@ -248,7 +248,7 @@ void PhysicsObjectOptimizer::createLine()
       d.setY(QPointF::dotProduct(n2, v)); // - b2_toiSlop;
     }
 
-    if ((d.x() >= 0.01) && (d.y() >= 0.01)) {
+    if ((fabs(d.x()) >= 0.01) && (fabs(d.y()) >= 0.01)) {
       m_resultLineOrPolygonList << lineShape;
     }
   }
