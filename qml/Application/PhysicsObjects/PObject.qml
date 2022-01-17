@@ -11,6 +11,8 @@ Rectangle {
     property bool interactive: true
     property var interactionHandler
     property alias visualItem: childContainer.children
+    property bool soundsEnabled: true
+
     property alias physicalObject: body.fixtures
     property Body body: Body {
         id: body
@@ -55,6 +57,12 @@ Rectangle {
         anchors.fill: parent
     }
 
-    Component.onCompleted: Sound.playSound(Sound.Plopp)
-    Component.onDestruction: Sound.playSound(Sound.PaperCrumple)
+    Component.onCompleted: {
+        if (soundsEnabled)
+            Sound.playSound(Sound.Plopp)
+    }
+    Component.onDestruction: {
+        if (soundsEnabled)
+            Sound.playSound(Sound.PaperCrumple)
+    }
 }

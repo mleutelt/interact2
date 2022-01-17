@@ -44,6 +44,8 @@ PObject {
 
             fillColor: container.itemColor
             strokeColor: fillColor
+            joinStyle: ShapePath.RoundJoin
+            capStyle: ShapePath.RoundCap
 
             PathMultiline {
                 id: pathPolyLine

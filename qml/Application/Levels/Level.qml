@@ -35,6 +35,7 @@ Item {
         friction: 1
         density: 1
         world: enabled ? physicsWorld : null
+        soundsEnabled: false
     }
 
     PRectangle {
@@ -46,6 +47,7 @@ Item {
         anchors.top: parent.top
 
         world: enabled ? physicsWorld : null
+        soundsEnabled: false
     }
 
     PRectangle {
@@ -57,6 +59,7 @@ Item {
         anchors.bottom: parent.bottom
 
         world: enabled ? physicsWorld : null
+        soundsEnabled: false
     }
 
     PRectangle {
@@ -68,6 +71,7 @@ Item {
         anchors.bottom: parent.bottom
 
         world: enabled ? physicsWorld : null
+        soundsEnabled: false
     }
 
     PObjectFactory {

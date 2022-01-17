@@ -12,6 +12,9 @@ Editor::Editor(QObject *parent)
   : QObject { parent }
   , m_levelData { new LevelDataModel(this) }
 {
+  connect(this, &Editor::currentShapeChanged, this, [this]() {
+    setCurrentEditOperation(EditOperationType_Draw);
+  });
 }
 
 Constants::ShapeType Editor::currentShape() const

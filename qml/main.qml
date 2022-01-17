@@ -12,6 +12,24 @@ ApplicationWindow {
     minimumWidth: Style.application.minimumWindowSize.width
     visible: true
 
+    Shortcut {
+        sequence: "m"
+
+        onActivated: toggleMusicAction.toggle()
+    }
+
+    Action {
+        id: toggleMusicAction
+
+        onToggled: {
+            if (Sound.musicPlaying) {
+                Sound.stopMusic()
+            } else {
+                Sound.playMusic()
+            }
+        }
+    }
+
     StackView {
         id: stackView
 
@@ -135,13 +153,7 @@ ApplicationWindow {
                         text: qsTr("Background music")
                         checked: Sound.musicPlaying
 
-                        onToggled: {
-                            if (Sound.musicPlaying) {
-                                Sound.stopMusic()
-                            } else {
-                                Sound.playMusic()
-                            }
-                        }
+                        onToggled: toggleMusicAction.toggle()
                     }
 
                     RowLayout {
