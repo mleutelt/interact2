@@ -36,14 +36,7 @@ PObject {
     visualItem: Shape {
         id: lineShape
 
-        // NOTE: we can't use anchors here because we need to map from the
-        // drawing canvas coordinate system, which is the whole screen, to
-        // our local coordinate system.
-        // Seems to be a bit off sometimes, but accurate enough.
-        width: parent.width
-        height: parent.height
-        x: -model.boundingBox.x
-        y: -model.boundingBox.y
+        anchors.fill: parent
         antialiasing: true
 
         ShapePath {
