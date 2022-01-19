@@ -55,6 +55,15 @@ private:
     return length;
   }
 
+  inline QPointF rotateVertex(const QPointF &inputPoint, const QPointF &centerPoint, float fAngleRadians)
+  {
+      QPointF rotatedPoint
+      ((inputPoint.x() - centerPoint.x()) * cos(fAngleRadians) - (inputPoint.y() - centerPoint.y()) * sin(fAngleRadians) + centerPoint.x(),
+      (inputPoint.x() - centerPoint.x()) * sin(fAngleRadians) + (inputPoint.y() - centerPoint.y()) * cos(fAngleRadians) + centerPoint.y());
+
+      return rotatedPoint;
+  }
+
   void optimizeLine(const QList<QPointF> &input);
 
   // calculate the distance of a point to a line
