@@ -33,5 +33,22 @@ PObject {
         anchors.fill: parent
         antialiasing: true
         color: container.itemColor
+        border.color: hoverHandler.hovered ? "red" : "transparent"
+        border.width: hoverHandler.hovered ? 2 : 0
+
+        HoverHandler {
+            id: hoverHandler
+
+            enabled: container.interactive
+        }
+
+        TapHandler {
+            enabled: container.interactive
+
+            onTapped: {
+                if (container.interactionHandler && typeof container.interactionHandler === "function")
+                    container.interactionHandler(index)
+            }
+        }
     }
 }

@@ -66,13 +66,15 @@ PObject {
 
         anchors.fill: parent
         antialiasing: true
+        containsMode: Shape.FillContains
 
         ShapePath {
             id: shapePath
 
             fillColor: "gold"
-            strokeColor: fillColor
             fillRule: ShapePath.WindingFill
+            strokeColor: hoverHandler.hovered ? "red" : fillColor
+            strokeWidth: hoverHandler.hovered ? 2 : 1
             startX: star.width / 2
             startY: 0
 
@@ -81,6 +83,21 @@ PObject {
             PathLine { id: p3; x: star.width; y: star.height * 2 / 5 }
             PathLine { id: p4; x: star.width / 5; y: star.height }
             PathLine { id: p5; x: star.width / 2; y: 0 }
+        }
+
+        HoverHandler {
+            id: hoverHandler
+
+            enabled: container.interactive
+        }
+
+        TapHandler {
+            enabled: container.interactive
+
+            onTapped: {
+                if (container.interactionHandler && typeof container.interactionHandler === "function")
+                    container.interactionHandler(index)
+            }
         }
     }
 }

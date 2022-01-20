@@ -12,6 +12,7 @@ Rectangle {
     property var interactionHandler
     property alias visualItem: childContainer.children
     property bool soundsEnabled: true
+    property bool showBoundingBox: false
 
     property alias physicalObject: body.fixtures
     property Body body: Body {
@@ -38,18 +39,11 @@ Rectangle {
     signal beginContact(other: Fixture)
     signal endContact(other: Fixture)
 
-    color: App.debugBoundingBoxes ? "red" : "transparent"
-    opacity: App.debugBoundingBoxes ? 0.5 : 1
+    color: App.debugBoundingBoxes || showBoundingBox ? "red" : "transparent"
+    opacity: App.debugBoundingBoxes || showBoundingBox ? 0.5 : 1
 
     implicitWidth: childContainer.childrenRect.width
     implicitHeight: childContainer.childrenRect.height
-
-    TapHandler {
-        onTapped: {
-            if (container.interactive && interactionHandler && typeof interactionHandler === "function")
-                container.interactionHandler(index)
-        }
-    }
 
     Item {
         id: childContainer

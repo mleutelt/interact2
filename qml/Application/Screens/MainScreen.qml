@@ -25,6 +25,7 @@ Page {
             restitution: 0.5
 
             itemColor: Qt.rgba(Math.random(), Math.random(), Math.random())
+            interactive: false
         }
     }
 

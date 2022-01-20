@@ -4,6 +4,7 @@
 
 #include <QLocale>
 #include <QTranslator>
+#include <QSurfaceFormat>
 
 int main(int argc, char *argv[])
 {
@@ -12,6 +13,10 @@ int main(int argc, char *argv[])
   QGuiApplication::setApplicationDisplayName(u"Interact 2"_qs);
   QGuiApplication::setApplicationVersion(APPLICATION_VERSION);
   QGuiApplication app(argc, argv);
+
+  QSurfaceFormat format;
+  format.setSamples(8);
+  QSurfaceFormat::setDefaultFormat(format);
 
   // TODO: move this into the application class
   QTranslator translator;

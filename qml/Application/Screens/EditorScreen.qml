@@ -73,7 +73,6 @@ Page {
         anchors.fill: parent
 
         onPressed: {
-            console.log("Mouse button pressed at (" + mouseX + ", " + mouseY + ")")
             if (App.editor.currentEditOperation === Editor.EditOperationType_Draw) {
                 switch (App.editor.currentShape) {
                 case Constants.ShapeType_Circle:
@@ -90,13 +89,11 @@ Page {
             }
         }
         onReleased: {
-            console.log("Mouse button released at (" + mouseX + ", " + mouseY + ")")
-            switch (App.editor.currentShape) {
-            case Constants.ShapeType_Circle:
-            case Constants.ShapeType_Rectangle:
-            case Constants.ShapeType_SpecialStar:
-                switch (App.editor.currentEditOperation) {
-                case Editor.EditOperationType_Draw:
+            if (App.editor.currentEditOperation === Editor.EditOperationType_Draw) {
+                switch (App.editor.currentShape) {
+                case Constants.ShapeType_Circle:
+                case Constants.ShapeType_Rectangle:
+                case Constants.ShapeType_SpecialStar:
                     if (drawingRectangle.width > minimalObjectSize.width && drawingRectangle.height > minimalObjectSize.height) {
                         App.editor.addSimpleObject(App.editor.currentShape,
                                                    Qt.rect(drawingRectangle.x, drawingRectangle.y, drawingRectangle.width, drawingRectangle.height),
@@ -104,33 +101,30 @@ Page {
                     }
 
                     break
-                case Editor.EditOperationType_Delete:
-                case Editor.EditOperationType_Move:
+                case Constants.ShapeType_Polygon:
+                    canvas.clear()
+                    App.editor.addPolygonObject(App.editor.currentShape,
+                                                PhysicsObjectOptimizer.determineAndOptimizeObject(pointBuffer),
+                                                objectBehaviorButton.checked)
+                    pointBuffer = []
                     break
                 }
-                break
-            case Constants.ShapeType_Polygon:
-                canvas.clear()
-                App.editor.addPolygonObject(App.editor.currentShape,
-                                            PhysicsObjectOptimizer.determineAndOptimizeObject(pointBuffer),
-                                            objectBehaviorButton.checked)
-                pointBuffer = []
-                break
             }
         }
         onPositionChanged: {
-            switch (App.editor.currentShape) {
-            case Constants.ShapeType_Circle:
-            case Constants.ShapeType_Rectangle:
-            case Constants.ShapeType_SpecialStar:
-                break
-            case Constants.ShapeType_Polygon:
-                if (pressed) {
-                    console.log("Pushing mouse coordinates (" + mouseX + ", " + mouseY + ")")
-                    pointBuffer.push(Qt.point(mouseX, mouseY))
+            if (App.editor.currentEditOperation === Editor.EditOperationType_Draw) {
+                switch (App.editor.currentShape) {
+                case Constants.ShapeType_Circle:
+                case Constants.ShapeType_Rectangle:
+                case Constants.ShapeType_SpecialStar:
+                    break
+                case Constants.ShapeType_Polygon:
+                    if (pressed) {
+                        pointBuffer.push(Qt.point(mouseX, mouseY))
+                    }
+                    canvas.requestPaint()
+                    break
                 }
-                canvas.requestPaint()
-                break
             }
         }
     }

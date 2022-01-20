@@ -45,18 +45,35 @@ PObject {
         x: -model.boundingBox.x
         y: -model.boundingBox.y
         antialiasing: true
+        containsMode: Shape.FillContains
 
         ShapePath {
             id: shapePath
 
             fillColor: container.itemColor
-            strokeColor: fillColor
             fillRule: ShapePath.WindingFill
+            strokeColor: hoverHandler.hovered ? "red" : fillColor
+            strokeWidth: hoverHandler.hovered ? 2 : 1
 
             PathPolyline {
                 id: pathPolyLine
 
                 path: model.polygon
+            }
+        }
+
+        HoverHandler {
+            id: hoverHandler
+
+            enabled: container.interactive
+        }
+
+        TapHandler {
+            enabled: container.interactive
+
+            onTapped: {
+                if (container.interactionHandler && typeof container.interactionHandler === "function")
+                    container.interactionHandler(index)
             }
         }
     }
