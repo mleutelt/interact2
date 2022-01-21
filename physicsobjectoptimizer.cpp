@@ -7,9 +7,10 @@
 Q_LOGGING_CATEGORY(phoo, "app.physicsobjectoptimizer")
 
 namespace {
-  const int DISTANCE = 2;
+  const int POINT_TO_LINE_DISTANCE = 2;
   const int SKIP = 2;
-  const int POINTDISTANCE = 2;
+  const int LINE_SEGMENT_MIN_POINT_DISTANCE = 2; // for line segments
+  const int START_END_POINT_DISTANCE = 20; // distance to decide wether the line is closed or not
   // TODO: should be specified by the UI
   const float LINE_THICKNESS = 3.f;
 }
@@ -85,16 +86,16 @@ void PhysicsObjectOptimizer::optimizeLine(const QList<QPointF> &points)
     for (innerIndex = outerIndex + 1; innerIndex < outerIndex + SKIP; innerIndex++) {
       QPointF point = points.at(innerIndex);
 
-      if (!minDistance(lineStart, point)) {
+      if (!minDistance(lineStart, point, LINE_SEGMENT_MIN_POINT_DISTANCE)) {
         continue;
       }
 
-      if (calculateDistance(lineStart, lineEnd, point) > DISTANCE) {
-        qCDebug(phoo) << "calculateDistance: Distance acceptable (threshold: " << DISTANCE << ")";
+      if (calculateDistance(lineStart, lineEnd, point) > POINT_TO_LINE_DISTANCE) {
+        qCDebug(phoo) << "calculateDistance: Distance acceptable (threshold: " << POINT_TO_LINE_DISTANCE << ")";
         break;
       }
 
-      qCDebug(phoo) << "calculateDistance: Distance too close (threshold: " << DISTANCE << ")";
+      qCDebug(phoo) << "calculateDistance: Distance too close (threshold: " << POINT_TO_LINE_DISTANCE << ")";
     }
 
     outerIndex = innerIndex;
@@ -103,14 +104,14 @@ void PhysicsObjectOptimizer::optimizeLine(const QList<QPointF> &points)
   QPointF lastPoint = points.at(points.size() - 1);
 
   // assure that the last point or at least a point close to it is taken, too
-  if (m_OptimizedPointList.size() >= 1 && minDistance(m_OptimizedPointList.last(), lastPoint)) {
+  if (m_OptimizedPointList.size() >= 1 && minDistance(m_OptimizedPointList.last(), lastPoint, LINE_SEGMENT_MIN_POINT_DISTANCE)) {
     qCDebug(phoo) << "optimizeLine: Adding final point " << lastPoint << " to optimized list";
     m_OptimizedPointList << lastPoint;
   }
 
   // a polygon is closed when the first and last points are equal - so we check the distance and make them equal if needed to
   // force a closed polygon
-  if (!minDistance(m_OptimizedPointList.first(), m_OptimizedPointList.last())) {
+  if (!minDistance(m_OptimizedPointList.first(), m_OptimizedPointList.last(), START_END_POINT_DISTANCE)) {
     qCDebug(phoo) << "start and end points too close together, forcing closed polygon";
     m_OptimizedPointList.last() = m_OptimizedPointList.first();
   }
@@ -135,19 +136,19 @@ float PhysicsObjectOptimizer::calculateDistance(const QPointF &lineStart, const 
   return result;
 }
 
-bool PhysicsObjectOptimizer::minDistance(const QPointF &pointOne, const QPointF &pointTwo)
+bool PhysicsObjectOptimizer::minDistance(const QPointF &pointOne, const QPointF &pointTwo, int iDistance)
 {
   int xDistance = qAbs(pointOne.x() - pointTwo.x());
   int yDistance = qAbs(pointOne.y() - pointTwo.y());
 
-  if (xDistance < POINTDISTANCE && yDistance < POINTDISTANCE) {
+  if (xDistance < iDistance && yDistance < iDistance) {
     qCDebug(phoo) << "minDistance: Point " << pointOne << "and " << pointTwo << " too close to each other with distance ("
-                  << xDistance << ", " << yDistance << ") (threshold: " << POINTDISTANCE << "))";
+                  << xDistance << ", " << yDistance << ") (threshold: " << iDistance << "))";
     return false;
   }
 
   qCDebug(phoo) << "minDistance: Point " << pointOne << "and " << pointTwo << " distant enough with (" << xDistance << ", "
-                << yDistance << ") (threshold: " << POINTDISTANCE << "))";
+                << yDistance << ") (threshold: " << iDistance << "))";
   return true;
 }
 

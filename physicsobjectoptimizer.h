@@ -69,7 +69,7 @@ private:
   // calculate the distance of a point to a line
   float calculateDistance(const QPointF &lineStart, const QPointF &lineEnd, const QPointF &point);
   // calculate the distance between two points
-  bool minDistance(const QPointF &pointOne, const QPointF &pointTwo);
+  bool minDistance(const QPointF &pointOne, const QPointF &pointTwo, int iDistance);
 
   bool isPolygon();
   void createLine();
