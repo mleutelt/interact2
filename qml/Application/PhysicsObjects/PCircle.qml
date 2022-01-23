@@ -34,8 +34,8 @@ PObject {
         antialiasing: true
         radius: container.width / 2
         color: container.itemColor
-        border.color: hoverHandler.hovered ? "red" : "transparent"
-        border.width: hoverHandler.hovered ? 2 : 0
+        border.color: container.hovered ? "red" : "transparent"
+        border.width: container.hovered ? 2 : 0
         containmentMask: QtObject {
             function contains(point: point) : bool {
                 return (Math.pow(point.x - roundRectangle.radius, 2) + Math.pow(point.y - roundRectangle.radius, 2)) < Math.pow(roundRectangle.radius, 2)
@@ -45,16 +45,47 @@ PObject {
         HoverHandler {
             id: hoverHandler
 
-            enabled: container.interactive
+            enabled: container.hoverEnabled
+
+            onHoveredChanged: {
+                if (container.hoverHandler && typeof container.hoverHandler === "function")
+                    container.hovered = container.hoverHandler(container, hovered)
+            }
         }
 
         TapHandler {
-            enabled: container.interactive
+            enabled: container.clickEnabled
 
             onTapped: {
-                if (container.interactionHandler && typeof container.interactionHandler === "function")
-                    container.interactionHandler(index)
+                if (container.clickHandler && typeof container.clickHandler === "function")
+                    container.clickHandler(index)
             }
+        }
+
+        DragHandler {
+            enabled: container.dragEnabled
+            target: container
+
+            onGrabChanged: (transition, point) => {
+                if (container.dragHandler && typeof container.dragHandler === "function")
+                    container.dragHandler(container, transition, point)
+            }
+        }
+
+        WheelHandler {
+            id: wheelHandler
+            enabled: container.wheelEnabled
+            target: container
+
+            onWheel: event => {
+                if (container.wheelHandler && typeof container.wheelHandler === "function")
+                    container.wheelHandler(container, event, wheelHandler)
+            }
+        }
+
+        PinchHandler {
+            enabled: container.pinchEnabled
+            target: container
         }
     }
 }

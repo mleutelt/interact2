@@ -134,16 +134,36 @@ Page {
 
         backgroundImage.source: App.editor.levelData.backgroundImage
         objectFactory.model: App.editor.levelData
-        objectFactory.interactionHandler: function(index) {
-            switch (App.editor.currentEditOperation) {
-            case Editor.EditOperationType_Delete:
-                App.editor.removeObject(index)
+        // allows to filter clicks on items
+        objectFactory.clickEnabled: App.editor.currentEditOperation === Editor.EditOperationType_Delete
+        objectFactory.clickHandler: (index) => App.editor.removeObject(index)
+        // allows to control the hover state of each item based on which editor mode
+        // we're currently in
+        objectFactory.hoverEnabled: App.editor.currentEditOperation === Editor.EditOperationType_Delete ||
+                                    App.editor.currentEditOperation === Editor.EditOperationType_Move
+        objectFactory.hoverHandler: function(item, hovered) {
+            return hovered
+        }
+
+        objectFactory.dragEnabled: App.editor.currentEditOperation === Editor.EditOperationType_Move
+        objectFactory.dragHandler: function(item, transition, point) {
+            // FIXME: doesn't seem to work correctly
+            switch (transition) {
+            case PointerHandler.GrabPassive:
+                level.physicsWorld.running = false
                 break
-            case Editor.EditOperationType_Draw:
-            case Editor.EditOperationType_Move:
+            case PointerHandler.UngrabPassive:
+                level.physicsWorld.running = true
                 break
             }
         }
+        objectFactory.wheelEnabled: App.editor.currentEditOperation === Editor.EditOperationType_Move
+        objectFactory.wheelHandler: function(item, event, handler) {
+            // only rotate objects for now, maybe allow changing size?
+            handler.property = "rotation"
+        }
+        // TODO: implement pinch
+        objectFactory.pinchHandler: function() {}
     }
 
     Canvas {

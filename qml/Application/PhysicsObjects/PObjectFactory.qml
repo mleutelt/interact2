@@ -10,7 +10,16 @@ Instantiator {
 
     required property Item level
     required property World world
-    property var interactionHandler: function(index) {}
+    property bool clickEnabled: false
+    property var clickHandler: function(index) {}
+    property bool hoverEnabled: false
+    property var hoverHandler: function(item, hovered) {}
+    property bool dragEnabled: false
+    property var dragHandler: function(item, transition, point) {}
+    property bool wheelEnabled: false
+    property var wheelHandler: function(item, event, handler) {}
+    property bool pinchEnabled: false
+    property var pinchHandler: function(item) {}
     property LoggingCategory log: LoggingCategory {
         name: "app.qml.physicsobjectfactory"
     }
@@ -27,7 +36,16 @@ Instantiator {
                 bodyType: model.static ? Body.Static : Body.Dynamic
 
                 parent: factory.level
-                interactionHandler: factory.interactionHandler
+                clickEnabled: factory.clickEnabled
+                clickHandler: factory.clickHandler
+                hoverEnabled: factory.hoverEnabled
+                hoverHandler: factory.hoverHandler
+                dragEnabled: factory.dragEnabled
+                dragHandler: factory.dragHandler
+                wheelEnabled: factory.wheelEnabled
+                wheelHandler: factory.wheelHandler
+                pinchEnabled: factory.pinchEnabled
+                pinchHandler: factory.pinchHandler
                 x: model.boundingBox.x
                 y: model.boundingBox.y
                 width: Math.min(model.boundingBox.width, model.boundingBox.height)
@@ -45,7 +63,16 @@ Instantiator {
                 bodyType: model.static ? Body.Static : Body.Dynamic
 
                 parent: factory.level
-                interactionHandler: factory.interactionHandler
+                clickEnabled: factory.clickEnabled
+                clickHandler: factory.clickHandler
+                hoverEnabled: factory.hoverEnabled
+                hoverHandler: factory.hoverHandler
+                dragEnabled: factory.dragEnabled
+                dragHandler: factory.dragHandler
+                wheelEnabled: factory.wheelEnabled
+                wheelHandler: factory.wheelHandler
+                pinchEnabled: factory.pinchEnabled
+                pinchHandler: factory.pinchHandler
                 x: model.boundingBox.x
                 y: model.boundingBox.y
                 width: model.boundingBox.width
@@ -63,7 +90,16 @@ Instantiator {
                 bodyType: model.static ? Body.Static : Body.Dynamic
 
                 parent: factory.level
-                interactionHandler: factory.interactionHandler
+                clickEnabled: factory.clickEnabled
+                clickHandler: factory.clickHandler
+                hoverEnabled: factory.hoverEnabled
+                hoverHandler: factory.hoverHandler
+                dragEnabled: factory.dragEnabled
+                dragHandler: factory.dragHandler
+                wheelEnabled: factory.wheelEnabled
+                wheelHandler: factory.wheelHandler
+                pinchEnabled: factory.pinchEnabled
+                pinchHandler: factory.pinchHandler
                 width: model.boundingBox.width
                 height: model.boundingBox.height
                 itemColor: Qt.rgba(Math.random(), Math.random(), Math.random())
@@ -79,7 +115,16 @@ Instantiator {
                 bodyType: model.static ? Body.Static : Body.Dynamic
 
                 parent: factory.level
-                interactionHandler: factory.interactionHandler
+                clickEnabled: factory.clickEnabled
+                clickHandler: factory.clickHandler
+                hoverEnabled: factory.hoverEnabled
+                hoverHandler: factory.hoverHandler
+                dragEnabled: factory.dragEnabled
+                dragHandler: factory.dragHandler
+                wheelEnabled: factory.wheelEnabled
+                wheelHandler: factory.wheelHandler
+                pinchEnabled: factory.pinchEnabled
+                pinchHandler: factory.pinchHandler
                 width: model.boundingBox.width
                 height: model.boundingBox.height
                 itemColor: Qt.rgba(Math.random(), Math.random(), Math.random())
@@ -95,7 +140,16 @@ Instantiator {
                 bodyType: model.static ? Body.Static : Body.Dynamic
 
                 parent: factory.level
-                interactionHandler: factory.interactionHandler
+                clickEnabled: factory.clickEnabled
+                clickHandler: factory.clickHandler
+                hoverEnabled: factory.hoverEnabled
+                hoverHandler: factory.hoverHandler
+                dragEnabled: factory.dragEnabled
+                dragHandler: factory.dragHandler
+                wheelEnabled: factory.wheelEnabled
+                wheelHandler: factory.wheelHandler
+                pinchEnabled: factory.pinchEnabled
+                pinchHandler: factory.pinchHandler
                 x: model.boundingBox.x
                 y: model.boundingBox.y
                 width: Math.min(model.boundingBox.width, model.boundingBox.height)

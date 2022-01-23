@@ -9,7 +9,17 @@ Rectangle {
 
     property color itemColor: "black"
     property bool interactive: true
-    property var interactionHandler
+    property bool hovered: false
+    property bool clickEnabled: false
+    property var clickHandler
+    property bool hoverEnabled: false
+    property var hoverHandler
+    property bool dragEnabled: false
+    property var dragHandler
+    property bool wheelEnabled: false
+    property var wheelHandler
+    property bool pinchEnabled: false
+    property var pinchHandler
     property alias visualItem: childContainer.children
     property bool soundsEnabled: true
     property bool showBoundingBox: false
