@@ -64,6 +64,13 @@ private:
       return rotatedPoint;
   }
 
+  inline float floatRand(float fMin, float fMax)
+  {
+      float fScale = rand() / (float) RAND_MAX; /* range between [0, 1.f] */
+      return fMin + fScale * ( fMax - fMin );      /* range between [fMin, fMax] */
+  }
+
+  QList<QPointF> naturalizeLine(const QList<QPointF> &input);
   void optimizeLine(const QList<QPointF> &input);
 
   // calculate the distance of a point to a line
