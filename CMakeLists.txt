@@ -13,12 +13,31 @@ find_package(Qt6 6.2
 )
 
 qt_add_big_resources(LARGE_RESOURCES
-    resources/resources.qrc
+    resources/resources_media.qrc
 )
+
+qt_add_resources(RESOURCES resources/resources.qrc)
 
 qt_add_executable(appInteract2
     main.cpp
+    ${RESOURCES}
     ${LARGE_RESOURCES}
+)
+
+set_target_properties(appInteract2 PROPERTIES
+    WIN32_EXECUTABLE TRUE
+    MACOSX_BUNDLE TRUE
+)
+
+target_compile_definitions(appInteract2
+    PRIVATE $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:QT_QML_DEBUG>
+    APPLICATION_VERSION=\"${PROJECT_VERSION}\"
+)
+
+target_link_libraries(appInteract2
+    PRIVATE
+    Qt6::Quick
+    Qt6::Multimedia
 )
 
 set_source_files_properties(
@@ -78,13 +97,20 @@ qt_add_qml_module(appInteract2
         ilevelmanager.h
 )
 
-target_compile_definitions(appInteract2
-    PRIVATE $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:QT_QML_DEBUG>
-    APPLICATION_VERSION=\"${PROJECT_VERSION}\"
-)
+# TODO: make deployment to mobile devices work
+#if(IOS)
+#    message("iOS detected")
+#qt_finalize_target(appInteract2)
+#endif()
 
-target_link_libraries(appInteract2
-    PRIVATE
-    Qt6::Quick
-    Qt6::Multimedia
-)
+#if(MACOS)
+#    message("macOS detected")
+#    set_target_properties(${CUR_TARGET} PROPERTIES
+#        BUNDLE True
+#        MACOSX_BUNDLE_GUI_IDENTIFIER my.domain.style.identifier.${CUR_TARGET}
+#        MACOSX_BUNDLE_BUNDLE_NAME ${CUR_TARGET}
+#        MACOSX_BUNDLE_BUNDLE_VERSION "0.1"
+#        MACOSX_BUNDLE_SHORT_VERSION_STRING "0.1"
+#        MACOSX_BUNDLE_INFO_PLIST ${CMAKE_SOURCE_DIR}/cmake/customtemplate.plist.in
+#    )
+#endif()

@@ -6,6 +6,13 @@
 #include <QTranslator>
 #include <QSurfaceFormat>
 
+// FIXME: get this to work for static builds
+//#if TARGET_OS_IOS
+//#include <QtQml/qqmlextensionplugin.h>
+
+//Q_IMPORT_QML_PLUGIN(Box2DPlugin);
+//#endif
+
 int main(int argc, char *argv[])
 {
   QGuiApplication::setOrganizationName(u"Wurstcrew"_qs);
@@ -30,6 +37,8 @@ int main(int argc, char *argv[])
   }
 
   QQmlApplicationEngine engine;
+  engine.addImportPath(u"qrc:/"_qs);
+
   const QUrl url(u"qrc:/App/qml/main.qml"_qs);
   QObject::connect(
       &engine, &QQmlApplicationEngine::objectCreated, &app,

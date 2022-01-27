@@ -1,7 +1,6 @@
 <RCC>
     <qresource prefix="/">
         <file>qtquickcontrols2.conf</file>
-        <file>music/Lullaby.mp3</file>
         <file>levels/Introduction/data.json</file>
         <file>levels/Introduction/preview.png</file>
         <file>levels/Introduction/resources/introduction.png</file>
@@ -23,27 +22,6 @@
         <file>levels/Level 6/data.json</file>
         <file>levels/Level 6/preview.png</file>
         <file>levels/Level 6/resources/Wiese.png</file>
-        <file>fonts/FontAwesome/Font Awesome 6 Free-Regular-400.otf</file>
         <file>fonts/FontAwesome/Font Awesome 6 Free-Solid-900.otf</file>
-        <file>backgrounds/clouds.png</file>
-        <file>backgrounds/diver.png</file>
-        <file>backgrounds/iceberg.png</file>
-        <file>backgrounds/kariertesblatt.png</file>
-        <file>backgrounds/marsrover.png</file>
-        <file>backgrounds/Nasentierlandschaft.png</file>
-        <file>backgrounds/paper1.png</file>
-        <file>backgrounds/paper2.png</file>
-        <file>backgrounds/paper3.png</file>
-        <file>backgrounds/paper4.png</file>
-        <file>backgrounds/penguins.png</file>
-        <file>images/coil.png</file>
-        <file>sounds/attention-bell-ding.wav</file>
-        <file>sounds/ball-bouncing.wav</file>
-        <file>sounds/kling.wav</file>
-        <file>sounds/kloing.wav</file>
-        <file>sounds/paper-slide.wav</file>
-        <file>sounds/plopp.wav</file>
-        <file>sounds/pop.wav</file>
-        <file>sounds/paper-crumple.wav</file>
     </qresource>
 </RCC>

@@ -21,7 +21,7 @@ contains(QT_CONFIG, reduce_exports): CONFIG += hide_symbols
 include(box2d_lib.pri)
 include(examples/examples.pri)
 
-importPath = $$[QT_INSTALL_QML]/$$replace(TARGETPATH, \\., /).$$API_VER
+importPath = $$[QT_INSTALL_QML]/$$replace(TARGETPATH, \\., /)
 target.path = $${importPath}
 
 qmldir.path = $${importPath}

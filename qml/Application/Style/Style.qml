@@ -11,10 +11,6 @@ QtObject {
         readonly property size minimumWindowSize: Qt.size(800, 600)
     }
 
-    readonly property FontLoader fontAwesomeRegular: FontLoader {
-        source: "qrc:/fonts/FontAwesome/Font Awesome 6 Free-Regular-400.otf"
-    }
-
     readonly property FontLoader fontAwesomeSolid: FontLoader {
         source: "qrc:/fonts/FontAwesome/Font Awesome 6 Free-Solid-900.otf"
     }

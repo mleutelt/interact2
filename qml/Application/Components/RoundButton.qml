@@ -6,8 +6,7 @@ import App
 QQC.RoundButton {
     id: container
 
-    font.family: Style.fontAwesomeRegular.font.family
-    font.weight: Font.Regular
+    font: Style.fontAwesomeSolid.font
 
     onClicked: Sound.playSound(Sound.Pop)
 }
