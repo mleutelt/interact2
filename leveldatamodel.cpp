@@ -68,10 +68,10 @@ void LevelDataModel::setLevelData(const LevelData &data)
   endResetModel();
 }
 
-void LevelDataModel::addSimpleObject(int type, const QRectF &boundingRect, bool isStatic, int rotation)
+void LevelDataModel::addSimpleObject(int type, const QRectF &boundingRect, bool isStatic)
 {
   ObjectDescription objectDescription = {
-    type, boundingRect, {}, {}, isStatic, rotation,
+    type, boundingRect, {}, {}, isStatic,
   };
 
   qCDebug(lvldm) << "adding simple object" << objectDescription << m_objects.count();
@@ -82,10 +82,10 @@ void LevelDataModel::addSimpleObject(int type, const QRectF &boundingRect, bool 
 }
 
 void LevelDataModel::addPolygonObject(int type, const QPolygonF &originalPoints, const QList<QPolygonF> &optimizedPoints,
-                                      bool isStatic, int rotation)
+                                      bool isStatic)
 {
   ObjectDescription objectDescription = {
-    type, originalPoints.boundingRect(), originalPoints, polygonListToVariantList(optimizedPoints), isStatic, rotation,
+    type, originalPoints.boundingRect(), originalPoints, polygonListToVariantList(optimizedPoints), isStatic,
   };
 
   qCDebug(lvldm) << "adding polygon object" << objectDescription << m_objects.count();
@@ -95,11 +95,10 @@ void LevelDataModel::addPolygonObject(int type, const QPolygonF &originalPoints,
   endInsertRows();
 }
 
-void LevelDataModel::addLineObject(int type, const QPolygonF &originalPoints, const QList<QPolygonF> &lineSegments, bool isStatic,
-                                   int rotation)
+void LevelDataModel::addLineObject(int type, const QPolygonF &originalPoints, const QList<QPolygonF> &lineSegments, bool isStatic)
 {
   ObjectDescription objectDescription = {
-    type, originalPoints.boundingRect(), originalPoints, polygonListToVariantList(lineSegments), isStatic, rotation,
+    type, originalPoints.boundingRect(), originalPoints, polygonListToVariantList(lineSegments), isStatic,
   };
 
   qCDebug(lvldm) << "adding line object" << objectDescription << m_objects.count();

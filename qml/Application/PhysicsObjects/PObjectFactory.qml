@@ -11,7 +11,7 @@ Instantiator {
     required property Item level
     required property World world
     property bool clickEnabled: false
-    property var clickHandler: function(index) {}
+    property var clickHandler: function(index, button) {}
     property bool hoverEnabled: false
     property var hoverHandler: function(item, hovered) {}
     property bool dragEnabled: false

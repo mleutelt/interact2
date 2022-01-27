@@ -14,7 +14,7 @@ namespace {
 }
 
 LevelHandler::LevelHandler(QObject *parent)
-  : QObject { parent }
+  : ILevelManager { parent }
   , m_availableLevels { new LevelModel(this) }
   , m_userLevels { new LevelModel(this) }
   , m_currentLevelData { new LevelDataModel(this) }
@@ -48,6 +48,18 @@ void LevelHandler::loadLevel(const QString &path)
     qCCritical(lvlh) << "unable to find level data";
     // TODO: emit signal to display UI message
   }
+}
+
+void LevelHandler::saveLevel(const QString &name, QQuickItemGrabResult *screenshot)
+{
+  Q_UNUSED(screenshot)
+
+  qCDebug(lvlh) << "unimplemented";
+}
+
+void LevelHandler::resetLevel()
+{
+  qCDebug(lvlh) << "unimplemented";
 }
 
 void LevelHandler::updateGameLevelsModel()
@@ -94,7 +106,7 @@ void LevelHandler::updateUserLevelsModel()
   qCInfo(lvlh) << "user levels found:" << userLevelList.count();
 }
 
-LevelDataModel *LevelHandler::currentLevelData() const
+LevelDataModel *LevelHandler::levelData() const
 {
   return m_currentLevelData;
 }

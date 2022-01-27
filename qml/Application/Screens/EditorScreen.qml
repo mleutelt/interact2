@@ -64,6 +64,12 @@ Page {
         }
     }
 
+    LevelInteractor {
+        id: levelInteractor
+
+        levelManager: App.editor
+    }
+
     MouseArea {
         id: drawingMouseArea
 
@@ -95,17 +101,17 @@ Page {
                 case Constants.ShapeType_Rectangle:
                 case Constants.ShapeType_SpecialStar:
                     if (drawingRectangle.width > minimalObjectSize.width && drawingRectangle.height > minimalObjectSize.height) {
-                        App.editor.addSimpleObject(App.editor.currentShape,
-                                                   Qt.rect(drawingRectangle.x, drawingRectangle.y, drawingRectangle.width, drawingRectangle.height),
-                                                   objectBehaviorButton.checked)
+                        levelInteractor.addSimpleObject(App.editor.currentShape,
+                                                        Qt.rect(drawingRectangle.x, drawingRectangle.y, drawingRectangle.width, drawingRectangle.height),
+                                                        objectBehaviorButton.checked)
                     }
 
                     break
                 case Constants.ShapeType_Polygon:
                     canvas.clear()
-                    App.editor.addPolygonObject(App.editor.currentShape,
-                                                PhysicsObjectOptimizer.determineAndOptimizeObject(pointBuffer),
-                                                objectBehaviorButton.checked)
+                    levelInteractor.addPolygonObject(App.editor.currentShape,
+                                                     PhysicsObjectOptimizer.determineAndOptimizeObject(pointBuffer),
+                                                     objectBehaviorButton.checked)
                     pointBuffer = []
                     break
                 }
@@ -136,7 +142,7 @@ Page {
         objectFactory.model: App.editor.levelData
         // allows to filter clicks on items
         objectFactory.clickEnabled: App.editor.currentEditOperation === Editor.EditOperationType_Delete
-        objectFactory.clickHandler: (index) => App.editor.removeObject(index)
+        objectFactory.clickHandler: (index) => levelInteractor.removeObject(index)
         // allows to control the hover state of each item based on which editor mode
         // we're currently in
         objectFactory.hoverEnabled: App.editor.currentEditOperation === Editor.EditOperationType_Delete ||
@@ -500,5 +506,5 @@ Page {
         }
     }
 
-    StackView.onDeactivated: App.editor.reset()
+    StackView.onDeactivated: App.editor.resetLevel()
 }

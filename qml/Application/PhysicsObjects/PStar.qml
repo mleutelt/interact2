@@ -98,10 +98,11 @@ PObject {
 
         TapHandler {
             enabled: container.clickEnabled
+            acceptedButtons: Qt.LeftButton | Qt.MiddleButton | Qt.RightButton
 
-            onTapped: {
+            onTapped: (eventPoint, button) => {
                 if (container.clickHandler && typeof container.clickHandler === "function")
-                    container.clickHandler(index)
+                    container.clickHandler(index, button)
             }
         }
 

@@ -2,13 +2,15 @@
 
 #include <QObject>
 #include <QtQml/qqml.h>
-#include <QQuickItemGrabResult>
 
 #include "leveldatamodel.h"
 #include "physicsobjectoptimizer.h"
 #include "constants.h"
+#include "ilevelmanager.h"
 
-class Editor : public QObject
+class QQuickItemGrabResult;
+
+class Editor : public ILevelManager
 {
   Q_OBJECT
   Q_PROPERTY(QList<Constants::ShapeType> availableShapes READ availableShapes CONSTANT)
@@ -18,6 +20,7 @@ class Editor : public QObject
                  currentEditOperationChanged)
   Q_PROPERTY(LevelDataModel *levelData READ levelData CONSTANT)
   QML_ELEMENT
+  QML_IMPLEMENTS_INTERFACES(ILevelManager)
 
 public:
   enum EditOperationType
@@ -39,22 +42,16 @@ public:
   EditOperationType currentEditOperation() const;
   void setCurrentEditOperation(EditOperationType operation);
 
-  LevelDataModel *levelData() const;
+protected:
+  void loadLevel(const QString &path) override;
+  void saveLevel(const QString &name, QQuickItemGrabResult *screenshot) override;
+  void resetLevel() override;
 
-  Q_INVOKABLE void loadLevel(const QString &path);
-  Q_INVOKABLE void saveLevel(const QString &name, QQuickItemGrabResult *screenshot);
-  Q_INVOKABLE void reset();
-
-  Q_INVOKABLE void addSimpleObject(int type, const QRectF &boundingRect, bool isStatic = false, int rotation = 0) const;
-  Q_INVOKABLE void addPolygonObject(int type, const OptimizerResult &optimizerResult, bool isStatic = false,
-                                    int rotation = 0) const;
-  Q_INVOKABLE void removeObject(int index) const;
+  LevelDataModel *levelData() const override;
 
 signals:
   void currentShapeChanged();
   void currentEditOperationChanged();
-  void levelSavedSuccessfully();
-  void levelLoadedSuccessfully();
 
 private:
   Constants::ShapeType m_currentShape = Constants::ShapeType_Circle;

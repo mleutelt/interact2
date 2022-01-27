@@ -34,11 +34,9 @@ public:
 
   void setLevelData(const LevelData &data);
 
-  void addSimpleObject(int type, const QRectF &boundingRect, bool isStatic, int rotation);
-  void addPolygonObject(int type, const QPolygonF &originalPoints, const QList<QPolygonF> &optimizedPoints, bool isStatic,
-                        int rotation);
-  void addLineObject(int type, const QPolygonF &originalPoints, const QList<QPolygonF> &lineSegments, bool isStatic,
-                     int rotation);
+  void addSimpleObject(int type, const QRectF &boundingRect, bool isStatic);
+  void addPolygonObject(int type, const QPolygonF &originalPoints, const QList<QPolygonF> &optimizedPoints, bool isStatic);
+  void addLineObject(int type, const QPolygonF &originalPoints, const QList<QPolygonF> &lineSegments, bool isStatic);
   void removeObject(int index);
   void clear();
   QList<ObjectDescription> objects() const;

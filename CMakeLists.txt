@@ -73,6 +73,9 @@ qt_add_qml_module(appInteract2
         concavechopper.h
         concavechopper.cpp
         constants.h
+        levelinteractor.h
+        levelinteractor.cpp
+        ilevelmanager.h
 )
 
 target_compile_definitions(appInteract2

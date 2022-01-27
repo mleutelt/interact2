@@ -26,8 +26,6 @@ PObject {
 
             onBeginContact: other => container.beginContact(other)
             onEndContact: other => container.endContact(other)
-
-            Component.onCompleted: console.log("poly fixture created from points:", modelData)
         }
 
         onObjectAdded: (index, object) => container.body.addFixture(object)
@@ -75,10 +73,11 @@ PObject {
 
         TapHandler {
             enabled: container.clickEnabled
+            acceptedButtons: Qt.LeftButton | Qt.MiddleButton | Qt.RightButton
 
-            onTapped: {
+            onTapped: (eventPoint, button) => {
                 if (container.clickHandler && typeof container.clickHandler === "function")
-                    container.clickHandler(index)
+                    container.clickHandler(index, button)
             }
         }
 

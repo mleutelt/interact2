@@ -4,12 +4,13 @@
 
 #include <QDir>
 #include <QStandardPaths>
+#include <QQuickItemGrabResult>
 #include <QLoggingCategory>
 
 Q_LOGGING_CATEGORY(editor, "app.editor")
 
 Editor::Editor(QObject *parent)
-  : QObject { parent }
+  : ILevelManager { parent }
   , m_levelData { new LevelDataModel(this) }
 {
   connect(this, &Editor::currentShapeChanged, this, [this]() {
@@ -85,36 +86,11 @@ void Editor::saveLevel(const QString &name, QQuickItemGrabResult *screenshot)
   emit levelSavedSuccessfully();
 }
 
-void Editor::reset()
+void Editor::resetLevel()
 {
   m_levelData->clear();
   setCurrentShape(Constants::ShapeType_Circle);
   setCurrentEditOperation(EditOperationType_Draw);
-}
-
-void Editor::addSimpleObject(int type, const QRectF &boundingRect, bool isStatic, int rotation) const
-{
-  m_levelData->addSimpleObject(type, boundingRect, isStatic, rotation);
-}
-
-void Editor::addPolygonObject(int type, const OptimizerResult &optimizerResult, bool isStatic, int rotation) const
-{
-  if (optimizerResult.originalPoints.count() > 2) {
-    if (optimizerResult.isLine) {
-      m_levelData->addLineObject(Constants::ShapeType_Line, optimizerResult.originalPoints, optimizerResult.optimizedPoints,
-                                 isStatic, rotation);
-    } else {
-      m_levelData->addPolygonObject(Constants::ShapeType_Polygon, optimizerResult.originalPoints, optimizerResult.optimizedPoints,
-                                    isStatic, rotation);
-    }
-  } else {
-    qCDebug(editor) << "ignoring input, not enough points";
-  }
-}
-
-void Editor::removeObject(int index) const
-{
-  m_levelData->removeObject(index);
 }
 
 LevelDataModel *Editor::levelData() const
