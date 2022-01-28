@@ -158,10 +158,13 @@ target_link_libraries(${plugin_name}
     Qt6::Quick
 )
 
-set(plugin_deployment_dir ${qml_plugins_deployment_dir}/Box2D)
+# NOTE: deploy plugin to plugins directory for non-iOS builds
+if(NOT IOS)
+    set(plugin_deployment_dir ${qml_plugins_deployment_dir}/Box2D)
 
-add_custom_command(TARGET ${plugin_name} POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E make_directory ${plugin_deployment_dir}
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:${plugin_name}> ${plugin_deployment_dir}
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different qmldir ${plugin_deployment_dir}
-)
+    add_custom_command(TARGET ${plugin_name} POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E make_directory ${plugin_deployment_dir}
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:${plugin_name}> ${plugin_deployment_dir}
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different qmldir ${plugin_deployment_dir}
+    )
+endif()

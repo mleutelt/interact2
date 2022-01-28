@@ -1,5 +1,6 @@
 #include "app.h"
 
+#include <QGuiApplication>
 #include <QLoggingCategory>
 
 Q_LOGGING_CATEGORY(app, "app")
@@ -58,4 +59,13 @@ void App::setDebugBox2d(bool flag)
 
   m_debugBox2d = flag;
   emit debugBox2dChanged();
+}
+
+QString App::musicPath() const
+{
+#if defined(Q_OS_IOS)
+  return QString("file://%1/").arg(qGuiApp->applicationDirPath());
+#else
+  return QString("file://%1/%2/").arg(qGuiApp->applicationDirPath()).arg("music");
+#endif
 }

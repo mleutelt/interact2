@@ -1,18 +1,5 @@
 <RCC>
     <qresource prefix="/">
-        <file>music/Lullaby.mp3</file>
-        <file>backgrounds/clouds.png</file>
-        <file>backgrounds/diver.png</file>
-        <file>backgrounds/iceberg.png</file>
-        <file>backgrounds/kariertesblatt.png</file>
-        <file>backgrounds/marsrover.png</file>
-        <file>backgrounds/Nasentierlandschaft.png</file>
-        <file>backgrounds/paper1.png</file>
-        <file>backgrounds/paper2.png</file>
-        <file>backgrounds/paper3.png</file>
-        <file>backgrounds/paper4.png</file>
-        <file>backgrounds/penguins.png</file>
-        <file>images/coil.png</file>
         <file>sounds/attention-bell-ding.wav</file>
         <file>sounds/ball-bouncing.wav</file>
         <file>sounds/kling.wav</file>

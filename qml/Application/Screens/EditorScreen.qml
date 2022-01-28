@@ -449,7 +449,8 @@ Page {
                     view.cellHeight: 48
                     view.cellWidth: view.width
                     view.model: FolderListModel {
-                        folder: "qrc:/music"
+                        folder: App.musicPath
+                        nameFilters: [ "*.mp3" ]
                     }
                     view.delegate: CheckDelegate {
                         implicitWidth: GridView.view.cellWidth
@@ -459,7 +460,7 @@ Page {
 
                         onToggled: {
                             if (checked) {
-                                App.editor.levelData.music = "qrc" + model.filePath
+                                App.editor.levelData.music = model.filePath
                                 musicSelection.selectedMusic = model.fileBaseName
                             } else {
                                 App.editor.levelData.music = ""

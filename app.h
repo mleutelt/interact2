@@ -13,6 +13,7 @@ class App : public QObject
   Q_PROPERTY(LevelHandler *levelHandler READ levelHandler CONSTANT)
   Q_PROPERTY(bool debugBoundingBoxes READ debugBoundingBoxes WRITE setDebugBoundingBoxes NOTIFY debugBoundingBoxesChanged)
   Q_PROPERTY(bool debugBox2d READ debugBox2d WRITE setDebugBox2d NOTIFY debugBox2dChanged)
+  Q_PROPERTY(QString musicPath READ musicPath CONSTANT)
   QML_ELEMENT
   QML_SINGLETON
 
@@ -27,6 +28,8 @@ public:
 
   bool debugBox2d() const;
   void setDebugBox2d(bool flag);
+
+  QString musicPath() const;
 
 signals:
   void debugBoundingBoxesChanged();

@@ -6,6 +6,12 @@
 #include <QTranslator>
 #include <QSurfaceFormat>
 
+#if defined(Q_OS_IOS)
+#include <QtQml/qqmlextensionplugin.h>
+
+Q_IMPORT_QML_PLUGIN(Box2DPlugin)
+#endif
+
 int main(int argc, char *argv[])
 {
   QGuiApplication::setOrganizationName(u"Wurstcrew"_qs);

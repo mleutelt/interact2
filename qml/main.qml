@@ -10,6 +10,10 @@ ApplicationWindow {
     title: Application.name
     minimumHeight: Style.application.minimumWindowSize.height
     minimumWidth: Style.application.minimumWindowSize.width
+    height: Style.application.preferredWindowSize.height
+    width: Style.application.preferredWindowSize.width
+    flags: Style.application.windowFlags
+    visibility: Style.application.windowVisibility
     visible: true
 
     Shortcut {

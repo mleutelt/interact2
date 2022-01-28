@@ -14,17 +14,54 @@ find_package(Qt6 6.2
     REQUIRED
 )
 
-qt_add_big_resources(LARGE_RESOURCES
+qt_add_resources(RESOURCES
+    resources/resources.qrc
     resources/resources_media.qrc
 )
 
-qt_add_resources(RESOURCES resources/resources.qrc)
-
-qt_add_executable(${PROJECT_NAME}
-    main.cpp
-    ${RESOURCES}
-    ${LARGE_RESOURCES}
+# NOTE: for some reason qt_add_big_resources causes compile errors on iOS,
+# so we're deploying bigger files manually
+set(music_files
+    ${CMAKE_CURRENT_SOURCE_DIR}/resources/music/Lullaby.mp3
 )
+
+if(IOS)
+    qt_add_executable(${PROJECT_NAME}
+        main.cpp
+        ${RESOURCES}
+        ${music_files}
+    )
+
+    # NOTE: on iOS we're linking the plugin statically into the app
+    target_link_libraries(${PROJECT_NAME}
+        PRIVATE
+        Qt6::Quick
+        Qt6::Multimedia
+        box2dplugin
+    )
+
+    set_target_properties(${PROJECT_NAME} PROPERTIES
+        RESOURCE "${music_files}"
+    )
+else()
+    qt_add_executable(${PROJECT_NAME}
+        main.cpp
+        ${RESOURCES}
+    )
+
+    target_link_libraries(${PROJECT_NAME}
+        PRIVATE
+        Qt6::Quick
+        Qt6::Multimedia
+    )
+
+    set(music_deployment_dir $<TARGET_FILE_DIR:${PROJECT_NAME}>/music)
+
+    add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E make_directory ${music_deployment_dir}
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different ${music_files} ${music_deployment_dir}
+    )
+endif()
 
 set_target_properties(${PROJECT_NAME} PROPERTIES
     WIN32_EXECUTABLE TRUE
@@ -34,12 +71,6 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
 target_compile_definitions(${PROJECT_NAME}
     PRIVATE $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:QT_QML_DEBUG>
     APPLICATION_VERSION=\"${PROJECT_VERSION}\"
-)
-
-target_link_libraries(${PROJECT_NAME}
-    PRIVATE
-    Qt6::Quick
-    Qt6::Multimedia
 )
 
 set_source_files_properties(
