@@ -5,6 +5,8 @@ project(Interact2 VERSION 0.3 LANGUAGES CXX)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+set(qml_plugins_deployment_dir $<TARGET_FILE_DIR:${PROJECT_NAME}>/qml)
+
 find_package(Qt6 6.2
     COMPONENTS
         Quick
@@ -18,23 +20,23 @@ qt_add_big_resources(LARGE_RESOURCES
 
 qt_add_resources(RESOURCES resources/resources.qrc)
 
-qt_add_executable(appInteract2
+qt_add_executable(${PROJECT_NAME}
     main.cpp
     ${RESOURCES}
     ${LARGE_RESOURCES}
 )
 
-set_target_properties(appInteract2 PROPERTIES
+set_target_properties(${PROJECT_NAME} PROPERTIES
     WIN32_EXECUTABLE TRUE
     MACOSX_BUNDLE TRUE
 )
 
-target_compile_definitions(appInteract2
+target_compile_definitions(${PROJECT_NAME}
     PRIVATE $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:QT_QML_DEBUG>
     APPLICATION_VERSION=\"${PROJECT_VERSION}\"
 )
 
-target_link_libraries(appInteract2
+target_link_libraries(${PROJECT_NAME}
     PRIVATE
     Qt6::Quick
     Qt6::Multimedia
@@ -47,7 +49,7 @@ set_source_files_properties(
     PROPERTIES QT_QML_SINGLETON_TYPE true
 )
 
-qt_add_qml_module(appInteract2
+qt_add_qml_module(${PROJECT_NAME}
     URI App
     VERSION 1.0
     QML_FILES
@@ -63,8 +65,6 @@ qt_add_qml_module(appInteract2
         qml/Application/Screens/LevelSelectionScreen.qml
         qml/Application/Screens/CurrentLevelScreen.qml
         qml/Application/Levels/Level.qml
-        # FIXME: ideally the physics objects should be put into another importable module
-        # to allow namespaced imports in qml
         qml/Application/PhysicsObjects/PObject.qml
         qml/Application/PhysicsObjects/PRectangle.qml
         qml/Application/PhysicsObjects/PPolygon.qml
@@ -114,3 +114,5 @@ qt_add_qml_module(appInteract2
 #        MACOSX_BUNDLE_INFO_PLIST ${CMAKE_SOURCE_DIR}/cmake/customtemplate.plist.in
 #    )
 #endif()
+
+add_subdirectory(3rdparty)
