@@ -7,8 +7,7 @@
  *
  */
 
-#ifndef CONCAVECHOPPER_H
-#define CONCAVECHOPPER_H
+#pragma once
 
 #include <QPointF>
 #include <QList>
@@ -18,62 +17,16 @@ class ConcaveChopper
 {
 
 public:
-  /** Constructor.
-
- @param vertices a vector with an objects vertices.
- */
-  ConcaveChopper(QList<QPointF> *vertices);
-
-  /// Destructor.
-  ~ConcaveChopper();
-
-  /**
- @return true if the polygon is NOT simple, otherwise false.
- */
-
-  inline bool isSimplePolygon()
-  {
-    return m_IsSimplePolygon;
-  }
-
-  /** Checks if a given line has any intersection.
-
- If an intersection is found, the method returns.
- The polygon is then not simple and is converted to a closed line.
-
- @return a vector containing either the original vertices or the triangulated polygon.
- */
-
-  QList<QPointF> *checkAllIntersections();
-
-private:
-  QPointF *calculateLineIntersection(const QPointF *one, const QPointF *two, const QPointF *three, const QPointF *four);
-
-  void addIntersections(int indexOfStartQPointF);
-
-  void collectSimplePolygon(int index);
-
-  bool findIntersection();
-
-  // QPointF *leftmostIntersection, *rightmostIntersection;
-
-  QList<QPointF> *resultVector, *simplePolygon, *originalQPointFVector, *newQPointFVector;
-
   // triangulate a contour/polygon, places results in STL vector
   // as series of triangles.
-  static bool process(QList<QPointF> *contour, QList<QPointF> *result);
+  static QList<QPointF> triangulate(QList<QPointF> &contour);
 
   // compute area of a contour/polygon
-  static float area(QList<QPointF> *contour);
+  static float area(const QList<QPointF> &contour);
 
   // decide if point Px/Py is inside triangle defined by
   // (Ax,Ay) (Bx,By) (Cx,Cy)
   static bool insideTriangle(float Ax, float Ay, float Bx, float By, float Cx, float Cy, float Px, float Py);
 
-  static bool snip(QList<QPointF> *contour, int u, int v, int w, int n, int *V);
-
-  // member variables
-  bool m_IsSimplePolygon;
+  static bool snip(QList<QPointF> &contour, int u, int v, int w, int n, int *V);
 };
-
-#endif // CONCAVECHOPPER_H

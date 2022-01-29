@@ -81,11 +81,11 @@ void LevelDataModel::addSimpleObject(int type, const QRectF &boundingRect, bool 
   endInsertRows();
 }
 
-void LevelDataModel::addPolygonObject(int type, const QPolygonF &originalPoints, const QList<QPolygonF> &optimizedPoints,
+void LevelDataModel::addPolygonObject(int type, const QPolygonF &originalPoints, const QList<QVariantList> &optimizedPoints,
                                       bool isStatic)
 {
   ObjectDescription objectDescription = {
-    type, originalPoints.boundingRect(), originalPoints, polygonListToVariantList(optimizedPoints), isStatic,
+    type, originalPoints.boundingRect(), originalPoints, optimizedPoints, isStatic,
   };
 
   qCDebug(lvldm) << "adding polygon object" << objectDescription << m_objects.count();
@@ -95,10 +95,10 @@ void LevelDataModel::addPolygonObject(int type, const QPolygonF &originalPoints,
   endInsertRows();
 }
 
-void LevelDataModel::addLineObject(int type, const QPolygonF &originalPoints, const QList<QPolygonF> &lineSegments, bool isStatic)
+void LevelDataModel::addLineObject(int type, const QPolygonF &originalPoints, const QList<QVariantList> &lineSegments, bool isStatic)
 {
   ObjectDescription objectDescription = {
-    type, originalPoints.boundingRect(), originalPoints, polygonListToVariantList(lineSegments), isStatic,
+    type, originalPoints.boundingRect(), originalPoints, lineSegments, isStatic,
   };
 
   qCDebug(lvldm) << "adding line object" << objectDescription << m_objects.count();
@@ -143,24 +143,6 @@ void LevelDataModel::setName(const QString &name)
 
   m_name = name;
   emit nameChanged();
-}
-
-QList<QVariantList> LevelDataModel::polygonListToVariantList(const QList<QPolygonF> &list) const
-{
-  // NOTE: convert to list of QVariantLists, each QVariantList representing a triangle (in case of a object being
-  // a closed polygon) created by triangulation or a rectangle (in case of a self-intersecting line) created by
-  // line segmentation.
-  // FIXME: move this code somewhere else
-  QList<QVariantList> result;
-  for (const QPolygonF &polygon : list) {
-    QVariantList pointList;
-    for (const QPointF &point : polygon) {
-      pointList << point;
-    }
-    result << pointList;
-  }
-
-  return result;
 }
 
 QUrl LevelDataModel::backgroundImage() const

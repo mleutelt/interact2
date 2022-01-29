@@ -35,8 +35,8 @@ public:
   void setLevelData(const LevelData &data);
 
   void addSimpleObject(int type, const QRectF &boundingRect, bool isStatic);
-  void addPolygonObject(int type, const QPolygonF &originalPoints, const QList<QPolygonF> &optimizedPoints, bool isStatic);
-  void addLineObject(int type, const QPolygonF &originalPoints, const QList<QPolygonF> &lineSegments, bool isStatic);
+  void addPolygonObject(int type, const QPolygonF &originalPoints, const QList<QVariantList> &optimizedPoints, bool isStatic);
+  void addLineObject(int type, const QPolygonF &originalPoints, const QList<QVariantList> &lineSegments, bool isStatic);
   void removeObject(int index);
   void clear();
   QList<ObjectDescription> objects() const;
@@ -54,7 +54,6 @@ signals:
 
 private:
   void setName(const QString &name);
-  QList<QVariantList> polygonListToVariantList(const QList<QPolygonF> &list) const;
 
   QList<ObjectDescription> m_objects;
   QString m_name;
