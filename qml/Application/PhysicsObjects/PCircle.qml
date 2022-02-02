@@ -1,5 +1,6 @@
 import QtQuick
 import QtQuick.Shapes
+import Qt5Compat.GraphicalEffects
 
 import Box2D as B2D
 
@@ -19,7 +20,7 @@ PObject {
     physicalObject: B2D.Circle {
         id: circle
 
-        radius: roundRectangle.radius
+        radius: fakeCircle.radius
         density: 1
         friction: 0.5
         restitution: 0.3
@@ -27,18 +28,34 @@ PObject {
         onBeginContact: other => container.beginContact(other)
         onEndContact: other => container.endContact(other)
     }
-    visualItem: Rectangle {
+    visualItem: Item {
         id: roundRectangle
 
         anchors.fill: parent
-        antialiasing: true
-        radius: container.width / 2
-        color: container.itemColor
-        border.color: container.hovered ? "red" : "transparent"
-        border.width: container.hovered ? 2 : 0
         containmentMask: QtObject {
             function contains(point: point) : bool {
-                return (Math.pow(point.x - roundRectangle.radius, 2) + Math.pow(point.y - roundRectangle.radius, 2)) < Math.pow(roundRectangle.radius, 2)
+                return (Math.pow(point.x - fakeCircle.radius, 2) + Math.pow(point.y - fakeCircle.radius, 2)) < Math.pow(fakeCircle.radius, 2)
+            }
+        }
+
+        Rectangle {
+            id: fakeCircle
+            anchors.fill: parent
+            antialiasing: true
+            radius: container.width / 2
+            color: container.itemColor
+            border.color: container.hovered ? "red" : "transparent"
+            border.width: container.hovered ? 2 : 0
+        }
+
+        RadialGradient {
+            source: fakeCircle
+            cached: true
+            visible: container.isGameItem
+            anchors.fill: parent
+            gradient: Gradient {
+                GradientStop { position: 0.0; color: "#00000000" }
+                GradientStop { position: 1.0; color: "#FF000000" }
             }
         }
 
@@ -59,7 +76,7 @@ PObject {
 
             onTapped: (eventPoint, button) => {
                 if (container.clickHandler && typeof container.clickHandler === "function")
-                    container.clickHandler(index, button)
+                    container.clickHandler(container, index, button)
             }
         }
 

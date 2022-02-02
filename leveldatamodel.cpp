@@ -35,6 +35,10 @@ QVariant LevelDataModel::data(const QModelIndex &index, int role) const
     return data.polygon;
   case Points:
     return QVariant::fromValue(data.points);
+  case Invisible:
+    return data.invisible;
+  case GameItem:
+    return data.gameItem;
   }
 
   return QVariant();
@@ -48,6 +52,8 @@ QHash<int, QByteArray> LevelDataModel::roleNames() const
   roles[Static] = "static";
   roles[Polygon] = "polygon";
   roles[Points] = "points";
+  roles[Invisible] = "invisible";
+  roles[GameItem] = "gameItem";
 
   return roles;
 }
@@ -68,10 +74,10 @@ void LevelDataModel::setLevelData(const LevelData &data)
   endResetModel();
 }
 
-void LevelDataModel::addSimpleObject(int type, const QRectF &boundingRect, bool isStatic)
+void LevelDataModel::addSimpleObject(int type, const QRectF &boundingRect, bool isStatic, bool invisible, bool gameItem)
 {
   ObjectDescription objectDescription = {
-    type, boundingRect, {}, {}, isStatic,
+    type, boundingRect, {}, {}, isStatic, invisible, gameItem,
   };
 
   qCDebug(lvldm) << "adding simple object" << objectDescription << m_objects.count();
@@ -82,10 +88,10 @@ void LevelDataModel::addSimpleObject(int type, const QRectF &boundingRect, bool 
 }
 
 void LevelDataModel::addPolygonObject(int type, const QPolygonF &originalPoints, const QList<QVariantList> &optimizedPoints,
-                                      bool isStatic)
+                                      bool isStatic, bool invisible, bool gameItem)
 {
   ObjectDescription objectDescription = {
-    type, originalPoints.boundingRect(), originalPoints, optimizedPoints, isStatic,
+    type, originalPoints.boundingRect(), originalPoints, optimizedPoints, isStatic, invisible, gameItem,
   };
 
   qCDebug(lvldm) << "adding polygon object" << objectDescription << m_objects.count();
@@ -95,10 +101,11 @@ void LevelDataModel::addPolygonObject(int type, const QPolygonF &originalPoints,
   endInsertRows();
 }
 
-void LevelDataModel::addLineObject(int type, const QPolygonF &originalPoints, const QList<QVariantList> &lineSegments, bool isStatic)
+void LevelDataModel::addLineObject(int type, const QPolygonF &originalPoints, const QList<QVariantList> &lineSegments,
+                                   bool isStatic, bool invisible, bool gameItem)
 {
   ObjectDescription objectDescription = {
-    type, originalPoints.boundingRect(), originalPoints, lineSegments, isStatic,
+    type, originalPoints.boundingRect(), originalPoints, lineSegments, isStatic, invisible, gameItem,
   };
 
   qCDebug(lvldm) << "adding line object" << objectDescription << m_objects.count();

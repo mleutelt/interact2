@@ -16,15 +16,18 @@ public:
   explicit LevelInteractor(QObject *parent = nullptr);
 
   ILevelManager *levelManager() const;
-  void setLevelManager(ILevelManager *manager);
 
-  Q_INVOKABLE void addSimpleObject(int type, const QRectF &boundingRect, bool isStatic = false) const;
-  Q_INVOKABLE void addPolygonObject(int type, const OptimizerResult &optimizerResult, bool isStatic = false) const;
+  Q_INVOKABLE void addSimpleObject(int type, const QRectF &boundingRect, bool isStatic = false, bool invisible = false,
+                                   bool gameItem = false) const;
+  Q_INVOKABLE void addPolygonObject(int type, const OptimizerResult &optimizerResult, bool isStatic = false,
+                                    bool invisible = false, bool gameItem = false) const;
   Q_INVOKABLE void removeObject(int index) const;
 
 signals:
   void levelManagerChanged();
 
 private:
+  void setLevelManager(ILevelManager *manager);
+
   ILevelManager *m_levelManager = nullptr;
 };

@@ -4,7 +4,8 @@
 
 Q_LOGGING_CATEGORY(lvlm, "app.models.levelmodel")
 
-LevelModel::LevelModel(QObject *parent) : QAbstractListModel { parent }
+LevelModel::LevelModel(QObject *parent)
+  : QAbstractListModel { parent }
 {
 }
 
@@ -56,4 +57,20 @@ void LevelModel::clear()
   beginResetModel();
   m_data.clear();
   endResetModel();
+}
+
+LevelDescription LevelModel::levelAtIndex(int index) const
+{
+  return m_data.at(index);
+}
+
+int LevelModel::indexOf(const QString &name) const
+{
+  for (int index = 0; index < m_data.count(); index++) {
+    if (m_data.at(index).name == name) {
+      return index;
+    }
+  }
+
+  return -1;
 }

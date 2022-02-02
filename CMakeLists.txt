@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 
-project(Interact2 VERSION 0.3 LANGUAGES CXX)
+project(Interact2 VERSION 0.4.0 LANGUAGES CXX)
 
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -10,7 +10,9 @@ set(qml_plugins_deployment_dir $<TARGET_FILE_DIR:${PROJECT_NAME}>/qml)
 find_package(Qt6 6.2
     COMPONENTS
         Quick
+        Widgets
         Multimedia
+        ShaderTools
     REQUIRED
 )
 
@@ -36,6 +38,7 @@ if(IOS)
     target_link_libraries(${PROJECT_NAME}
         PRIVATE
         Qt6::Quick
+        Qt6::Widgets
         Qt6::Multimedia
         box2dplugin
     )
@@ -52,6 +55,7 @@ else()
     target_link_libraries(${PROJECT_NAME}
         PRIVATE
         Qt6::Quick
+        Qt6::Widgets
         Qt6::Multimedia
     )
 
@@ -62,6 +66,13 @@ else()
         COMMAND ${CMAKE_COMMAND} -E copy_if_different ${music_files} ${music_deployment_dir}
     )
 endif()
+
+qt_add_shaders(${PROJECT_NAME} "shaders"
+    PREFIX "/"
+    FILES
+        resources/shaders/vertex.vert
+        resources/shaders/fragment.frag
+)
 
 set_target_properties(${PROJECT_NAME} PROPERTIES
     WIN32_EXECUTABLE TRUE

@@ -37,6 +37,8 @@ public:
 
   void addLevel(const LevelDescription &level);
   void clear();
+  LevelDescription levelAtIndex(int index) const;
+  int indexOf(const QString &name) const;
 
 private:
   QList<LevelDescription> m_data;

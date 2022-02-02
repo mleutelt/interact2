@@ -27,6 +27,8 @@ signals:
   void levelSavedSuccessfully();
   void levelLoadedSuccessfully();
   void levelDataChanged();
+  void nextLevelAvailable(const QString &path);
+  void nextLevelNotAvailable();
 };
 
 Q_DECLARE_INTERFACE(ILevelManager, "org.Wurstcrew.ILevelManager")

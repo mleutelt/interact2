@@ -26,20 +26,21 @@ void LevelInteractor::setLevelManager(ILevelManager *manager)
   emit levelManagerChanged();
 }
 
-void LevelInteractor::addSimpleObject(int type, const QRectF &boundingRect, bool isStatic) const
+void LevelInteractor::addSimpleObject(int type, const QRectF &boundingRect, bool isStatic, bool invisible, bool gameItem) const
 {
-  m_levelManager->levelData()->addSimpleObject(type, boundingRect, isStatic);
+  m_levelManager->levelData()->addSimpleObject(type, boundingRect, isStatic, invisible, gameItem);
 }
 
-void LevelInteractor::addPolygonObject(int type, const OptimizerResult &optimizerResult, bool isStatic) const
+void LevelInteractor::addPolygonObject(int type, const OptimizerResult &optimizerResult, bool isStatic, bool invisible,
+                                       bool gameItem) const
 {
   if (optimizerResult.originalPoints.count() > 2) {
     if (optimizerResult.isLine) {
       m_levelManager->levelData()->addLineObject(Constants::ShapeType_Line, optimizerResult.originalPoints,
-                                                 optimizerResult.optimizedPoints, isStatic);
+                                                 optimizerResult.optimizedPoints, isStatic, invisible, gameItem);
     } else {
       m_levelManager->levelData()->addPolygonObject(Constants::ShapeType_Polygon, optimizerResult.originalPoints,
-                                                    optimizerResult.optimizedPoints, isStatic);
+                                                    optimizerResult.optimizedPoints, isStatic, invisible, gameItem);
     }
   } else {
     qCDebug(lvlia) << "ignoring input, not enough points";

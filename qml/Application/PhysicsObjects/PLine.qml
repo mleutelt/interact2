@@ -91,7 +91,7 @@ PObject {
 
             onWheel: event => {
                 if (container.wheelHandler && typeof container.wheelHandler === "function")
-                    container.wheelHandler(container, event, wheelHandler)
+                    container.wheelHandler(container, container, event, wheelHandler)
             }
         }
 

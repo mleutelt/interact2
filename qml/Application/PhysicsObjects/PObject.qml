@@ -23,6 +23,10 @@ Rectangle {
     property alias visualItem: childContainer.children
     property bool soundsEnabled: true
     property bool showBoundingBox: false
+    property var contactHandler
+    property bool isGameItem: false
+    property bool isGoalItem: false
+    property bool invisible: false
 
     property alias physicalObject: body.fixtures
     property Body body: Body {
@@ -49,8 +53,8 @@ Rectangle {
     signal beginContact(other: Fixture)
     signal endContact(other: Fixture)
 
-    color: App.debugBoundingBoxes || showBoundingBox ? "red" : "transparent"
-    opacity: App.debugBoundingBoxes || showBoundingBox ? 0.5 : 1
+    color: App.debugMode || showBoundingBox ? "red" : "transparent"
+    opacity: App.debugMode || showBoundingBox ? 0.5 : 1
 
     implicitWidth: childContainer.childrenRect.width
     implicitHeight: childContainer.childrenRect.height
@@ -61,12 +65,36 @@ Rectangle {
         anchors.fill: parent
     }
 
+    Column {
+        anchors.centerIn: parent
+        visible: App.debugMode
+        rotation: -container.rotation
+
+        Text {
+            font.pixelSize: 8
+            text: "game item:" + container.isGameItem
+        }
+        Text {
+            font.pixelSize: 8
+            text: "goal item:" + container.isGoalItem
+        }
+        Text {
+            font.pixelSize: 8
+            text: "sounds:" + container.soundsEnabled
+        }
+        Text {
+            font.pixelSize: 8
+            text: "interactive:" + container.interactive
+        }
+    }
+
+    onBeginContact: other => {
+        if (container.contactHandler && typeof container.contactHandler === "function")
+            container.contactHandler(container, other.getBody().target)
+    }
+
     Component.onCompleted: {
         if (soundsEnabled)
             Sound.playSound(Sound.Plopp)
-    }
-    Component.onDestruction: {
-        if (soundsEnabled)
-            Sound.playSound(Sound.PaperCrumple)
     }
 }

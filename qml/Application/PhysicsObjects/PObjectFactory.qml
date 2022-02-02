@@ -11,7 +11,7 @@ Instantiator {
     required property Item level
     required property World world
     property bool clickEnabled: false
-    property var clickHandler: function(index, button) {}
+    property var clickHandler: function(item, index, button) {}
     property bool hoverEnabled: false
     property var hoverHandler: function(item, hovered) {}
     property bool dragEnabled: false
@@ -20,10 +20,13 @@ Instantiator {
     property var wheelHandler: function(item, event, handler) {}
     property bool pinchEnabled: false
     property var pinchHandler: function(item) {}
+    property var contactHandler: function(item, otherItem) {}
+
     property LoggingCategory log: LoggingCategory {
         name: "app.qml.physicsobjectfactory"
     }
 
+    asynchronous: true
     model: []
     delegate: DelegateChooser {
         role: "type"
@@ -46,11 +49,14 @@ Instantiator {
                 wheelHandler: factory.wheelHandler
                 pinchEnabled: factory.pinchEnabled
                 pinchHandler: factory.pinchHandler
+                contactHandler: factory.contactHandler
+                isGameItem: model.gameItem
                 x: model.boundingBox.x
                 y: model.boundingBox.y
                 width: Math.min(model.boundingBox.width, model.boundingBox.height)
                 height: Math.min(model.boundingBox.height, model.boundingBox.width)
-                itemColor: Qt.rgba(Math.random(), Math.random(), Math.random())
+                invisible: model.invisible
+                itemColor: model.invisible ? "transparent" : Qt.rgba(Math.random(), Math.random(), Math.random())
 
                 Component.onCompleted: console.log(log, "Circle created")
             }
@@ -73,11 +79,14 @@ Instantiator {
                 wheelHandler: factory.wheelHandler
                 pinchEnabled: factory.pinchEnabled
                 pinchHandler: factory.pinchHandler
+                contactHandler: factory.contactHandler
+                isGameItem: model.gameItem
                 x: model.boundingBox.x
                 y: model.boundingBox.y
                 width: model.boundingBox.width
                 height: model.boundingBox.height
-                itemColor: Qt.rgba(Math.random(), Math.random(), Math.random())
+                invisible: model.invisible
+                itemColor: model.invisible ? "transparent" : Qt.rgba(Math.random(), Math.random(), Math.random())
 
                 Component.onCompleted: console.log(log, "Rectangle created")
             }
@@ -100,9 +109,12 @@ Instantiator {
                 wheelHandler: factory.wheelHandler
                 pinchEnabled: factory.pinchEnabled
                 pinchHandler: factory.pinchHandler
+                contactHandler: factory.contactHandler
+                isGameItem: model.gameItem
                 width: model.boundingBox.width
                 height: model.boundingBox.height
-                itemColor: Qt.rgba(Math.random(), Math.random(), Math.random())
+                invisible: model.invisible
+                itemColor: model.invisible ? "transparent" : t.rgba(Math.random(), Math.random(), Math.random())
 
                 Component.onCompleted: console.log(log, "Polygon created")
             }
@@ -125,9 +137,12 @@ Instantiator {
                 wheelHandler: factory.wheelHandler
                 pinchEnabled: factory.pinchEnabled
                 pinchHandler: factory.pinchHandler
+                contactHandler: factory.contactHandler
+                isGameItem: model.gameItem
                 width: model.boundingBox.width
                 height: model.boundingBox.height
-                itemColor: Qt.rgba(Math.random(), Math.random(), Math.random())
+                invisible: model.invisible
+                itemColor: model.invisible ? "transparent" : Qt.rgba(Math.random(), Math.random(), Math.random())
 
                 Component.onCompleted: console.log(log, "Line created")
             }
@@ -150,6 +165,7 @@ Instantiator {
                 wheelHandler: factory.wheelHandler
                 pinchEnabled: factory.pinchEnabled
                 pinchHandler: factory.pinchHandler
+                contactHandler: factory.contactHandler
                 x: model.boundingBox.x
                 y: model.boundingBox.y
                 width: Math.min(model.boundingBox.width, model.boundingBox.height)

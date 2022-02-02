@@ -8,14 +8,6 @@ import Box2D
 Page {
     id: container
 
-    function spawnBall(position, size) {
-        var newBall = ball.createObject(level)
-        newBall.width = size.width
-        newBall.height = newBall.width
-        newBall.x = position.x
-        newBall.y = position.y
-    }
-
     Component {
         id: ball
 
@@ -32,7 +24,12 @@ Page {
     MouseArea {
         anchors.fill: parent
 
-        onClicked: spawnBall(Qt.point(mouseX - 15, mouseY - 15), Qt.size(30, 30))
+        onClicked: ball.createObject(level, {
+                                         x: mouseX - 15,
+                                         y: mouseY - 15,
+                                         width: 30,
+                                         height: 30
+                                     })
     }
 
     Level {
@@ -58,12 +55,16 @@ Page {
             y: title.y
             width: 50
             height: 50
+            soundsEnabled: false
+
+            onBeginContact: Sound.playSound(Sound.Bell)
         }
 
         PRectangle {
             id: startButton
 
             anchors.centerIn: parent
+            soundsEnabled: false
             itemColor: Qt.rgba(Math.random(), Math.random(), Math.random())
 
             visualItem: Button {
@@ -72,8 +73,8 @@ Page {
 
                 onClicked: Screens.show(Screens.LevelSelection, {
                                             levelSelectionHandler: (path) => {
-                                                App.levelHandler.loadLevel(path)
                                                 Screens.show(Screens.CurrentLevel)
+                                                App.levelHandler.loadLevel(path)
                                             }
                                         })
             }
@@ -85,6 +86,7 @@ Page {
             anchors.top: startButton.bottom
             anchors.topMargin: 20
             anchors.horizontalCenter: startButton.horizontalCenter
+            soundsEnabled: false
             itemColor: Qt.rgba(Math.random(), Math.random(), Math.random())
 
             visualItem: Button {
@@ -104,7 +106,13 @@ Page {
             var size = Qt.size(width, width)
             var position = Qt.point(ApplicationWindow.window.width / 2 + width * Math.random(), -size.height)
 
-            spawnBall(position, size)
+            ball.createObject(level, {
+                                  width: size.width,
+                                  height: size.height,
+                                  x: position.x,
+                                  y: position.y,
+                                  soundsEnabled: false,
+                              })
         }
     }
 }

@@ -77,7 +77,7 @@ PObject {
 
             onTapped: (eventPoint, button) => {
                 if (container.clickHandler && typeof container.clickHandler === "function")
-                    container.clickHandler(index, button)
+                    container.clickHandler(container, index, button)
             }
         }
 

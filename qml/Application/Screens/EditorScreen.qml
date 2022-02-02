@@ -4,6 +4,7 @@ import QtQuick.Controls.Material
 import QtQuick.Controls.Material.impl
 import QtQuick.Layouts
 import Qt.labs.folderlistmodel
+import Qt.labs.platform
 
 import App
 
@@ -103,7 +104,9 @@ Page {
                     if (drawingRectangle.width > minimalObjectSize.width && drawingRectangle.height > minimalObjectSize.height) {
                         levelInteractor.addSimpleObject(App.editor.currentShape,
                                                         Qt.rect(drawingRectangle.x, drawingRectangle.y, drawingRectangle.width, drawingRectangle.height),
-                                                        objectBehaviorButton.checked)
+                                                        objectBehaviorButton.checked,
+                                                        objectVisibilityButton.checked,
+                                                        gameItemButton.checked)
                     }
 
                     break
@@ -111,7 +114,9 @@ Page {
                     canvas.clear()
                     levelInteractor.addPolygonObject(App.editor.currentShape,
                                                      PhysicsObjectOptimizer.determineAndOptimizeObject(pointBuffer),
-                                                     objectBehaviorButton.checked)
+                                                     objectBehaviorButton.checked,
+                                                     objectVisibilityButton.checked,
+                                                     gameItemButton.checked)
                     pointBuffer = []
                     break
                 }
@@ -142,7 +147,10 @@ Page {
         objectFactory.model: App.editor.levelData
         // allows to filter clicks on items
         objectFactory.clickEnabled: App.editor.currentEditOperation === Editor.EditOperationType_Delete
-        objectFactory.clickHandler: (index) => levelInteractor.removeObject(index)
+        objectFactory.clickHandler: function(item, index) {
+            levelInteractor.removeObject(index)
+            Sound.playSound(Sound.PaperCrumple)
+        }
         // allows to control the hover state of each item based on which editor mode
         // we're currently in
         objectFactory.hoverEnabled: App.editor.currentEditOperation === Editor.EditOperationType_Delete ||
@@ -166,10 +174,16 @@ Page {
         objectFactory.wheelEnabled: App.editor.currentEditOperation === Editor.EditOperationType_Move
         objectFactory.wheelHandler: function(item, event, handler) {
             // only rotate objects for now, maybe allow changing size?
+            // FIXME: set a fix rotation axis
             handler.property = "rotation"
         }
         // TODO: implement pinch
         objectFactory.pinchHandler: function() {}
+        objectFactory.contactHandler: function(item, otherItem) {
+            if (item.isGameItem && otherItem.isGoalItem) {
+                Sound.playSound(Sound.Bell)
+            }
+        }
     }
 
     Canvas {
@@ -302,6 +316,32 @@ Page {
             }
         }
 
+        RoundButton {
+            id: colorSelectionButton
+
+            ToolTip.visible: hovered
+            ToolTip.text: qsTr("Colors")
+            checkable: true
+            text: "\uf53f"
+
+            onToggled: colorDialog.open()
+
+            ColorDialog {
+                id: colorDialog
+
+                onAccepted: colorSelectionButton.toggle()
+                onRejected: colorSelectionButton.toggle()
+            }
+        }
+
+        RoundButton {
+            id: objectVisibilityButton
+
+            ToolTip.visible: hovered
+            ToolTip.text: qsTr("Object visible/invisible")
+            checkable: true
+            text: checked ? "\uf070" : "\uf06e"
+        }
 
         RoundButton {
             id: objectBehaviorButton
@@ -310,6 +350,15 @@ Page {
             ToolTip.text: qsTr("Static/dynamic object mode")
             checkable: true
             text: checked ? "\uf78c" : "\uf31e"
+        }
+
+        RoundButton {
+            id: gameItemButton
+
+            ToolTip.visible: hovered
+            ToolTip.text: qsTr("Game/normal item mode")
+            checkable: true
+            text: checked ? "\uf5a2" : "\uf45f"
         }
 
         RoundButton {
@@ -451,6 +500,7 @@ Page {
                     view.model: FolderListModel {
                         folder: App.musicPath
                         nameFilters: [ "*.mp3" ]
+                        showDirs: false
                     }
                     view.delegate: CheckDelegate {
                         implicitWidth: GridView.view.cellWidth

@@ -21,6 +21,8 @@ public:
     Static,
     Polygon,
     Points,
+    Invisible,
+    GameItem,
   };
   Q_ENUM(Roles)
 
@@ -34,9 +36,11 @@ public:
 
   void setLevelData(const LevelData &data);
 
-  void addSimpleObject(int type, const QRectF &boundingRect, bool isStatic);
-  void addPolygonObject(int type, const QPolygonF &originalPoints, const QList<QVariantList> &optimizedPoints, bool isStatic);
-  void addLineObject(int type, const QPolygonF &originalPoints, const QList<QVariantList> &lineSegments, bool isStatic);
+  void addSimpleObject(int type, const QRectF &boundingRect, bool isStatic, bool visible, bool gameItem);
+  void addPolygonObject(int type, const QPolygonF &originalPoints, const QList<QVariantList> &optimizedPoints, bool isStatic,
+                        bool visible, bool gameItem);
+  void addLineObject(int type, const QPolygonF &originalPoints, const QList<QVariantList> &lineSegments, bool isStatic,
+                     bool visible, bool gameItem);
   void removeObject(int index);
   void clear();
   QList<ObjectDescription> objects() const;

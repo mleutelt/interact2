@@ -1,6 +1,6 @@
 #include "app.h"
 
-#include <QGuiApplication>
+#include <QApplication>
 #include <QLoggingCategory>
 
 Q_LOGGING_CATEGORY(app, "app")
@@ -21,19 +21,19 @@ LevelHandler *App::levelHandler() const
   return m_levelHandler;
 }
 
-bool App::debugBoundingBoxes() const
+bool App::debugMode() const
 {
-  return m_debugBoundingBoxes;
+  return m_debugMode;
 }
 
-void App::setDebugBoundingBoxes(bool flag)
+void App::setDebugMode(bool flag)
 {
-  if (m_debugBoundingBoxes == flag) {
+  if (m_debugMode == flag) {
     return;
   }
 
-  m_debugBoundingBoxes = flag;
-  emit debugBoundingBoxesChanged();
+  m_debugMode = flag;
+  emit debugModeChanged();
 }
 
 void App::initialize()
@@ -64,8 +64,8 @@ void App::setDebugBox2d(bool flag)
 QString App::musicPath() const
 {
 #if defined(Q_OS_IOS)
-  return QString("file://%1/").arg(qGuiApp->applicationDirPath());
+  return QString("file://%1/").arg(qApp->applicationDirPath());
 #else
-  return QString("file://%1/%2/").arg(qGuiApp->applicationDirPath()).arg("music");
+  return QString("file://%1/%2/").arg(qApp->applicationDirPath()).arg("music");
 #endif
 }

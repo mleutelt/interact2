@@ -47,6 +47,28 @@ LevelData LevelFileIO::loadLevelFromPath(const QString &path)
     };
     objectDescription.isStatic = o.value(u"static"_qs).toBool();
     objectDescription.rotation = o.value(u"rotation"_qs).toInt();
+    objectDescription.invisible = o.value(u"invisible"_qs).toBool();
+    objectDescription.gameItem = o.value(u"gameItem"_qs).toBool();
+
+    QJsonArray pointsArrayArray = o.value(u"points"_qs).toArray();
+    QList<QVariantList> points;
+    for (const QJsonValue &pointList : pointsArrayArray) {
+      QVariantList pointsArray;
+      for (const QJsonValue &point : pointList.toArray()) {
+        QPointF p(point[u"x"_qs].toDouble(), point[u"y"_qs].toDouble());
+        pointsArray << p;
+      }
+      points << pointsArray;
+    }
+    objectDescription.points = points;
+
+    QJsonArray polygonArray = o.value(u"polygon"_qs).toArray();
+    QPolygonF polygon;
+    for (const QJsonValue &point : polygonArray) {
+      QPointF p(point[u"x"_qs].toDouble(), point[u"y"_qs].toDouble());
+      polygon << p;
+    }
+    objectDescription.polygon = polygon;
 
     objects << objectDescription;
   }
@@ -86,6 +108,30 @@ bool LevelFileIO::storeLevelAtPath(const QString &path, const LevelData &data)
     jsonObject[u"height"_qs] = object.boundingBox.height();
     jsonObject[u"static"_qs] = object.isStatic;
     jsonObject[u"rotation"_qs] = object.rotation;
+    jsonObject[u"invisible"_qs] = object.invisible;
+    jsonObject[u"gameItem"_qs] = object.gameItem;
+
+    QJsonArray pointsArrayArray;
+    for (const QVariantList &pointList : object.points) {
+      QJsonArray pointsArray;
+      for (const QVariant &point : pointList) {
+        QJsonObject p;
+        p[u"x"_qs] = point.toPointF().x();
+        p[u"y"_qs] = point.toPointF().y();
+        pointsArray << p;
+      }
+      pointsArrayArray << pointsArray;
+    }
+    jsonObject[u"points"_qs] = pointsArrayArray;
+
+    QJsonArray polygonArray;
+    for (const QPointF &point : object.polygon) {
+      QJsonObject p;
+      p[u"x"_qs] = point.x();
+      p[u"y"_qs] = point.y();
+      polygonArray << p;
+    }
+    jsonObject[u"polygon"_qs] = polygonArray;
 
     objects << jsonObject;
   }

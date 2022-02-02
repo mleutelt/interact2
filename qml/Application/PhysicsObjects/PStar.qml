@@ -16,6 +16,8 @@ PObject {
     property alias collidesWith: polygon.collidesWith
     property alias groupIndex: polygon.groupIndex
 
+    isGameItem: true
+    isGoalItem: true
     // FIXME: vertices are not accurate
     physicalObject: [
         B2D.Polygon {
@@ -102,7 +104,7 @@ PObject {
 
             onTapped: (eventPoint, button) => {
                 if (container.clickHandler && typeof container.clickHandler === "function")
-                    container.clickHandler(index, button)
+                    container.clickHandler(container, index, button)
             }
         }
 

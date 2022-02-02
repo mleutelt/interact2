@@ -106,6 +106,19 @@ void LevelHandler::updateUserLevelsModel()
   qCInfo(lvlh) << "user levels found:" << userLevelList.count();
 }
 
+void LevelHandler::nextLevel()
+{
+  qCInfo(lvlh) << "proceeding to next level";
+
+  int currentLevelIndex = m_availableLevels->indexOf(m_currentLevelData->name());
+  if (currentLevelIndex >= 0 && currentLevelIndex < m_availableLevels->rowCount() - 1) {
+    emit nextLevelAvailable(m_availableLevels->levelAtIndex(currentLevelIndex + 1).path);
+  } else {
+    qCDebug(lvlh) << "no next level available";
+    emit nextLevelNotAvailable();
+  }
+}
+
 LevelDataModel *LevelHandler::levelData() const
 {
   return m_currentLevelData;

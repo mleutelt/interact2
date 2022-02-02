@@ -38,9 +38,29 @@ ApplicationWindow {
         id: stackView
 
         anchors.fill: parent
+//        layer.enabled: true
+//        layer.effect: ShaderEffect {
+//            fragmentShader: "qrc:/resources/shaders/fragment.frag.qsb"
+//        }
 
         onDepthChanged: Sound.playSound(Sound.PaperSlide)
     }
+
+    // TODO: implement nice shader effect
+//    ShaderEffect {
+//        property variant src: effectSource
+
+//        anchors.fill: parent
+//        vertexShader: "qrc:/resources/shaders/vertex.vert.qsb"
+//        fragmentShader: "qrc:/resources/shaders/fragment.frag.qsb"
+//    }
+
+//    ShaderEffectSource {
+//        id: effectSource
+//        sourceItem: stackView
+//        hideSource: true
+//        live: true
+//    }
 
     RoundButton {
         anchors.bottom: parent.bottom
@@ -78,6 +98,15 @@ ApplicationWindow {
         function onShowInitialScreen() {
             Screens.currentScreen = Screens.Main
             stackView.pop(null)
+        }
+    }
+
+    Connections {
+        target: App.levelHandler
+
+        function onNextLevelAvailable(level) {
+            Screens.show(Screens.CurrentLevel)
+            App.levelHandler.loadLevel(level)
         }
     }
 
@@ -124,10 +153,10 @@ ApplicationWindow {
                     anchors.fill: parent
 
                     CheckBox {
-                        text: qsTr("Show bounding boxes")
-                        checked: App.debugBoundingBoxes
+                        text: qsTr("Show debug infos")
+                        checked: App.debugMode
 
-                        onToggled: App.debugBoundingBoxes = !App.debugBoundingBoxes
+                        onToggled: App.debugMode = !App.debugMode
                     }
 
                     CheckBox {

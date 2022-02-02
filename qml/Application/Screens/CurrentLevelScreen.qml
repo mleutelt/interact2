@@ -25,7 +25,6 @@ Page {
             canvas.currentY = mouseY
         }
         onReleased: (mouse) => {
-
             if (mouse.button === Qt.LeftButton) {
                 canvas.clear()
                 levelInteractor.addPolygonObject(Constants.ShapeType_Polygon,
@@ -63,14 +62,21 @@ Page {
         backgroundImage.source: App.levelHandler.currentLevelData.backgroundImage
         objectFactory.model: App.levelHandler.currentLevelData
         objectFactory.clickEnabled: true
-        objectFactory.clickHandler: (index, button) => {
-            if (button === Qt.MiddleButton) {
+        objectFactory.clickHandler: function(item, index, button) {
+            if (button === Qt.LeftButton && !item.isGoalItem && !item.isGameItem && !item.invisible) {
                 levelInteractor.removeObject(index)
+                Sound.playSound(Sound.PaperCrumple)
             }
         }
         objectFactory.hoverEnabled: true
         objectFactory.hoverHandler: function(item, hovered) {
-            return hovered
+            return hovered && !(item.isGameItem || item.isGoalItem || item.invisible)
+        }
+        objectFactory.contactHandler: function(item, otherItem) {
+            if (item.isGameItem && otherItem.isGoalItem) {
+                Sound.playSound(Sound.Bell)
+                App.levelHandler.nextLevel()
+            }
         }
     }
 
@@ -111,5 +117,21 @@ Page {
         border.width: 1
         border.color: "black"
         color: "transparent"
+    }
+
+    Label {
+        id: levelName
+
+        anchors.centerIn: parent
+        font.pixelSize: 40
+        font.bold: true
+        text: App.levelHandler.currentLevelData.name
+
+        OpacityAnimator on opacity {
+            from: 1
+            to: 0
+            running: true
+            duration: 5000
+        }
     }
 }

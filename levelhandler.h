@@ -31,6 +31,7 @@ public:
   static QString levelDataFileName();
 
   Q_INVOKABLE void updateUserLevelsModel();
+  Q_INVOKABLE void nextLevel();
 
 protected:
   void loadLevel(const QString &path) override;

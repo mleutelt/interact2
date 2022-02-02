@@ -15,7 +15,7 @@ namespace {
   const int START_END_POINT_DISTANCE = 20; // distance to decide wether the line is closed or not
 
   // for naturalizeLine
-  const int INPUT_COORDINATES_MAX_DISTANCE = 4; // max. allowed distance between consecutive mouse coordinates
+  const int INPUT_COORDINATES_MAX_DISTANCE = 40; // max. allowed distance between consecutive mouse coordinates
   const float MIN_RANDOM_OFFSET = 1.5f; // min value for random point offset
   const float MAX_RANDOM_OFFSET = 1.5f; // max value for random point offset
 

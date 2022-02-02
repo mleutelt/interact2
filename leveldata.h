@@ -17,13 +17,15 @@ public:
   // NOTE: Box2d expects the vertices of a polygon as a QVariantList
   QList<QVariantList> points;
   bool isStatic = false;
+  bool invisible = false;
+  bool gameItem = false;
   int rotation = 0;
 };
 
 inline QDebug operator<<(QDebug debug, const ObjectDescription &o)
 {
   debug << "ObjectDescription(" << o.type << o.boundingBox.x() << o.boundingBox.y() << o.boundingBox.width()
-        << o.boundingBox.height() << o.isStatic << ")";
+        << o.boundingBox.height() << o.isStatic << o.invisible << o.gameItem << ")";
   return debug;
 }
 
