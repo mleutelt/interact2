@@ -47,8 +47,8 @@ LevelData LevelFileIO::loadLevelFromPath(const QString &path)
     };
     objectDescription.isStatic = o.value(u"static"_qs).toBool();
     objectDescription.rotation = o.value(u"rotation"_qs).toInt();
-    objectDescription.invisible = o.value(u"invisible"_qs).toBool();
     objectDescription.gameItem = o.value(u"gameItem"_qs).toBool();
+    objectDescription.color = o.value(u"color"_qs).toString();
 
     QJsonArray pointsArrayArray = o.value(u"points"_qs).toArray();
     QList<QVariantList> points;
@@ -108,8 +108,8 @@ bool LevelFileIO::storeLevelAtPath(const QString &path, const LevelData &data)
     jsonObject[u"height"_qs] = object.boundingBox.height();
     jsonObject[u"static"_qs] = object.isStatic;
     jsonObject[u"rotation"_qs] = object.rotation;
-    jsonObject[u"invisible"_qs] = object.invisible;
     jsonObject[u"gameItem"_qs] = object.gameItem;
+    jsonObject[u"color"_qs] = object.color.name();
 
     QJsonArray pointsArrayArray;
     for (const QVariantList &pointList : object.points) {

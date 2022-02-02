@@ -28,15 +28,18 @@ Page {
             if (mouse.button === Qt.LeftButton) {
                 canvas.clear()
                 levelInteractor.addPolygonObject(Constants.ShapeType_Polygon,
-                                                 PhysicsObjectOptimizer.determineAndOptimizeObject(pointBuffer))
+                                                 PhysicsObjectOptimizer.determineAndOptimizeObject(pointBuffer),
+                                                 Qt.rgba(Math.random(), Math.random(), Math.random()))
                 pointBuffer = []
             }
 
             if (mouse.button === Qt.RightButton && distance > minimalObjectSize.width) {
-                levelInteractor.addSimpleObject(Constants.ShapeType_Circle, Qt.rect(drawingMouseArea.initialPoint.x - distance / 2,
-                                                                                    drawingMouseArea.initialPoint.y - distance / 2,
-                                                                                    distance,
-                                                                                    distance))
+                levelInteractor.addSimpleObject(Constants.ShapeType_Circle,
+                                                Qt.rect(drawingMouseArea.initialPoint.x - distance / 2,
+                                                        drawingMouseArea.initialPoint.y - distance / 2,
+                                                        distance,
+                                                        distance),
+                                                Qt.rgba(Math.random(), Math.random(), Math.random()))
                 distance = 0
             }
         }

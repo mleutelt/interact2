@@ -104,8 +104,8 @@ Page {
                     if (drawingRectangle.width > minimalObjectSize.width && drawingRectangle.height > minimalObjectSize.height) {
                         levelInteractor.addSimpleObject(App.editor.currentShape,
                                                         Qt.rect(drawingRectangle.x, drawingRectangle.y, drawingRectangle.width, drawingRectangle.height),
+                                                        colorDialog.currentColor,
                                                         objectBehaviorButton.checked,
-                                                        objectVisibilityButton.checked,
                                                         gameItemButton.checked)
                     }
 
@@ -114,8 +114,8 @@ Page {
                     canvas.clear()
                     levelInteractor.addPolygonObject(App.editor.currentShape,
                                                      PhysicsObjectOptimizer.determineAndOptimizeObject(pointBuffer),
+                                                     colorDialog.currentColor,
                                                      objectBehaviorButton.checked,
-                                                     objectVisibilityButton.checked,
                                                      gameItemButton.checked)
                     pointBuffer = []
                     break
@@ -321,6 +321,7 @@ Page {
 
             ToolTip.visible: hovered
             ToolTip.text: qsTr("Colors")
+            Material.background: colorDialog.currentColor
             checkable: true
             text: "\uf53f"
 
@@ -329,18 +330,13 @@ Page {
             ColorDialog {
                 id: colorDialog
 
+                color: Qt.rgba(Math.random(), Math.random(), Math.random())
+                currentColor: color
+                options: ColorDialog.NoButtons | ColorDialog.ShowAlphaChannel
+
                 onAccepted: colorSelectionButton.toggle()
                 onRejected: colorSelectionButton.toggle()
             }
-        }
-
-        RoundButton {
-            id: objectVisibilityButton
-
-            ToolTip.visible: hovered
-            ToolTip.text: qsTr("Object visible/invisible")
-            checkable: true
-            text: checked ? "\uf070" : "\uf06e"
         }
 
         RoundButton {
@@ -554,6 +550,11 @@ Page {
 
         function onLevelLoadedSuccessfully() {
             Sound.playMusic(App.editor.levelData.music)
+        }
+
+        function onCurrentEditOperationChanged() {
+            objectBehaviorButton.checked = false
+            gameItemButton.checked = false
         }
     }
 

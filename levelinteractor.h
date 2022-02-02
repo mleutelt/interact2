@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QObject>
+#include <QColor>
 #include <QtQml/qqml.h>
 
 #include "ilevelmanager.h"
@@ -17,10 +18,10 @@ public:
 
   ILevelManager *levelManager() const;
 
-  Q_INVOKABLE void addSimpleObject(int type, const QRectF &boundingRect, bool isStatic = false, bool invisible = false,
+  Q_INVOKABLE void addSimpleObject(int type, const QRectF &boundingRect, const QColor &color = QColor(), bool isStatic = false,
                                    bool gameItem = false) const;
-  Q_INVOKABLE void addPolygonObject(int type, const OptimizerResult &optimizerResult, bool isStatic = false,
-                                    bool invisible = false, bool gameItem = false) const;
+  Q_INVOKABLE void addPolygonObject(int type, const OptimizerResult &optimizerResult, const QColor &color = QColor(),
+                                    bool isStatic = false, bool gameItem = false) const;
   Q_INVOKABLE void removeObject(int index) const;
 
 signals:

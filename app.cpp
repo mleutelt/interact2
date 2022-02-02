@@ -66,6 +66,6 @@ QString App::musicPath() const
 #if defined(Q_OS_IOS)
   return QString("file://%1/").arg(qApp->applicationDirPath());
 #else
-  return QString("file://%1/%2/").arg(qApp->applicationDirPath()).arg("music");
+  return QString("file:///%1/%2/").arg(qApp->applicationDirPath()).arg("music");
 #endif
 }

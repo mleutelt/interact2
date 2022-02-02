@@ -55,8 +55,7 @@ Instantiator {
                 y: model.boundingBox.y
                 width: Math.min(model.boundingBox.width, model.boundingBox.height)
                 height: Math.min(model.boundingBox.height, model.boundingBox.width)
-                invisible: model.invisible
-                itemColor: model.invisible ? "transparent" : Qt.rgba(Math.random(), Math.random(), Math.random())
+                itemColor: model.color
 
                 Component.onCompleted: console.log(log, "Circle created")
             }
@@ -85,8 +84,7 @@ Instantiator {
                 y: model.boundingBox.y
                 width: model.boundingBox.width
                 height: model.boundingBox.height
-                invisible: model.invisible
-                itemColor: model.invisible ? "transparent" : Qt.rgba(Math.random(), Math.random(), Math.random())
+                itemColor: model.color
 
                 Component.onCompleted: console.log(log, "Rectangle created")
             }
@@ -113,8 +111,7 @@ Instantiator {
                 isGameItem: model.gameItem
                 width: model.boundingBox.width
                 height: model.boundingBox.height
-                invisible: model.invisible
-                itemColor: model.invisible ? "transparent" : t.rgba(Math.random(), Math.random(), Math.random())
+                itemColor:  model.color
 
                 Component.onCompleted: console.log(log, "Polygon created")
             }
@@ -141,8 +138,7 @@ Instantiator {
                 isGameItem: model.gameItem
                 width: model.boundingBox.width
                 height: model.boundingBox.height
-                invisible: model.invisible
-                itemColor: model.invisible ? "transparent" : Qt.rgba(Math.random(), Math.random(), Math.random())
+                itemColor: model.color
 
                 Component.onCompleted: console.log(log, "Line created")
             }

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QAbstractListModel>
+#include <QColor>
 #include <QtQml/qqml.h>
 
 #include "leveldata.h"
@@ -21,8 +22,8 @@ public:
     Static,
     Polygon,
     Points,
-    Invisible,
     GameItem,
+    Color,
   };
   Q_ENUM(Roles)
 
@@ -36,11 +37,11 @@ public:
 
   void setLevelData(const LevelData &data);
 
-  void addSimpleObject(int type, const QRectF &boundingRect, bool isStatic, bool visible, bool gameItem);
+  void addSimpleObject(int type, const QRectF &boundingRect, bool isStatic, bool gameItem, const QColor &color);
   void addPolygonObject(int type, const QPolygonF &originalPoints, const QList<QVariantList> &optimizedPoints, bool isStatic,
-                        bool visible, bool gameItem);
+                        bool gameItem, const QColor &color);
   void addLineObject(int type, const QPolygonF &originalPoints, const QList<QVariantList> &lineSegments, bool isStatic,
-                     bool visible, bool gameItem);
+                     bool gameItem, const QColor &color);
   void removeObject(int index);
   void clear();
   QList<ObjectDescription> objects() const;

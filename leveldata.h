@@ -4,6 +4,7 @@
 #include <QRectF>
 #include <QPolygonF>
 #include <QUrl>
+#include <QColor>
 #include <QDebug>
 
 class ObjectDescription
@@ -17,15 +18,15 @@ public:
   // NOTE: Box2d expects the vertices of a polygon as a QVariantList
   QList<QVariantList> points;
   bool isStatic = false;
-  bool invisible = false;
   bool gameItem = false;
+  QColor color;
   int rotation = 0;
 };
 
 inline QDebug operator<<(QDebug debug, const ObjectDescription &o)
 {
   debug << "ObjectDescription(" << o.type << o.boundingBox.x() << o.boundingBox.y() << o.boundingBox.width()
-        << o.boundingBox.height() << o.isStatic << o.invisible << o.gameItem << ")";
+        << o.boundingBox.height() << o.isStatic << o.gameItem << o.color << ")";
   return debug;
 }
 

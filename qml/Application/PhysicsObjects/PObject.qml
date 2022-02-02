@@ -26,7 +26,6 @@ Rectangle {
     property var contactHandler
     property bool isGameItem: false
     property bool isGoalItem: false
-    property bool invisible: false
 
     property alias physicalObject: body.fixtures
     property Body body: Body {
