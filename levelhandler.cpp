@@ -119,6 +119,18 @@ void LevelHandler::nextLevel()
   }
 }
 
+void LevelHandler::deleteLevel(int index)
+{
+  const LevelDescription level = m_userLevels->levelAtIndex(index);
+  if (QDir(level.path).removeRecursively()) {
+    qCDebug(lvlh) << "removed level" << level.name;
+
+    m_userLevels->removeLevel(index);
+  } else {
+    qCWarning(lvlh) << "unable to remove level";
+  }
+}
+
 LevelDataModel *LevelHandler::levelData() const
 {
   return m_currentLevelData;

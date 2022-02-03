@@ -19,7 +19,10 @@ ApplicationWindow {
     Shortcut {
         sequence: "m"
 
-        onActivated: toggleMusicAction.toggle()
+        onActivated: {
+            toggleMusicAction.toggle()
+            Notification.showText(qsTr("Music is %1").arg(Sound.musicPlaying ? "on" : "off"))
+        }
     }
 
     Action {
@@ -102,11 +105,21 @@ ApplicationWindow {
     }
 
     Connections {
+        target: Notification
+
+        function onShowText(text) {
+            notification.text = text
+            notificationAnimation.restart()
+        }
+    }
+
+    Connections {
         target: App.levelHandler
 
         function onNextLevelAvailable(level) {
             Screens.show(Screens.CurrentLevel)
             App.levelHandler.loadLevel(level)
+            Notification.showText(App.levelHandler.currentLevelData.name)
         }
     }
 
@@ -254,6 +267,23 @@ ApplicationWindow {
                 x: handler.point.position.x - width / 2
                 y: handler.point.position.y - height / 2
             }
+        }
+    }
+
+    Label {
+        id: notification
+
+        anchors.top: parent.top
+        anchors.topMargin: 40
+        anchors.horizontalCenter: parent.horizontalCenter
+        font.pixelSize: 40
+        font.bold: true
+
+        OpacityAnimator on opacity {
+            id: notificationAnimation
+            from: 1
+            to: 0
+            duration: 3000
         }
     }
 

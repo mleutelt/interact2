@@ -174,7 +174,7 @@ Page {
         objectFactory.wheelEnabled: App.editor.currentEditOperation === Editor.EditOperationType_Move
         objectFactory.wheelHandler: function(item, event, handler) {
             // only rotate objects for now, maybe allow changing size?
-            // FIXME: set a fix rotation axis
+            // FIXME: set a fixed rotation axis
             handler.property = "rotation"
         }
         // TODO: implement pinch

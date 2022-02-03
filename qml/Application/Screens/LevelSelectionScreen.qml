@@ -67,6 +67,16 @@ Page {
                     text: model.name
 
                     onClicked: container.levelSelectionHandler(model.path)
+
+                    ToolButton {
+                        anchors.bottom: parent.bottom
+                        anchors.right: parent.right
+                        font: Style.fontAwesomeSolid.font
+                        flat: true
+                        text: "\uf2ed"
+
+                        onClicked: App.levelHandler.deleteLevel(index)
+                    }
                 }
             }
         }

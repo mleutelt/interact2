@@ -88,6 +88,7 @@ set_source_files_properties(
     qml/Application/Screens/Screens.qml
     qml/Application/Style/Style.qml
     qml/Application/Sound/Sound.qml
+    qml/Application/Notifications/Notification.qml
     PROPERTIES QT_QML_SINGLETON_TYPE true
 )
 
@@ -115,6 +116,7 @@ qt_add_qml_module(${PROJECT_NAME}
         qml/Application/PhysicsObjects/PObjectFactory.qml
         qml/Application/PhysicsObjects/PStar.qml
         qml/Application/Style/Style.qml
+        qml/Application/Notifications/Notification.qml
     SOURCES
         app.h
         app.cpp

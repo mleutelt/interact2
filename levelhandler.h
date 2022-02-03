@@ -32,6 +32,7 @@ public:
 
   Q_INVOKABLE void updateUserLevelsModel();
   Q_INVOKABLE void nextLevel();
+  Q_INVOKABLE void deleteLevel(int index);
 
 protected:
   void loadLevel(const QString &path) override;

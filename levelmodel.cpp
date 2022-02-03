@@ -74,3 +74,10 @@ int LevelModel::indexOf(const QString &name) const
 
   return -1;
 }
+
+void LevelModel::removeLevel(int index)
+{
+  beginRemoveRows(QModelIndex(), index, index);
+  m_data.remove(index);
+  endRemoveRows();
+}

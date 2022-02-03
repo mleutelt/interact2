@@ -39,6 +39,7 @@ public:
   void clear();
   LevelDescription levelAtIndex(int index) const;
   int indexOf(const QString &name) const;
+  void removeLevel(int index);
 
 private:
   QList<LevelDescription> m_data;

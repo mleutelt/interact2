@@ -1,6 +1,6 @@
 pragma Singleton
 
-import QtQuick
+import QtQml
 
 // NOTE: central management of all screens the user can navigate between
 QtObject {

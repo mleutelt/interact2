@@ -75,6 +75,7 @@ Page {
                                             levelSelectionHandler: (path) => {
                                                 Screens.show(Screens.CurrentLevel)
                                                 App.levelHandler.loadLevel(path)
+                                                Notification.showText(App.levelHandler.currentLevelData.name)
                                             }
                                         })
             }

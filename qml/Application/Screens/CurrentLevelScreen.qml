@@ -3,6 +3,8 @@ import QtQuick.Controls
 
 import App
 
+import Box2D
+
 Page {
     id: container
 
@@ -66,14 +68,14 @@ Page {
         objectFactory.model: App.levelHandler.currentLevelData
         objectFactory.clickEnabled: true
         objectFactory.clickHandler: function(item, index, button) {
-            if (button === Qt.LeftButton && !item.isGoalItem && !item.isGameItem && !item.invisible) {
+            if (button === Qt.LeftButton && !item.isGoalItem && !item.isGameItem && !item.invisible && item.bodyType !== Body.Static) {
                 levelInteractor.removeObject(index)
                 Sound.playSound(Sound.PaperCrumple)
             }
         }
         objectFactory.hoverEnabled: true
         objectFactory.hoverHandler: function(item, hovered) {
-            return hovered && !(item.isGameItem || item.isGoalItem || item.invisible)
+            return hovered && item.bodyType !== Body.Static && !(item.isGameItem || item.isGoalItem || item.invisible)
         }
         objectFactory.contactHandler: function(item, otherItem) {
             if (item.isGameItem && otherItem.isGoalItem) {
@@ -120,21 +122,5 @@ Page {
         border.width: 1
         border.color: "black"
         color: "transparent"
-    }
-
-    Label {
-        id: levelName
-
-        anchors.centerIn: parent
-        font.pixelSize: 40
-        font.bold: true
-        text: App.levelHandler.currentLevelData.name
-
-        OpacityAnimator on opacity {
-            from: 1
-            to: 0
-            running: true
-            duration: 5000
-        }
     }
 }

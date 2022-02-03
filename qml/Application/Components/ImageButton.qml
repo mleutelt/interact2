@@ -1,5 +1,6 @@
 import QtQuick
 import QtQuick.Controls
+import QtQuick.Controls.Material
 import QtQuick.Layouts
 
 import App
@@ -13,25 +14,35 @@ Button {
     font.capitalization: Font.Capitalize
 
     contentItem: ColumnLayout {
-        Image {
-            id: image
-
+        Rectangle {
             Layout.fillWidth: true
             Layout.fillHeight: true
-            fillMode: Image.PreserveAspectCrop
-            asynchronous: true
-            smooth: true
+            color: Material.color(Material.Grey)
 
-            BusyIndicator {
-                id: busyIndicator
+            Image {
+                id: image
 
-                anchors.centerIn: parent
-                running: false
+                anchors.fill: parent
+                anchors.margins: 1
+                fillMode: Image.PreserveAspectCrop
+                asynchronous: true
+                smooth: true
+
+                BusyIndicator {
+                    id: busyIndicator
+
+                    anchors.centerIn: parent
+                    running: false
+                }
             }
         }
 
         IconLabel {
             Layout.fillWidth: true
+            Layout.leftMargin: 40
+            Layout.rightMargin: 40
+            Layout.minimumHeight: 24
+            alignment: Qt.AlignVCenter
             font: container.font
             text: container.text
         }

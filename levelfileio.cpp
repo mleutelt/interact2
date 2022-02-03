@@ -73,7 +73,7 @@ LevelData LevelFileIO::loadLevelFromPath(const QString &path)
     objects << objectDescription;
   }
 
-  levelData.name = QFileInfo(path).dir().dirName();
+  levelData.name = level.value(u"name"_qs).toString();
   levelData.objects = objects;
   levelData.backgroundImage = level.value(u"backgroundImage"_qs).toString();
   levelData.music = level.value(u"music"_qs).toString();
@@ -143,6 +143,7 @@ bool LevelFileIO::storeLevelAtPath(const QString &path, const LevelData &data)
   level[u"topWallEnabled"_qs] = data.topWallEnabled;
   level[u"backgroundImage"_qs] = data.backgroundImage.toString();
   level[u"music"_qs] = data.music.toString();
+  level[u"name"_qs] = data.name;
 
   QJsonDocument document(level);
 
