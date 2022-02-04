@@ -1,0 +1,71 @@
+{
+    "backgroundImage": "file::/backgrounds/level_Easy1.png",
+    "groundEnabled": true,
+    "leftWallEnabled": true,
+    "music": "",
+    "name": "Level 1",
+    "objects": [
+        {
+            "color": "#0d2aae",
+            "gameItem": false,
+            "height": 95,
+            "points": [
+            ],
+            "polygon": [
+            ],
+            "rotation": 0,
+            "static": true,
+            "type": 1,
+            "width": 131,
+            "x": 73,
+            "y": 394
+        },
+        {
+            "color": "#0d2aae",
+            "gameItem": false,
+            "height": 88,
+            "points": [
+            ],
+            "polygon": [
+            ],
+            "rotation": 0,
+            "static": true,
+            "type": 1,
+            "width": 132,
+            "x": 546,
+            "y": 382
+        },
+        {
+            "color": "#0d2aae",
+            "gameItem": false,
+            "height": 75,
+            "points": [
+            ],
+            "polygon": [
+            ],
+            "rotation": 0,
+            "static": false,
+            "type": 4,
+            "width": 83,
+            "x": 588,
+            "y": 305
+        },
+        {
+            "color": "#55aa00",
+            "gameItem": true,
+            "height": 73,
+            "points": [
+            ],
+            "polygon": [
+            ],
+            "rotation": 0,
+            "static": false,
+            "type": 0,
+            "width": 77,
+            "x": 114,
+            "y": 279
+        }
+    ],
+    "rightWallEnabled": true,
+    "topWallEnabled": true
+}

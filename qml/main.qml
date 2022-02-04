@@ -121,6 +121,10 @@ ApplicationWindow {
             App.levelHandler.loadLevel(level)
             Notification.showText(App.levelHandler.currentLevelData.name)
         }
+
+        function onNextLevelNotAvailable() {
+            Screens.show(Screens.Main)
+        }
     }
 
     Dialog {
