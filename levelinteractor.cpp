@@ -35,7 +35,7 @@ void LevelInteractor::addSimpleObject(int type, const QRectF &boundingRect, cons
 void LevelInteractor::addPolygonObject(int type, const OptimizerResult &optimizerResult, const QColor &color, bool isStatic,
                                        bool gameItem) const
 {
-  if (optimizerResult.originalPoints.count() > 2) {
+  if (optimizerResult.originalPoints.count() > 2 && optimizerResult.optimizedPoints.count() > 2) {
     if (optimizerResult.isLine) {
       m_levelManager->levelData()->addLineObject(Constants::ShapeType_Line, optimizerResult.originalPoints,
                                                  optimizerResult.optimizedPoints, isStatic, gameItem, color);

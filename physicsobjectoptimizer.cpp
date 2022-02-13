@@ -122,7 +122,7 @@ QList<QPointF> PhysicsObjectOptimizer::naturalizeLine(const QList<QPointF> &inpu
   // in between.
   QList<QPointF> output;
 
-  if (input.size() < 2) {
+  if (input.size() < 3) {
     return input;
   }
 
@@ -168,7 +168,7 @@ QList<QPointF> PhysicsObjectOptimizer::optimizeLine(const QList<QPointF> &points
   QList<QPointF> result;
 
   // if vector is shorter than skip distance
-  if (points.count() < SKIP) {
+  if (points.count() < SKIP + 1) {
     qCDebug(phoo) << "optimizeLine: Vector is shorter than skip distance, abort." << points.count();
 
     return points;

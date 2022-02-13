@@ -109,7 +109,7 @@ bool LevelFileIO::storeLevelAtPath(const QString &path, const LevelData &data)
     jsonObject[u"static"_qs] = object.isStatic;
     jsonObject[u"rotation"_qs] = object.rotation;
     jsonObject[u"gameItem"_qs] = object.gameItem;
-    jsonObject[u"color"_qs] = object.color.name();
+    jsonObject[u"color"_qs] = object.color.name(QColor::HexArgb);
 
     QJsonArray pointsArrayArray;
     for (const QVariantList &pointList : object.points) {
