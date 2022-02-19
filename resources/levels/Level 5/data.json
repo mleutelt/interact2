@@ -6,7 +6,7 @@
     "name": "Level 5",
     "objects": [
         {
-            "color": "#734637",
+            "color": "#00734637",
             "gameItem": false,
             "height": 98,
             "points": [
@@ -21,7 +21,7 @@
             "y": 501
         },
         {
-            "color": "#734637",
+            "color": "#00734637",
             "gameItem": false,
             "height": 80,
             "points": [
@@ -3812,7 +3812,7 @@
             "y": 423
         },
         {
-            "color": "#1a00ff",
+            "color": "#001a00ff",
             "gameItem": false,
             "height": 232,
             "points": [
@@ -3827,7 +3827,7 @@
             "y": 269
         },
         {
-            "color": "#1a00ff",
+            "color": "#001a00ff",
             "gameItem": false,
             "height": 27,
             "points": [

@@ -6,7 +6,7 @@
     "name": "Level 4",
     "objects": [
         {
-            "color": "#7d4229",
+            "color": "#007d4229",
             "gameItem": false,
             "height": 80,
             "points": [
@@ -1925,7 +1925,7 @@
             "y": 333
         },
         {
-            "color": "#7d4229",
+            "color": "#007d4229",
             "gameItem": false,
             "height": 376,
             "points": [

@@ -6,7 +6,7 @@
     "name": "Level 3",
     "objects": [
         {
-            "color": "#076152",
+            "color": "#00076152",
             "gameItem": false,
             "height": 136,
             "points": [
@@ -4700,7 +4700,7 @@
             "y": 205
         },
         {
-            "color": "#a75e29",
+            "color": "#00a75e29",
             "gameItem": false,
             "height": 113,
             "points": [
@@ -4715,7 +4715,7 @@
             "y": 300
         },
         {
-            "color": "#3e6501",
+            "color": "#003e6501",
             "gameItem": false,
             "height": 90,
             "points": [

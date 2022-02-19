@@ -6,7 +6,7 @@
     "name": "Level 6",
     "objects": [
         {
-            "color": "#009e00",
+            "color": "#00009e00",
             "gameItem": false,
             "height": 118,
             "points": [
@@ -21,7 +21,7 @@
             "y": 481
         },
         {
-            "color": "#0e009d",
+            "color": "#000e009d",
             "gameItem": false,
             "height": 121,
             "points": [
@@ -36,7 +36,7 @@
             "y": 478
         },
         {
-            "color": "#b06400",
+            "color": "#00b06400",
             "gameItem": false,
             "height": 536,
             "points": [

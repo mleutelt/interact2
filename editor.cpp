@@ -81,7 +81,7 @@ void Editor::saveLevel(const QString &name, QQuickItemGrabResult *screenshot)
   levelData.objects = m_levelData->objects();
 
   screenshot->saveToFile(levelDirectory.filePath(LevelHandler::levelPreviewFileName()));
-  LevelFileIO::storeLevelAtPath(levelDirectory.filePath(LevelHandler::levelDataFileName()), levelData);
+  LevelFileIO::storeLevel(levelDirectory.filePath(LevelHandler::levelDataFileName()), levelData);
 
   emit levelSavedSuccessfully();
 }
@@ -105,7 +105,7 @@ void Editor::loadLevel(const QString &path)
   QDir levelPath(path);
 
   if (levelPath.exists(LevelHandler::levelDataFileName())) {
-    m_levelData->setLevelData(LevelFileIO::loadLevelFromPath(levelPath.filePath(LevelHandler::levelDataFileName())));
+    m_levelData->setLevelData(LevelFileIO::loadLevel(levelPath.filePath(LevelHandler::levelDataFileName())));
 
     emit levelLoadedSuccessfully();
   } else {

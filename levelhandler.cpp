@@ -43,7 +43,7 @@ void LevelHandler::loadLevel(const QString &path)
   QDir levelPath(path);
 
   if (levelPath.exists(LEVEL_FILE)) {
-    m_currentLevelData->setLevelData(LevelFileIO::loadLevelFromPath(levelPath.filePath(LEVEL_FILE)));
+    m_currentLevelData->setLevelData(LevelFileIO::loadLevel(levelPath.filePath(LEVEL_FILE)));
   } else {
     qCCritical(lvlh) << "unable to find level data";
     // TODO: emit signal to display UI message
