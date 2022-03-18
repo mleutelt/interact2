@@ -25,6 +25,9 @@ Page {
         dim: false
         x: -width - shapesMenuLayout.spacing
         padding: 0
+        background: Rectangle {
+            color: "transparent"
+        }
 
         RowLayout {
             id: shapesMenuLayout
@@ -56,12 +59,12 @@ Page {
         modal: true
         contentWidth: parent.width * 3 / 4
         contentHeight: parent.height * 3 / 4
+        clip: true
 
         GridView {
             id: gridView
 
             anchors.fill: parent
-            clip: true
         }
     }
 
@@ -330,9 +333,9 @@ Page {
             ColorDialog {
                 id: colorDialog
 
-                color: Qt.rgba(Math.random(), Math.random(), Math.random())
+                color: Qt.rgba(Math.random(), Math.random(), Math.random(), 0.5)
                 currentColor: color
-                options: ColorDialog.NoButtons | ColorDialog.ShowAlphaChannel
+                options: ColorDialog.NoButtons
 
                 onAccepted: colorSelectionButton.toggle()
                 onRejected: colorSelectionButton.toggle()

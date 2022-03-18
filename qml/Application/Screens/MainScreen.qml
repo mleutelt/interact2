@@ -8,6 +8,8 @@ import Box2D
 Page {
     id: container
 
+    background.opacity: 0
+
     Component {
         id: ball
 
@@ -35,7 +37,6 @@ Page {
     Level {
         id: level
 
-        backgroundImage.source: "qrc:/backgrounds/kariertesblatt.png"
         topWall.enabled: false
 
         Text {

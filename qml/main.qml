@@ -21,7 +21,7 @@ ApplicationWindow {
 
         onActivated: {
             toggleMusicAction.toggle()
-            Notification.showText(qsTr("Music is %1").arg(Sound.musicPlaying ? "on" : "off"))
+            Notification.showText(qsTr("Music %1").arg(Sound.musicPlaying ? "on" : "off"))
         }
     }
 
@@ -35,6 +35,12 @@ ApplicationWindow {
                 Sound.playMusic()
             }
         }
+    }
+
+    Image {
+        anchors.fill: parent
+        fillMode: Image.PreserveAspectCrop
+        source: "qrc:/backgrounds/kariertesblatt.png"
     }
 
     StackView {

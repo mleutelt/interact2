@@ -38,12 +38,32 @@ PObject {
             }
         }
 
+        Image {
+            id: image
+            anchors.fill: parent
+            antialiasing: true
+            source: "qrc:/images/paper3.png"
+            layer.enabled: true
+            layer.effect: OpacityMask {
+                maskSource: mask
+                cached: true
+            }
+        }
+
+        Rectangle {
+            id: mask
+            anchors.fill: parent
+            radius: container.width / 2
+            color: Qt.alpha(container.itemColor, 1)
+            visible: false
+        }
+
         Rectangle {
             id: fakeCircle
             anchors.fill: parent
             antialiasing: true
             radius: container.width / 2
-            color: container.itemColor
+            color: Qt.alpha(container.itemColor, 0.5)
             border.color: container.hovered ? "red" : "transparent"
             border.width: container.hovered ? 2 : 0
         }

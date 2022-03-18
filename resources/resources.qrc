@@ -35,5 +35,9 @@
         <file>backgrounds/level_2Boxes.png</file>
         <file>backgrounds/level_Easy1.png</file>
         <file>images/coil.png</file>
+        <file>images/paper1.png</file>
+        <file>images/paper2.png</file>
+        <file>images/paper3.png</file>
+        <file>images/paper4.png</file>
     </qresource>
 </RCC>

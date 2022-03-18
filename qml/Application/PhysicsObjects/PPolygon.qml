@@ -1,5 +1,6 @@
 import QtQuick
 import QtQuick.Shapes
+import Qt5Compat.GraphicalEffects
 
 import Box2D as B2D
 
@@ -31,80 +32,122 @@ PObject {
         onObjectAdded: (index, object) => container.body.addFixture(object)
     }
 
-    visualItem: Shape {
-        id: polygonShape
+    visualItem: Item {
+        anchors.fill: parent
 
-        // NOTE: we can't use anchors here because we need to map from the
-        // drawing canvas coordinate system, which is the whole screen, to
-        // our local coordinate system.
-        // Seems to be a bit off sometimes, but accurate enough.
-        width: parent.width
-        height: parent.height
-        x: -model.boundingBox.x
-        y: -model.boundingBox.y
-        antialiasing: true
-        containsMode: Shape.FillContains
-
-        ShapePath {
-            id: shapePath
-
-            fillColor: container.itemColor
-            fillRule: ShapePath.WindingFill
-            strokeColor: container.hovered ? "red" : fillColor
-            strokeWidth: container.hovered ? 2 : 1
-
-            PathPolyline {
-                id: pathPolyLine
-
-                path: model.polygon
+        Image {
+            id: image
+            anchors.fill: parent
+            antialiasing: true
+            source: "qrc:/images/paper4.png"
+            layer.enabled: true
+            layer.effect: OpacityMask {
+                maskSource: mask
+                cached: true
             }
         }
 
-        HoverHandler {
-            id: hoverHandler
+        Item {
+            id: mask
 
-            enabled: container.hoverEnabled
+            anchors.fill: parent
+            visible: false
 
-            onHoveredChanged: {
-                if (container.hoverHandler && typeof container.hoverHandler === "function")
-                    container.hovered = container.hoverHandler(container, hovered)
+            Shape {
+                width: parent.width
+                height: parent.height
+                x: -model.boundingBox.x
+                y: -model.boundingBox.y
+
+                ShapePath {
+                    // NOTE: the alpha channel provides the mask to "clip" the image
+                    fillColor: Qt.alpha(container.itemColor, 1)
+                    fillRule: ShapePath.WindingFill
+                    strokeWidth: 0
+
+                    PathPolyline {
+
+                        path: model.polygon
+                    }
+                }
             }
         }
 
-        TapHandler {
-            enabled: container.clickEnabled
-            acceptedButtons: Qt.LeftButton | Qt.MiddleButton | Qt.RightButton
+        Shape {
+            id: polygonShape
 
-            onTapped: (eventPoint, button) => {
-                if (container.clickHandler && typeof container.clickHandler === "function")
-                    container.clickHandler(container, index, button)
+            // NOTE: we can't use anchors here because we need to map from the
+            // drawing canvas coordinate system, which is the whole screen, to
+            // our local coordinate system.
+            // Seems to be a bit off sometimes, but accurate enough.
+            width: parent.width
+            height: parent.height
+            x: -model.boundingBox.x
+            y: -model.boundingBox.y
+            antialiasing: true
+            containsMode: Shape.FillContains
+
+            ShapePath {
+                id: shapePath
+
+                fillColor: Qt.alpha(container.itemColor, 0.5)
+                fillRule: ShapePath.WindingFill
+                strokeColor: container.hovered ? "red" : fillColor
+                strokeWidth: container.hovered ? 2 : 0
+
+                PathPolyline {
+                    id: pathPolyLine
+
+                    path: model.polygon
+                }
             }
-        }
 
-        DragHandler {
-            enabled: container.dragEnabled
-            target: container
+            HoverHandler {
+                id: hoverHandler
 
-            onGrabChanged: (transition, point) => {
-                if (container.dragHandler && typeof container.dragHandler === "function")
-                    container.dragHandler(container, transition, point)
+                enabled: container.hoverEnabled
+
+                onHoveredChanged: {
+                    if (container.hoverHandler && typeof container.hoverHandler === "function")
+                        container.hovered = container.hoverHandler(container, hovered)
+                }
             }
-        }
 
-        WheelHandler {
-            id: wheelHandler
-            enabled: container.wheelEnabled
-            target: container
+            TapHandler {
+                enabled: container.clickEnabled
+                acceptedButtons: Qt.LeftButton | Qt.MiddleButton | Qt.RightButton
 
-            onWheel: event => {
-                if (container.wheelHandler && typeof container.wheelHandler === "function")
-                    container.wheelHandler(container, event, wheelHandler)
+                onTapped: (eventPoint, button) => {
+                              if (container.clickHandler && typeof container.clickHandler === "function")
+                              container.clickHandler(container, index, button)
+                          }
             }
-        }
 
-        PinchHandler {
-            enabled: container.pinchEnabled
-            target: container
+            DragHandler {
+                enabled: container.dragEnabled
+                target: container
+
+                onGrabChanged: (transition, point) => {
+                                   if (container.dragHandler && typeof container.dragHandler === "function")
+                                   container.dragHandler(container, transition, point)
+                               }
+            }
+
+            WheelHandler {
+                id: wheelHandler
+                enabled: container.wheelEnabled
+                target: container
+
+                onWheel: event => {
+                             if (container.wheelHandler && typeof container.wheelHandler === "function")
+                             container.wheelHandler(container, event, wheelHandler)
+                         }
+            }
+
+            PinchHandler {
+                enabled: container.pinchEnabled
+                target: container
+            }
         }
     }
 }

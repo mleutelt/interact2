@@ -1,4 +1,5 @@
 import QtQuick
+import Qt5Compat.GraphicalEffects
 
 import Box2D as B2D
 
@@ -27,14 +28,25 @@ PObject {
         onBeginContact: other => container.beginContact(other)
         onEndContact: other => container.endContact(other)
     }
-    visualItem: Rectangle {
+    visualItem: Item {
         id: rectangle
 
         anchors.fill: parent
-        antialiasing: true
-        color: container.itemColor
-        border.color: container.hovered ? "red" : "transparent"
-        border.width: container.hovered ? 2 : 0
+
+        Image {
+            id: image
+            anchors.fill: parent
+            antialiasing: true
+            source: "qrc:/images/paper2.png"
+        }
+
+        Rectangle {
+            anchors.fill: parent
+            antialiasing: true
+            color: Qt.alpha(container.itemColor, 0.5)
+            border.color: container.hovered ? "red" : "transparent"
+            border.width: container.hovered ? 2 : 0
+        }
 
         HoverHandler {
             id: hoverHandler

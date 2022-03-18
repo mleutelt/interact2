@@ -1,5 +1,6 @@
 import QtQuick
 import QtQuick.Shapes
+import Qt5Compat.GraphicalEffects
 
 import Box2D as B2D
 
@@ -63,75 +64,112 @@ PObject {
         }
     ]
 
-    visualItem: Shape {
-        id: star
-
+    visualItem: Item {
         anchors.fill: parent
-        antialiasing: true
-        containsMode: Shape.FillContains
 
-        ShapePath {
-            id: shapePath
-
-            fillColor: "gold"
-            fillRule: ShapePath.WindingFill
-            strokeColor: container.hovered ? "red" : fillColor
-            strokeWidth: container.hovered ? 2 : 1
-            startX: star.width / 2
-            startY: 0
-
-            PathLine { id: p1; x: star.width * 4 / 5; y: star.height }
-            PathLine { id: p2; x: 0; y: star.height * 2 / 5 }
-            PathLine { id: p3; x: star.width; y: star.height * 2 / 5 }
-            PathLine { id: p4; x: star.width / 5; y: star.height }
-            PathLine { id: p5; x: star.width / 2; y: 0 }
-        }
-
-        HoverHandler {
-            id: hoverHandler
-
-            enabled: container.hoverEnabled
-
-            onHoveredChanged: {
-                if (container.hoverHandler && typeof container.hoverHandler === "function")
-                    container.hovered = container.hoverHandler(container, hovered)
+        Image {
+            id: image
+            anchors.fill: parent
+            antialiasing: true
+            source: "qrc:/images/paper1.png"
+            layer.enabled: true
+            layer.effect: OpacityMask {
+                maskSource: mask
+                cached: true
             }
         }
 
-        TapHandler {
-            enabled: container.clickEnabled
-            acceptedButtons: Qt.LeftButton | Qt.MiddleButton | Qt.RightButton
+        Shape {
+            id: mask
 
-            onTapped: (eventPoint, button) => {
-                if (container.clickHandler && typeof container.clickHandler === "function")
-                    container.clickHandler(container, index, button)
+            anchors.fill: parent
+            visible: false
+
+            ShapePath {
+                fillColor: Qt.alpha("gold", 1)
+                fillRule: ShapePath.WindingFill
+                strokeWidth: 0
+                startX: mask.width / 2
+                startY: 0
+
+                PathLine { id: p1; x: mask.width * 4 / 5; y: mask.height }
+                PathLine { id: p2; x: 0; y: mask.height * 2 / 5 }
+                PathLine { id: p3; x: mask.width; y: mask.height * 2 / 5 }
+                PathLine { id: p4; x: mask.width / 5; y: mask.height }
+                PathLine { id: p5; x: mask.width / 2; y: 0 }
             }
         }
 
-        DragHandler {
-            enabled: container.dragEnabled
-            target: container
+        Shape {
+            id: star
 
-            onGrabChanged: (transition, point) => {
-                if (container.dragHandler && typeof container.dragHandler === "function")
-                    container.dragHandler(container, transition, point)
+            anchors.fill: parent
+            antialiasing: true
+            containsMode: Shape.FillContains
+
+            ShapePath {
+                id: shapePath
+
+                fillColor: Qt.alpha("gold", 0.5)
+                fillRule: ShapePath.WindingFill
+                strokeColor: container.hovered ? "red" : fillColor
+                strokeWidth: container.hovered ? 2 : 0
+                startX: star.width / 2
+                startY: 0
+
+                PathLine { x: star.width * 4 / 5; y: star.height }
+                PathLine { x: 0; y: star.height * 2 / 5 }
+                PathLine { x: star.width; y: star.height * 2 / 5 }
+                PathLine { x: star.width / 5; y: star.height }
+                PathLine { x: star.width / 2; y: 0 }
             }
-        }
 
-        WheelHandler {
-            id: wheelHandler
-            enabled: container.wheelEnabled
-            target: container
+            HoverHandler {
+                id: hoverHandler
 
-            onWheel: event => {
-                if (container.wheelHandler && typeof container.wheelHandler === "function")
-                    container.wheelHandler(container, event, wheelHandler)
+                enabled: container.hoverEnabled
+
+                onHoveredChanged: {
+                    if (container.hoverHandler && typeof container.hoverHandler === "function")
+                        container.hovered = container.hoverHandler(container, hovered)
+                }
             }
-        }
 
-        PinchHandler {
-            enabled: container.pinchEnabled
-            target: container
+            TapHandler {
+                enabled: container.clickEnabled
+                acceptedButtons: Qt.LeftButton | Qt.MiddleButton | Qt.RightButton
+
+                onTapped: (eventPoint, button) => {
+                              if (container.clickHandler && typeof container.clickHandler === "function")
+                              container.clickHandler(container, index, button)
+                          }
+            }
+
+            DragHandler {
+                enabled: container.dragEnabled
+                target: container
+
+                onGrabChanged: (transition, point) => {
+                                   if (container.dragHandler && typeof container.dragHandler === "function")
+                                   container.dragHandler(container, transition, point)
+                               }
+            }
+
+            WheelHandler {
+                id: wheelHandler
+                enabled: container.wheelEnabled
+                target: container
+
+                onWheel: event => {
+                             if (container.wheelHandler && typeof container.wheelHandler === "function")
+                             container.wheelHandler(container, event, wheelHandler)
+                         }
+            }
+
+            PinchHandler {
+                enabled: container.pinchEnabled
+                target: container
+            }
         }
     }
 }

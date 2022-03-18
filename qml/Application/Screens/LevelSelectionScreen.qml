@@ -9,6 +9,8 @@ Page {
 
     property var levelSelectionHandler
 
+    clip: true
+    background.opacity: 0
     footer: TabBar {
         id: tabBar
 
@@ -32,7 +34,6 @@ Page {
         currentIndex: tabBar.currentIndex
 
         GridView {
-            clip: true
             model: App.levelHandler.availableLevels
             cellWidth: parent.width / 3
             cellHeight: cellWidth
@@ -52,7 +53,6 @@ Page {
         }
 
         GridView {
-            clip: true
             model: App.levelHandler.userLevels
             cellWidth: parent.width / 3
             cellHeight: cellWidth
