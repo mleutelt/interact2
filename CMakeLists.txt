@@ -5,7 +5,7 @@ project(Interact2 VERSION 0.4.0 LANGUAGES CXX)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-set(qml_plugins_deployment_dir $<TARGET_FILE_DIR:${PROJECT_NAME}>/qml)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${PROJECT_NAME})
 
 find_package(Qt6 6.2
     COMPONENTS
@@ -65,6 +65,27 @@ else()
         COMMAND ${CMAKE_COMMAND} -E make_directory ${music_deployment_dir}
         COMMAND ${CMAKE_COMMAND} -E copy_if_different ${music_files} ${music_deployment_dir}
     )
+
+    # Deployment for Windows
+    if(WIN32)
+        include(InstallRequiredSystemLibraries)
+        find_program(WINDEPLOYQT_EXECUTABLE windeployqt HINTS "${_qt_bin_dir}")
+        add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+            COMMAND "${CMAKE_COMMAND}" -E env PATH="${_qt_bin_dir}" "${WINDEPLOYQT_EXECUTABLE}" --verbose 0 --qmldir ${CMAKE_CURRENT_SOURCE_DIR}/qml \"$<TARGET_FILE:${PROJECT_NAME}>\"
+            COMMENT "Deploying Qt..."
+        )
+
+        if(MINGW)
+            get_filename_component(MINGW_GCC_DIRECTORY ${CMAKE_C_COMPILER} DIRECTORY)
+            add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+                COMMAND ${CMAKE_COMMAND} -E copy_if_different
+                        ${MINGW_GCC_DIRECTORY}/libstdc++-6.dll
+                        ${MINGW_GCC_DIRECTORY}/libwinpthread-1.dll
+                        ${MINGW_GCC_DIRECTORY}/libgcc_s_seh-1.dll
+                        $<TARGET_FILE_DIR:${PROJECT_NAME}>
+            )
+        endif()
+    endif()
 endif()
 
 qt_add_shaders(${PROJECT_NAME} "shaders"

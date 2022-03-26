@@ -37,7 +37,6 @@ int main(int argc, char *argv[])
 
   QQmlApplicationEngine engine;
   engine.addImportPath(u"qrc:/"_qs);
-  engine.addImportPath(u"qml"_qs);
 
   const QUrl url(u"qrc:/App/qml/main.qml"_qs);
   QObject::connect(

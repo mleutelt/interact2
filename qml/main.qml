@@ -37,12 +37,6 @@ ApplicationWindow {
         }
     }
 
-    Image {
-        anchors.fill: parent
-        fillMode: Image.PreserveAspectCrop
-        source: "qrc:/backgrounds/kariertesblatt.png"
-    }
-
     StackView {
         id: stackView
 
@@ -51,6 +45,10 @@ ApplicationWindow {
 //        layer.effect: ShaderEffect {
 //            fragmentShader: "qrc:/resources/shaders/fragment.frag.qsb"
 //        }
+        background: Image {
+            fillMode: Image.PreserveAspectCrop
+            source: "qrc:/backgrounds/kariertesblatt.png"
+        }
 
         onDepthChanged: Sound.playSound(Sound.PaperSlide)
     }
